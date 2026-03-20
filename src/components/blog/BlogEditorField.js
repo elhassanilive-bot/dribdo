@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { renderMarkdownToHtml } from "@/lib/blog/markdown";
@@ -18,15 +18,28 @@ function insertLinePrefix(text, selectionStart, selectionEnd, prefix) {
   const before = text.slice(0, start);
   const selected = text.slice(start, end) || "";
   const after = text.slice(end);
-  const lines = (selected || "").split("\n").map((l) => (l.trim() ? `${prefix}${l}` : l));
+  const lines = (selected || "").split("\n").map((line) => (line.trim() ? `${prefix}${line}` : line));
   const replacement = lines.join("\n") || `${prefix}`;
   const next = before + replacement + after;
   const nextCursor = (before + replacement).length;
   return { next, nextCursor };
 }
 
+function ToolButton({ onClick, children }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
+    >
+      {children}
+    </button>
+  );
+}
+
 export default function BlogEditorField({ name = "content", storageKey = "Dribdo_blog_draft" }) {
   const [value, setValue] = useState(() => {
+    if (typeof window === "undefined") return "";
     try {
       return localStorage.getItem(storageKey) || "";
     } catch {
@@ -49,6 +62,7 @@ export default function BlogEditorField({ name = "content", storageKey = "Dribdo
       .trim()
       .split(/\s+/g)
       .filter(Boolean);
+
     return words.length;
   }, [value]);
 
@@ -113,88 +127,74 @@ export default function BlogEditorField({ name = "content", storageKey = "Dribdo
   }
 
   return (
-    <div className="rounded-3xl border border-gray-200 dark:border-gray-800 overflow-hidden bg-white dark:bg-gray-950">
-      <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+    <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-slate-50">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 py-4">
         <div className="flex flex-wrap gap-2">
-          <button type="button" onClick={() => apply("h2")} className="px-3 py-2 rounded-lg bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-sm font-semibold">
-            H2
-          </button>
-          <button type="button" onClick={() => apply("h3")} className="px-3 py-2 rounded-lg bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-sm font-semibold">
-            H3
-          </button>
-          <button type="button" onClick={() => apply("bold")} className="px-3 py-2 rounded-lg bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-sm font-semibold">
-            عريض
-          </button>
-          <button type="button" onClick={() => apply("italic")} className="px-3 py-2 rounded-lg bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-sm font-semibold">
-            مائل
-          </button>
-          <button type="button" onClick={() => apply("link")} className="px-3 py-2 rounded-lg bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-sm font-semibold">
-            رابط
-          </button>
-          <button type="button" onClick={() => apply("image")} className="px-3 py-2 rounded-lg bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-sm font-semibold">
-            صورة
-          </button>
-          <button type="button" onClick={() => apply("ul")} className="px-3 py-2 rounded-lg bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-sm font-semibold">
-            قائمة
-          </button>
-          <button type="button" onClick={() => apply("ol")} className="px-3 py-2 rounded-lg bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-sm font-semibold">
-            ترقيم
-          </button>
-          <button type="button" onClick={() => apply("quote")} className="px-3 py-2 rounded-lg bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-sm font-semibold">
-            اقتباس
-          </button>
-          <button type="button" onClick={() => apply("code")} className="px-3 py-2 rounded-lg bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-sm font-semibold">
-            كود
-          </button>
-          <button type="button" onClick={() => apply("codeblock")} className="px-3 py-2 rounded-lg bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-sm font-semibold">
-            كتلة كود
-          </button>
+          <ToolButton onClick={() => apply("h2")}>H2</ToolButton>
+          <ToolButton onClick={() => apply("h3")}>H3</ToolButton>
+          <ToolButton onClick={() => apply("bold")}>عريض</ToolButton>
+          <ToolButton onClick={() => apply("italic")}>مائل</ToolButton>
+          <ToolButton onClick={() => apply("link")}>رابط</ToolButton>
+          <ToolButton onClick={() => apply("image")}>صورة</ToolButton>
+          <ToolButton onClick={() => apply("ul")}>قائمة</ToolButton>
+          <ToolButton onClick={() => apply("ol")}>ترقيم</ToolButton>
+          <ToolButton onClick={() => apply("quote")}>اقتباس</ToolButton>
+          <ToolButton onClick={() => apply("code")}>كود</ToolButton>
+          <ToolButton onClick={() => apply("codeblock")}>كتلة كود</ToolButton>
         </div>
 
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => setTab("write")}
-            className={tab === "write" ? "px-3 py-2 rounded-lg bg-red-600 text-white text-sm font-semibold" : "px-3 py-2 rounded-lg bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-sm font-semibold"}
+            className={
+              tab === "write"
+                ? "rounded-xl bg-[var(--blog-accent)] px-3 py-2 text-sm font-semibold text-white"
+                : "rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700"
+            }
           >
             كتابة
           </button>
           <button
             type="button"
             onClick={() => setTab("preview")}
-            className={tab === "preview" ? "px-3 py-2 rounded-lg bg-red-600 text-white text-sm font-semibold" : "px-3 py-2 rounded-lg bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-sm font-semibold"}
+            className={
+              tab === "preview"
+                ? "rounded-xl bg-[var(--blog-accent)] px-3 py-2 text-sm font-semibold text-white"
+                : "rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700"
+            }
           >
             معاينة
           </button>
         </div>
       </div>
 
-      <div className="p-4">
+      <div className="p-4 sm:p-5">
         <input type="hidden" name={name} value={value} />
 
         {tab === "write" ? (
           <textarea
             ref={textareaRef}
             value={value}
-            onChange={(e) => setValue(e.target.value)}
-            rows={16}
-            className="w-full rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 py-3 text-gray-900 dark:text-white leading-relaxed"
-            placeholder={"اكتب المقال هنا بصيغة Markdown...\n\n## عنوان فرعي\nفقرة...\n- نقطة\n- نقطة\n\n> اقتباس\n\n[رابط](https://example.com)"}
+            onChange={(event) => setValue(event.target.value)}
+            rows={18}
+            className="min-h-[28rem] w-full rounded-[1.5rem] border border-slate-200 bg-white px-5 py-4 text-base leading-8 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-orange-300"
+            placeholder={"اكتب المقال هنا بصيغة Markdown...\n\n# عنوان رئيسي\n## عنوان فرعي\nفقرة افتتاحية قوية...\n- نقطة أولى\n- نقطة ثانية\n\n![وصف الصورة](https://example.com/image.jpg)\n\n[رابط مرجعي](https://example.com)"}
           />
         ) : (
-          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 px-5 py-4">
+          <div className="rounded-[1.5rem] border border-slate-200 bg-white px-5 py-5">
             {value.trim() ? (
               <article
-                className="prose prose-lg dark:prose-invert max-w-none"
+                className="blog-prose max-w-none"
                 dangerouslySetInnerHTML={{ __html: previewHtml }}
               />
             ) : (
-              <p className="text-gray-600 dark:text-gray-400">لا يوجد محتوى للمعاينة بعد.</p>
+              <p className="text-slate-500">لا يوجد محتوى للمعاينة بعد.</p>
             )}
           </div>
         )}
 
-        <div className="mt-3 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-500">
           <div>عدد الكلمات: {wordCount}</div>
           <button
             type="button"
@@ -204,7 +204,7 @@ export default function BlogEditorField({ name = "content", storageKey = "Dribdo
                 localStorage.removeItem(storageKey);
               } catch {}
             }}
-            className="hover:text-red-800 dark:hover:text-red-300"
+            className="font-semibold text-slate-600 transition hover:text-orange-700"
           >
             مسح المسودة
           </button>
@@ -213,4 +213,3 @@ export default function BlogEditorField({ name = "content", storageKey = "Dribdo
     </div>
   );
 }
-

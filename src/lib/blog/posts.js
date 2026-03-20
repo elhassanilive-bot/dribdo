@@ -1,5 +1,9 @@
 import { getSupabaseClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { getSupabaseAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
+import { createSlugCandidate } from "@/lib/blog/slug";
+
+const POST_LIST_COLUMNS =
+  "id,slug,title,excerpt,content,cover_image_url,category,tags,published_at,created_at,updated_at,status";
 
 export function isBlogEnabled() {
   return isSupabaseConfigured();
@@ -23,7 +27,47 @@ function normalizePost(row) {
     tags: row.tags || [],
     publishedAt: row.published_at,
     createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    status: row.status,
   };
+}
+
+function normalizeTags(tags) {
+  if (!Array.isArray(tags)) return [];
+
+  return [...new Set(tags.map((tag) => String(tag || "").trim()).filter(Boolean))];
+}
+
+async function getWriteClient() {
+  return isSupabaseAdminConfigured()
+    ? getSupabaseAdminClient()
+    : getSupabaseClient();
+}
+
+async function ensureUniqueSlug(client, baseSlug) {
+  const fallbackBase = createSlugCandidate(baseSlug);
+  let attempt = 0;
+
+  while (attempt < 100) {
+    const candidate = attempt === 0 ? fallbackBase : `${fallbackBase}-${attempt + 1}`;
+    const { data, error } = await client
+      .from("blog_posts")
+      .select("slug")
+      .eq("slug", candidate)
+      .maybeSingle();
+
+    if (error) {
+      return { slug: candidate, error: error.message };
+    }
+
+    if (!data) {
+      return { slug: candidate, error: null };
+    }
+
+    attempt += 1;
+  }
+
+  return { slug: `${fallbackBase}-${Date.now()}`, error: null };
 }
 
 export async function listPosts({ limit = 20 } = {}) {
@@ -34,7 +78,7 @@ export async function listPosts({ limit = 20 } = {}) {
 
   const { data, error } = await supabase
     .from("blog_posts")
-    .select("id,slug,title,excerpt,cover_image_url,category,tags,published_at,created_at")
+    .select(POST_LIST_COLUMNS)
     .eq("status", "published")
     .order("published_at", { ascending: false })
     .limit(limit);
@@ -51,7 +95,7 @@ export async function listPostsDetailed({ limit = 20 } = {}) {
 
   const { data, error } = await supabase
     .from("blog_posts")
-    .select("id,slug,title,excerpt,cover_image_url,category,tags,published_at,created_at")
+    .select(POST_LIST_COLUMNS)
     .eq("status", "published")
     .order("published_at", { ascending: false })
     .limit(limit);
@@ -68,7 +112,7 @@ export async function getPostBySlug(slug) {
 
   const { data, error } = await supabase
     .from("blog_posts")
-    .select("id,slug,title,excerpt,content,cover_image_url,category,tags,published_at,created_at,status")
+    .select(POST_LIST_COLUMNS)
     .eq("slug", slug)
     .eq("status", "published")
     .maybeSingle();
@@ -85,7 +129,7 @@ export async function getPostBySlugDetailed(slug) {
 
   const { data, error } = await supabase
     .from("blog_posts")
-    .select("id,slug,title,excerpt,content,cover_image_url,category,tags,published_at,created_at,status")
+    .select(POST_LIST_COLUMNS)
     .eq("slug", slug)
     .eq("status", "published")
     .maybeSingle();
@@ -93,29 +137,6 @@ export async function getPostBySlugDetailed(slug) {
   if (error) return { post: null, error: error.message };
   if (!data) return { post: null, error: null };
   return { post: normalizePost(data), error: null };
-}
-
-function slugify(input) {
-  const trimmed = String(input || "").trim();
-  const ascii = trimmed
-    .toLowerCase()
-    .replace(/['"]/g, "")
-    .replace(/[^a-z0-9\s-]/g, " ")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
-
-  if (ascii) return ascii;
-
-  const now = new Date();
-  const stamp = [
-    now.getFullYear(),
-    String(now.getMonth() + 1).padStart(2, "0"),
-    String(now.getDate()).padStart(2, "0"),
-    String(now.getHours()).padStart(2, "0"),
-    String(now.getMinutes()).padStart(2, "0"),
-  ].join("");
-  return `post-${stamp}`;
 }
 
 export async function createPost(input) {
@@ -128,20 +149,25 @@ export async function createPost(input) {
   const content = String(input?.content || "").trim();
   const coverImageUrl = String(input?.coverImageUrl || "").trim() || null;
   const category = String(input?.category || "").trim() || null;
-  const tags = Array.isArray(input?.tags) ? input.tags : [];
+  const tags = normalizeTags(input?.tags);
   const desiredSlug = String(input?.slug || "").trim();
-  const slug = desiredSlug ? slugify(desiredSlug) : slugify(title);
 
   if (!title || !excerpt || !content) {
-    return { ok: false, error: "Missing required fields" };
+    return { ok: false, error: "يرجى تعبئة العنوان والملخص والمحتوى." };
   }
 
-  const writer = isSupabaseAdminConfigured()
-    ? await getSupabaseAdminClient()
-    : await getSupabaseClient();
-
+  const writer = await getWriteClient();
   if (!writer) {
     return { ok: false, error: "Supabase client is not available" };
+  }
+
+  const { slug, error: slugError } = await ensureUniqueSlug(
+    writer,
+    desiredSlug ? createSlugCandidate(desiredSlug) : createSlugCandidate(title)
+  );
+
+  if (slugError) {
+    return { ok: false, error: slugError };
   }
 
   const { data, error } = await writer
@@ -157,9 +183,17 @@ export async function createPost(input) {
       status: "published",
       published_at: new Date().toISOString(),
     })
-    .select("slug")
+    .select("id, slug")
     .maybeSingle();
 
-  if (error) return { ok: false, error: error.message };
-  return { ok: true, slug: data?.slug || slug };
+  if (error) {
+    const message =
+      error.code === "23505"
+        ? "يوجد مقال آخر بنفس الرابط المختصر. غيّر العنوان أو slug ثم أعد المحاولة."
+        : error.message;
+
+    return { ok: false, error: message };
+  }
+
+  return { ok: true, slug: data?.slug || slug, id: data?.id || null };
 }

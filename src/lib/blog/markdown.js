@@ -28,7 +28,8 @@ function renderInline(text) {
   out = out.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, url) => {
     const href = safeUrl(url);
     if (!href) return escapeHtml(`[${label}](${url})`);
-    const target = href.startsWith("http") ? ` target="_blank" rel="noopener noreferrer"` : "";
+    const external = href.startsWith("http");
+    const target = external ? ` target="_blank" rel="noopener noreferrer"` : "";
     return `<a href="${escapeHtml(href)}"${target}>${escapeHtml(label)}</a>`;
   });
 
@@ -44,8 +45,7 @@ export function renderMarkdownToHtml(markdown) {
   if (!src) return "";
 
   const lines = src.split("\n");
-  let html = "";
-
+  const html = [];
   let inCode = false;
   let codeBuffer = [];
   let inUl = false;
@@ -55,35 +55,35 @@ export function renderMarkdownToHtml(markdown) {
 
   function closeParagraph() {
     if (!paragraph.length) return;
-    html += `<p>${renderInline(paragraph.join(" "))}</p>`;
+    html.push(`<p>${renderInline(paragraph.join(" "))}</p>`);
     paragraph = [];
   }
 
   function closeLists() {
     if (inUl) {
-      html += "</ul>";
+      html.push("</ul>");
       inUl = false;
     }
     if (inOl) {
-      html += "</ol>";
+      html.push("</ol>");
       inOl = false;
     }
   }
 
   function closeQuote() {
-    if (inQuote) {
-      closeParagraph();
-      html += "</blockquote>";
-      inQuote = false;
-    }
+    if (!inQuote) return;
+    closeParagraph();
+    html.push("</blockquote>");
+    inQuote = false;
   }
 
   for (const rawLine of lines) {
     const line = rawLine.trimEnd();
+    const trimmed = line.trim();
 
-    if (line.startsWith("```")) {
+    if (trimmed.startsWith("```")) {
       if (inCode) {
-        html += `<pre><code>${escapeHtml(codeBuffer.join("\n"))}</code></pre>`;
+        html.push(`<pre><code>${escapeHtml(codeBuffer.join("\n"))}</code></pre>`);
         codeBuffer = [];
         inCode = false;
       } else {
@@ -100,11 +100,18 @@ export function renderMarkdownToHtml(markdown) {
       continue;
     }
 
-    const trimmed = line.trim();
     if (!trimmed) {
       closeQuote();
       closeLists();
       closeParagraph();
+      continue;
+    }
+
+    if (/^---+$/.test(trimmed) || /^\*\*\*+$/.test(trimmed)) {
+      closeQuote();
+      closeLists();
+      closeParagraph();
+      html.push("<hr />");
       continue;
     }
 
@@ -113,7 +120,7 @@ export function renderMarkdownToHtml(markdown) {
       closeLists();
       if (!inQuote) {
         closeParagraph();
-        html += "<blockquote>";
+        html.push("<blockquote>");
         inQuote = true;
       }
       paragraph.push(quoteMatch[1]);
@@ -122,12 +129,12 @@ export function renderMarkdownToHtml(markdown) {
 
     closeQuote();
 
-    const hMatch = trimmed.match(/^(#{1,3})\s+(.*)$/);
-    if (hMatch) {
+    const headingMatch = trimmed.match(/^(#{1,6})\s+(.*)$/);
+    if (headingMatch) {
       closeLists();
       closeParagraph();
-      const level = hMatch[1].length;
-      html += `<h${level}>${renderInline(hMatch[2])}</h${level}>`;
+      const level = headingMatch[1].length;
+      html.push(`<h${level}>${renderInline(headingMatch[2])}</h${level}>`);
       continue;
     }
 
@@ -135,14 +142,14 @@ export function renderMarkdownToHtml(markdown) {
     if (ulMatch) {
       closeParagraph();
       if (inOl) {
-        html += "</ol>";
+        html.push("</ol>");
         inOl = false;
       }
       if (!inUl) {
-        html += "<ul>";
+        html.push("<ul>");
         inUl = true;
       }
-      html += `<li>${renderInline(ulMatch[1])}</li>`;
+      html.push(`<li>${renderInline(ulMatch[1])}</li>`);
       continue;
     }
 
@@ -150,14 +157,14 @@ export function renderMarkdownToHtml(markdown) {
     if (olMatch) {
       closeParagraph();
       if (inUl) {
-        html += "</ul>";
+        html.push("</ul>");
         inUl = false;
       }
       if (!inOl) {
-        html += "<ol>";
+        html.push("<ol>");
         inOl = true;
       }
-      html += `<li>${renderInline(olMatch[1])}</li>`;
+      html.push(`<li>${renderInline(olMatch[1])}</li>`);
       continue;
     }
 
@@ -165,13 +172,12 @@ export function renderMarkdownToHtml(markdown) {
   }
 
   if (inCode) {
-    html += `<pre><code>${escapeHtml(codeBuffer.join("\n"))}</code></pre>`;
+    html.push(`<pre><code>${escapeHtml(codeBuffer.join("\n"))}</code></pre>`);
   }
 
   closeQuote();
   closeLists();
   closeParagraph();
 
-  return html;
+  return html.join("");
 }
-

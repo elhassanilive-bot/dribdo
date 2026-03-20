@@ -3,6 +3,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --blog-accent: #f97316;
+  --blog-accent-strong: #ea580c;
+  --blog-ink: #0f172a;
+  --blog-muted: #475569;
+  --blog-surface: #fff7ed;
 }
 
 @theme inline {
@@ -17,9 +22,110 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: "Cairo", "Tajawal", "Noto Kufi Arabic", "Noto Sans Arabic", system-ui, -apple-system,
     "Segoe UI", Arial, sans-serif;
+}
+
+.blog-prose {
+  color: var(--blog-muted);
+  line-height: 2;
+  font-size: 1.05rem;
+}
+
+.blog-prose > * + * {
+  margin-top: 1.35rem;
+}
+
+.blog-prose h1,
+.blog-prose h2,
+.blog-prose h3,
+.blog-prose h4,
+.blog-prose h5,
+.blog-prose h6 {
+  color: var(--blog-ink);
+  font-weight: 900;
+  line-height: 1.35;
+  margin-top: 2rem;
+}
+
+.blog-prose h1 {
+  font-size: 2.1rem;
+}
+
+.blog-prose h2 {
+  font-size: 1.8rem;
+}
+
+.blog-prose h3 {
+  font-size: 1.45rem;
+}
+
+.blog-prose p {
+  margin: 0;
+}
+
+.blog-prose a {
+  color: var(--blog-accent-strong);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.blog-prose ul,
+.blog-prose ol {
+  padding-inline-start: 1.4rem;
+}
+
+.blog-prose li + li {
+  margin-top: 0.6rem;
+}
+
+.blog-prose blockquote {
+  border-inline-start: 4px solid #fdba74;
+  background: var(--blog-surface);
+  border-radius: 1.25rem;
+  padding: 1rem 1.25rem;
+  color: var(--blog-ink);
+}
+
+.blog-prose code {
+  background: #fff7ed;
+  color: #9a3412;
+  border-radius: 0.6rem;
+  padding: 0.15rem 0.45rem;
+  font-size: 0.95em;
+}
+
+.blog-prose pre {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 1.5rem;
+  overflow-x: auto;
+  padding: 1.15rem 1.25rem;
+}
+
+.blog-prose pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.blog-prose img {
+  width: 100%;
+  border-radius: 1.5rem;
+  border: 1px solid #e2e8f0;
+  margin-top: 1.5rem;
+}
+
+.blog-prose hr {
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+  margin: 2rem 0;
 }

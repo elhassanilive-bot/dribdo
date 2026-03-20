@@ -14,6 +14,16 @@ export function formatArabicDate(iso) {
   }
 }
 
+export function estimateReadingTime(content) {
+  const words = String(content || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+
+  if (!words) return 1;
+  return Math.max(1, Math.ceil(words / 220));
+}
+
 export function renderPlainContent(content) {
   const text = String(content || "").trim();
   if (!text) return [];

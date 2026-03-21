@@ -28,7 +28,6 @@ export const metadata = {
   },
 };
 
-// Root layout must include <html> and <body> according to Next.js App Router
 export default function RootLayout({ children }) {
   return (
     <html lang="ar" dir="rtl">

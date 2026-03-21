@@ -1,6 +1,6 @@
 import { revalidatePath } from "next/cache";
 import AdminBlogDashboard from "@/components/blog/AdminBlogDashboard";
-import { createPost, isBlogPublishingEnabled } from "@/lib/blog/posts";
+import { createPost, deletePost, isBlogPublishingEnabled, listPostsForAdmin, updatePost } from "@/lib/blog/posts";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 
 export const metadata = {
@@ -15,13 +15,36 @@ function SetupBox() {
     <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_20px_55px_-45px_rgba(15,23,42,0.5)] sm:p-8">
       <h2 className="text-2xl font-black text-slate-950">إعداد Supabase للنشر</h2>
       <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
-        لتفعيل نظام المقالات بالكامل، شغّل
+        بنية الجداول الحالية كافية لهذا التطوير لأن
+        {" "}
+        <code>content</code>
+        {" "}
+        يبقى حقلًا نصيًا، لكننا نخزّن فيه الآن
+        {" "}
+        <strong>HTML غني</strong>
+        {" "}
+        بدل Markdown. شغّل
         {" "}
         <code>supabase/blog_schema.sql</code>
         {" "}
-        في SQL Editor. وإذا أردت النشر من هذه اللوحة مؤقتًا بدون تسجيل دخول، شغّل أيضًا
+        ثم
         {" "}
-        <code>supabase/blog_temp_publishing.sql</code>.
+        <code>supabase/blog_storage.sql</code>
+        {" "}
+        لتفعيل رفع الوسائط، ثم
+        {" "}
+        <code>supabase/blog_temp_publishing.sql</code>
+        {" "}
+        مؤقتًا إذا أردت تجربة النشر بدون تسجيل.
+      </p>
+      <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
+        إذا كنت تستعمل اسم bucket مختلفًا، أضف
+        {" "}
+        <code>NEXT_PUBLIC_SUPABASE_BLOG_BUCKET</code>
+        {" "}
+        داخل
+        {" "}
+        <code>.env.local</code>.
       </p>
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <div className="rounded-3xl bg-slate-50 p-5">
@@ -35,6 +58,10 @@ function SetupBox() {
             {" "}
             <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code>
             {" "}
+            ويفضّل أيضًا
+            {" "}
+            <code>NEXT_PUBLIC_SUPABASE_BLOG_BUCKET</code>
+            {" "}
             داخل
             {" "}
             <code>.env.local</code>.
@@ -43,11 +70,11 @@ function SetupBox() {
         <div className="rounded-3xl bg-slate-50 p-5">
           <div className="text-sm font-semibold text-slate-900">RLS</div>
           <p className="mt-2 text-sm leading-7 text-slate-600">
-            القراءة العامة يجب أن تبقى محصورة على
+            القراءة العامة تبقى محصورة على
             {" "}
             <code>{"status = 'published'"}</code>
             {" "}
-            بينما سياسات الكتابة المؤقتة مخصصة للتجربة فقط.
+            بينما عمليات التعديل والحذف تحتاج Service Role أو سياسات RLS إضافية.
           </p>
         </div>
       </div>
@@ -55,28 +82,28 @@ function SetupBox() {
   );
 }
 
-const initialState = {
-  ok: false,
-  error: "",
-  slug: "",
-  title: "",
-};
+function validateAdminToken(adminToken) {
+  const expectedToken = process.env.BLOG_ADMIN_TOKEN || "";
+  const providedToken = String(adminToken || "");
+
+  if (expectedToken && providedToken !== expectedToken) {
+    return "رمز الإدارة غير صحيح. راجع قيمة BLOG_ADMIN_TOKEN ثم أعد المحاولة.";
+  }
+
+  return null;
+}
 
 export default async function AdminBlogPage() {
-  async function publishPostAction(_prevState, formData) {
+  async function savePostAction(formData) {
     "use server";
 
-    const expectedToken = process.env.BLOG_ADMIN_TOKEN || "";
-    const providedToken = String(formData.get("adminToken") || "");
-
-    if (expectedToken && providedToken !== expectedToken) {
-      return {
-        ...initialState,
-        error: "رمز الإدارة غير صحيح. راجع قيمة BLOG_ADMIN_TOKEN ثم أعد المحاولة.",
-      };
+    const tokenError = validateAdminToken(formData.get("adminToken"));
+    if (tokenError) {
+      return { ok: false, error: tokenError };
     }
 
-    const result = await createPost({
+    const payload = {
+      id: formData.get("id"),
       title: formData.get("title"),
       slug: formData.get("slug"),
       excerpt: formData.get("excerpt"),
@@ -87,29 +114,41 @@ export default async function AdminBlogPage() {
         .map((tag) => tag.trim())
         .filter(Boolean),
       content: formData.get("content"),
-    });
+    };
 
-    if (!result.ok) {
-      return {
-        ...initialState,
-        error: result.error || "تعذر نشر المقال. حاول مرة أخرى.",
-      };
+    const result = payload.id ? await updatePost(payload) : await createPost(payload);
+
+    if (result.ok) {
+      revalidatePath("/blog");
+      revalidatePath("/admin/blog");
+      revalidatePath(`/blog/${result.slug}`);
     }
 
-    revalidatePath("/blog");
-    revalidatePath(`/blog/${result.slug}`);
+    return result;
+  }
 
-    return {
-      ok: true,
-      error: "",
-      slug: result.slug || "",
-      title: String(formData.get("title") || "").trim(),
-    };
+  async function deletePostAction(payload) {
+    "use server";
+
+    const tokenError = validateAdminToken(payload?.adminToken);
+    if (tokenError) {
+      return { ok: false, error: tokenError };
+    }
+
+    const result = await deletePost(payload?.id);
+
+    if (result.ok) {
+      revalidatePath("/blog");
+      revalidatePath("/admin/blog");
+    }
+
+    return result;
   }
 
   const publishingEnabled = isBlogPublishingEnabled();
   const requiresToken = Boolean(process.env.BLOG_ADMIN_TOKEN);
   const supabaseReady = isSupabaseConfigured();
+  const { posts, error: adminListError } = supabaseReady ? await listPostsForAdmin({ limit: 100 }) : { posts: [], error: null };
 
   return (
     <div className="w-full bg-[linear-gradient(180deg,#fff7ed_0%,#fff 28%,#f8fafc_100%)]">
@@ -117,9 +156,12 @@ export default async function AdminBlogPage() {
         <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
           {!supabaseReady ? <SetupBox /> : null}
           <AdminBlogDashboard
-            action={publishPostAction}
+            posts={posts}
+            saveAction={savePostAction}
+            deleteAction={deletePostAction}
             publishingEnabled={publishingEnabled}
             requiresToken={requiresToken}
+            adminListError={adminListError}
           />
         </div>
       </section>

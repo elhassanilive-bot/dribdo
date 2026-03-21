@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getPostBySlugDetailed } from "@/lib/blog/posts";
 import { estimateReadingTime, formatArabicDate } from "@/lib/blog/render";
-import { renderMarkdownToHtml } from "@/lib/blog/markdown";
+import { renderStoredBlogContent } from "@/lib/blog/content";
 import BlogImage from "@/components/blog/BlogImage";
 
 export const dynamic = "force-dynamic";
@@ -67,7 +67,7 @@ export default async function BlogPostPage({ params }) {
     return <NotFoundState error={error} />;
   }
 
-  const html = renderMarkdownToHtml(post.content);
+  const html = renderStoredBlogContent(post.content);
   const readingTime = estimateReadingTime(post.content);
 
   return (

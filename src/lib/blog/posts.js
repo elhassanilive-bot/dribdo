@@ -39,22 +39,26 @@ function normalizeTags(tags) {
 }
 
 async function getWriteClient() {
-  return isSupabaseAdminConfigured()
-    ? getSupabaseAdminClient()
-    : getSupabaseClient();
+  return isSupabaseAdminConfigured() ? getSupabaseAdminClient() : getSupabaseClient();
 }
 
-async function ensureUniqueSlug(client, baseSlug) {
+async function getAdminReadClient() {
+  return isSupabaseAdminConfigured() ? getSupabaseAdminClient() : getSupabaseClient();
+}
+
+async function ensureUniqueSlug(client, baseSlug, excludeId = null) {
   const fallbackBase = createSlugCandidate(baseSlug);
   let attempt = 0;
 
   while (attempt < 100) {
     const candidate = attempt === 0 ? fallbackBase : `${fallbackBase}-${attempt + 1}`;
-    const { data, error } = await client
-      .from("blog_posts")
-      .select("slug")
-      .eq("slug", candidate)
-      .maybeSingle();
+    let query = client.from("blog_posts").select("id, slug").eq("slug", candidate);
+
+    if (excludeId) {
+      query = query.neq("id", excludeId);
+    }
+
+    const { data, error } = await query.maybeSingle();
 
     if (error) {
       return { slug: candidate, error: error.message };
@@ -104,6 +108,23 @@ export async function listPostsDetailed({ limit = 20 } = {}) {
   return { posts: (data || []).map(normalizePost), error: null };
 }
 
+export async function listPostsForAdmin({ limit = 100 } = {}) {
+  if (!isSupabaseConfigured()) return { posts: [], error: "Supabase غير مُعد" };
+
+  const client = await getAdminReadClient();
+  if (!client) return { posts: [], error: "Supabase client غير متاح" };
+
+  const { data, error } = await client
+    .from("blog_posts")
+    .select(POST_LIST_COLUMNS)
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) return { posts: [], error: error.message };
+  return { posts: (data || []).map(normalizePost), error: null };
+}
+
 export async function getPostBySlug(slug) {
   if (!isSupabaseConfigured()) return null;
 
@@ -139,11 +160,7 @@ export async function getPostBySlugDetailed(slug) {
   return { post: normalizePost(data), error: null };
 }
 
-export async function createPost(input) {
-  if (!isSupabaseConfigured()) {
-    return { ok: false, error: "Supabase is not configured" };
-  }
-
+function normalizePostInput(input) {
   const title = String(input?.title || "").trim();
   const excerpt = String(input?.excerpt || "").trim();
   const content = String(input?.content || "").trim();
@@ -152,8 +169,40 @@ export async function createPost(input) {
   const tags = normalizeTags(input?.tags);
   const desiredSlug = String(input?.slug || "").trim();
 
-  if (!title || !excerpt || !content) {
-    return { ok: false, error: "يرجى تعبئة العنوان والملخص والمحتوى." };
+  return {
+    title,
+    excerpt,
+    content,
+    coverImageUrl,
+    category,
+    tags,
+    desiredSlug,
+  };
+}
+
+function validatePostInput(input) {
+  const contentText = String(input.content || "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .trim();
+  const hasMedia = /<(img|video|audio|iframe|table)\b/i.test(String(input.content || ""));
+
+  if (!input.title || !input.excerpt || (!input.content || (!contentText && !hasMedia))) {
+    return "يرجى تعبئة العنوان والملخص والمحتوى.";
+  }
+
+  return null;
+}
+
+export async function createPost(input) {
+  if (!isSupabaseConfigured()) {
+    return { ok: false, error: "Supabase is not configured" };
+  }
+
+  const normalized = normalizePostInput(input);
+  const validationError = validatePostInput(normalized);
+  if (validationError) {
+    return { ok: false, error: validationError };
   }
 
   const writer = await getWriteClient();
@@ -163,7 +212,7 @@ export async function createPost(input) {
 
   const { slug, error: slugError } = await ensureUniqueSlug(
     writer,
-    desiredSlug ? createSlugCandidate(desiredSlug) : createSlugCandidate(title)
+    normalized.desiredSlug ? createSlugCandidate(normalized.desiredSlug) : createSlugCandidate(normalized.title)
   );
 
   if (slugError) {
@@ -174,12 +223,12 @@ export async function createPost(input) {
     .from("blog_posts")
     .insert({
       slug,
-      title,
-      excerpt,
-      content,
-      cover_image_url: coverImageUrl,
-      category,
-      tags,
+      title: normalized.title,
+      excerpt: normalized.excerpt,
+      content: normalized.content,
+      cover_image_url: normalized.coverImageUrl,
+      category: normalized.category,
+      tags: normalized.tags,
       status: "published",
       published_at: new Date().toISOString(),
     })
@@ -196,4 +245,83 @@ export async function createPost(input) {
   }
 
   return { ok: true, slug: data?.slug || slug, id: data?.id || null };
+}
+
+export async function updatePost(input) {
+  if (!isSupabaseConfigured()) {
+    return { ok: false, error: "Supabase is not configured" };
+  }
+
+  const id = String(input?.id || "").trim();
+  if (!id) {
+    return { ok: false, error: "معرّف المقال مطلوب للتعديل." };
+  }
+
+  const normalized = normalizePostInput(input);
+  const validationError = validatePostInput(normalized);
+  if (validationError) {
+    return { ok: false, error: validationError };
+  }
+
+  const writer = await getWriteClient();
+  if (!writer) {
+    return { ok: false, error: "Supabase client is not available" };
+  }
+
+  const { slug, error: slugError } = await ensureUniqueSlug(
+    writer,
+    normalized.desiredSlug ? createSlugCandidate(normalized.desiredSlug) : createSlugCandidate(normalized.title),
+    id
+  );
+
+  if (slugError) {
+    return { ok: false, error: slugError };
+  }
+
+  const { data, error } = await writer
+    .from("blog_posts")
+    .update({
+      slug,
+      title: normalized.title,
+      excerpt: normalized.excerpt,
+      content: normalized.content,
+      cover_image_url: normalized.coverImageUrl,
+      category: normalized.category,
+      tags: normalized.tags,
+      status: "published",
+      published_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .select("id, slug")
+    .maybeSingle();
+
+  if (error) {
+    return { ok: false, error: error.message };
+  }
+
+  return { ok: true, slug: data?.slug || slug, id: data?.id || id };
+}
+
+export async function deletePost(id) {
+  if (!isSupabaseConfigured()) {
+    return { ok: false, error: "Supabase is not configured" };
+  }
+
+  const postId = String(id || "").trim();
+  if (!postId) {
+    return { ok: false, error: "معرّف المقال مطلوب للحذف." };
+  }
+
+  const writer = await getWriteClient();
+  if (!writer) {
+    return { ok: false, error: "Supabase client is not available" };
+  }
+
+  const { error } = await writer.from("blog_posts").delete().eq("id", postId);
+
+  if (error) {
+    return { ok: false, error: error.message };
+  }
+
+  return { ok: true };
 }

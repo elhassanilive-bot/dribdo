@@ -1,3 +1,11 @@
+function stripHtml(value) {
+  return String(value || "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export function formatArabicDate(iso) {
   if (!iso) return "";
   const date = new Date(iso);
@@ -15,8 +23,7 @@ export function formatArabicDate(iso) {
 }
 
 export function estimateReadingTime(content) {
-  const words = String(content || "")
-    .trim()
+  const words = stripHtml(content)
     .split(/\s+/)
     .filter(Boolean).length;
 
@@ -25,7 +32,7 @@ export function estimateReadingTime(content) {
 }
 
 export function renderPlainContent(content) {
-  const text = String(content || "").trim();
+  const text = stripHtml(content);
   if (!text) return [];
 
   return text

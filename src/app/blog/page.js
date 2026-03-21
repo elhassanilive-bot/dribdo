@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { listPostsDetailed, isBlogEnabled } from "@/lib/blog/posts";
+import { listPostsDetailed, isBlogEnabled, listCommentCountsForPosts } from "@/lib/blog/posts";
 import { estimateReadingTime, formatArabicDate } from "@/lib/blog/render";
 import BlogImage from "@/components/blog/BlogImage";
 
@@ -13,7 +13,7 @@ export const metadata = {
   alternates: { canonical: "/blog" },
 };
 
-function PostCard({ post, featured = false }) {
+function PostCard({ post, featured = false, commentCount = 0 }) {
   const imageHeight = featured ? "h-72 lg:h-full" : "h-56";
   const readingTime = estimateReadingTime(post.content);
 
@@ -59,9 +59,10 @@ function PostCard({ post, featured = false }) {
                 </span>
               ))}
             </div>
-            <span className="text-sm font-semibold text-orange-700 transition group-hover:text-orange-800">
-              قراءة المزيد
-            </span>
+            <div className="flex items-center gap-3 text-sm font-semibold text-orange-700 transition group-hover:text-orange-800">
+              <span>قراءة المزيد</span>
+              <span className="text-xs text-slate-400">• {commentCount} تعليقات</span>
+            </div>
           </div>
         </div>
       </Link>
@@ -89,6 +90,7 @@ function EmptyState({ title, description, ctaHref, ctaLabel }) {
 export default async function BlogIndex() {
   const enabled = isBlogEnabled();
   const { posts, error } = await listPostsDetailed({ limit: 30 });
+  const commentCounts = await listCommentCountsForPosts(posts.map((post) => post.id));
   const [featuredPost, ...remainingPosts] = posts;
 
   return (
@@ -150,16 +152,18 @@ export default async function BlogIndex() {
           ) : (
             <div className="space-y-10">
               <div className="grid gap-8 lg:grid-cols-3">
-                {featuredPost ? <PostCard post={featuredPost} featured /> : null}
+                {featuredPost ? (
+                  <PostCard post={featuredPost} featured commentCount={commentCounts[featuredPost.id] || 0} />
+                ) : null}
                 {remainingPosts.slice(0, 2).map((post) => (
-                  <PostCard key={post.slug} post={post} />
+                  <PostCard key={post.slug} post={post} commentCount={commentCounts[post.id] || 0} />
                 ))}
               </div>
 
               {remainingPosts.length > 2 ? (
                 <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
                   {remainingPosts.slice(2).map((post) => (
-                    <PostCard key={post.slug} post={post} />
+                    <PostCard key={post.slug} post={post} commentCount={commentCounts[post.id] || 0} />
                   ))}
                 </div>
               ) : null}

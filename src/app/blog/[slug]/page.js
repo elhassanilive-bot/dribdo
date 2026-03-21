@@ -3,6 +3,7 @@ import { getPostBySlugDetailed } from "@/lib/blog/posts";
 import { estimateReadingTime, formatArabicDate } from "@/lib/blog/render";
 import { renderStoredBlogContent } from "@/lib/blog/content";
 import BlogImage from "@/components/blog/BlogImage";
+import PostInteractions from "@/components/blog/PostInteractions";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -123,9 +124,12 @@ export default async function BlogPostPage({ params }) {
 
       <section className="pb-16 sm:pb-20">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_290px] lg:px-8">
-          <article className="rounded-[2rem] border border-slate-200 bg-white px-6 py-8 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.45)] sm:px-8 sm:py-10">
-            <div className="blog-prose max-w-none" dangerouslySetInnerHTML={{ __html: html }} />
-          </article>
+          <div className="space-y-8">
+            <article className="rounded-[2rem] border border-slate-200 bg-white px-6 py-8 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.45)] sm:px-8 sm:py-10">
+              <div className="blog-prose max-w-none" dangerouslySetInnerHTML={{ __html: html }} />
+            </article>
+            <PostInteractions postId={post.id} />
+          </div>
 
           <aside className="space-y-6">
             <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_20px_55px_-45px_rgba(15,23,42,0.45)]">

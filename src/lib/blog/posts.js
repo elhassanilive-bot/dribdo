@@ -108,6 +108,22 @@ export async function listPostsDetailed({ limit = 20 } = {}) {
   return { posts: (data || []).map(normalizePost), error: null };
 }
 
+export async function listCommentCountsForPosts(postIds = []) {
+  if (!isSupabaseConfigured()) return {};
+  if (!Array.isArray(postIds) || postIds.length === 0) return {};
+
+  const supabase = await getSupabaseClient();
+  if (!supabase) return {};
+
+  const { data, error } = await supabase
+    .from("blog_post_comment_counts")
+    .select("post_id, comment_count")
+    .in("post_id", postIds);
+
+  if (error) return {};
+  return Object.fromEntries((data || []).map((row) => [row.post_id, row.comment_count]));
+}
+
 export async function listPostsForAdmin({ limit = 100 } = {}) {
   if (!isSupabaseConfigured()) return { posts: [], error: "Supabase غير مُعد" };
 

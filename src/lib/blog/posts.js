@@ -79,12 +79,6 @@ async function ensureUniqueSlug(client, baseSlug, excludeId = null) {
 export async function listPosts({ limit = 20 } = {}) {
   if (!isSupabaseConfigured()) return [];
 
-  const normalizedSlug = String(slug || "").trim();
-  if (!normalizedSlug) return { post: null, error: null };
-
-  const normalizedSlug = String(slug || "").trim();
-  if (!normalizedSlug) return { post: null, error: null };
-
   const supabase = await getSupabaseClient();
   if (!supabase) return [];
 

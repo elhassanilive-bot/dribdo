@@ -11,17 +11,34 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 export const fetchCache = "force-no-store";
 
+const UUID_PATTERN = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+
 function extractIdFromParam(value) {
   const raw = String(value || "");
-  const match = raw.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i);
+  const match = raw.match(UUID_PATTERN);
   return match ? match[0] : "";
+}
+
+function extractSlugFromParam(value) {
+  const raw = String(value || "");
+  const match = raw.match(UUID_PATTERN);
+  if (!match) return raw;
+  const after = raw.slice(match.index + match[0].length);
+  if (!after) return "";
+  return after.startsWith("-") ? after.slice(1) : after;
 }
 
 async function resolvePostByParam(rawParam) {
   const decoded = rawParam ? decodeURIComponent(rawParam) : "";
   const id = extractIdFromParam(decoded);
   if (id) {
-    return getPostByIdDetailed(id);
+    const byId = await getPostByIdDetailed(id);
+    if (byId.post) return byId;
+    const fallbackSlug = extractSlugFromParam(decoded);
+    if (fallbackSlug) {
+      return getPostBySlugDetailed(fallbackSlug);
+    }
+    return byId;
   }
   return getPostBySlugDetailed(decoded);
 }

@@ -179,15 +179,24 @@ export async function listPostsForAdmin({ limit = 100 } = {}) {
 export async function getPostBySlug(slug) {
   if (!isSupabaseConfigured()) return null;
 
+  const normalizedSlug = String(slug || "").trim();
+  if (!normalizedSlug) return null;
+
   const supabase = await getSupabaseClient();
   if (!supabase) return null;
 
-  const { data, error } = await supabase
-    .from("blog_posts")
-    .select(POST_LIST_COLUMNS_WITH_VIEWS)
-    .eq("slug", slug)
-    .eq("status", "published")
-    .maybeSingle();
+  const normalizedSlug = String(slug || "").trim();
+  if (!normalizedSlug) return { post: null, error: null };
+
+  const baseQuery = (column, value) =>
+    supabase
+      .from("blog_posts")
+      .select(POST_LIST_COLUMNS_WITH_VIEWS)
+      [column]("slug", value)
+      .eq("status", "published")
+      .maybeSingle();
+
+  const { data, error } = await baseQuery("eq", normalizedSlug);
 
   if (error) {
     if (String(error.message || "").includes("view_count")) {
@@ -202,6 +211,12 @@ export async function getPostBySlug(slug) {
     }
     return null;
   }
+  if (!data && normalizedSlug) {
+    const caseInsensitive = await baseQuery("ilike", normalizedSlug);
+    if (caseInsensitive.data) return normalizePost(caseInsensitive.data);
+    const prefixMatch = await baseQuery("ilike", `${normalizedSlug}%`);
+    if (prefixMatch.data) return normalizePost(prefixMatch.data);
+  }
   if (!data) return null;
   return normalizePost(data);
 }
@@ -212,12 +227,15 @@ export async function getPostBySlugDetailed(slug) {
   const supabase = await getSupabaseClient();
   if (!supabase) return { post: null, error: "Supabase client غير متاح" };
 
-  const { data, error } = await supabase
-    .from("blog_posts")
-    .select(POST_LIST_COLUMNS_WITH_VIEWS)
-    .eq("slug", slug)
-    .eq("status", "published")
-    .maybeSingle();
+  const baseQuery = (column, value) =>
+    supabase
+      .from("blog_posts")
+      .select(POST_LIST_COLUMNS_WITH_VIEWS)
+      [column]("slug", value)
+      .eq("status", "published")
+      .maybeSingle();
+
+  const { data, error } = await baseQuery("eq", normalizedSlug);
 
   if (error) {
     if (String(error.message || "").includes("view_count")) {
@@ -232,6 +250,12 @@ export async function getPostBySlugDetailed(slug) {
       return { post: normalizePost(fallback.data), error: null };
     }
     return { post: null, error: error.message };
+  }
+  if (!data && normalizedSlug) {
+    const caseInsensitive = await baseQuery("ilike", normalizedSlug);
+    if (caseInsensitive.data) return { post: normalizePost(caseInsensitive.data), error: null };
+    const prefixMatch = await baseQuery("ilike", `${normalizedSlug}%`);
+    if (prefixMatch.data) return { post: normalizePost(prefixMatch.data), error: null };
   }
   if (!data) return { post: null, error: null };
   return { post: normalizePost(data), error: null };

@@ -289,6 +289,32 @@ export async function getPostBySlugDetailed(slug) {
     const prefixMatch = await baseQuery("ilike", `${normalizedSlug}%`);
     if (prefixMatch.data) return { post: normalizePost(prefixMatch.data), error: null };
   }
+  if (!data && isSupabaseAdminConfigured()) {
+    const admin = await getSupabaseAdminClient();
+    if (admin) {
+      const { data: adminRow } = await admin
+        .from("blog_posts")
+        .select("id, slug, status")
+        .ilike("slug", normalizedSlug)
+        .maybeSingle();
+      if (adminRow?.status && adminRow.status !== "published") {
+        return { post: null, error: "المقال موجود لكنه غير منشور بعد." };
+      }
+    }
+  }
+  if (!data && isSupabaseAdminConfigured()) {
+    const admin = await getSupabaseAdminClient();
+    if (admin) {
+      const { data: adminRow } = await admin
+        .from("blog_posts")
+        .select("id, slug, status")
+        .eq("id", normalizedId)
+        .maybeSingle();
+      if (adminRow?.status && adminRow.status !== "published") {
+        return { post: null, error: "المقال موجود لكنه غير منشور بعد." };
+      }
+    }
+  }
   if (!data) return { post: null, error: null };
   return { post: normalizePost(data), error: null };
 }

@@ -82,17 +82,19 @@ export async function listPosts({ limit = 20 } = {}) {
   const supabase = await getSupabaseClient();
   if (!supabase) return [];
 
-  const baseQuery = supabase
-    .from("blog_posts")
-    .eq("status", "published")
-    .order("published_at", { ascending: false })
-    .limit(limit);
+  const makeQuery = (columns) =>
+    supabase
+      .from("blog_posts")
+      .select(columns)
+      .eq("status", "published")
+      .order("published_at", { ascending: false })
+      .limit(limit);
 
-  const { data, error } = await baseQuery.select(POST_LIST_COLUMNS_WITH_VIEWS);
+  const { data, error } = await makeQuery(POST_LIST_COLUMNS_WITH_VIEWS);
 
   if (error) {
     if (String(error.message || "").includes("view_count")) {
-      const fallback = await baseQuery.select(POST_LIST_COLUMNS_BASE);
+      const fallback = await makeQuery(POST_LIST_COLUMNS_BASE);
       if (fallback.error) return [];
       return (fallback.data || []).map(normalizePost);
     }
@@ -108,17 +110,19 @@ export async function listPostsDetailed({ limit = 20 } = {}) {
   const supabase = await getSupabaseClient();
   if (!supabase) return { posts: [], error: "Supabase client غير متاح" };
 
-  const baseQuery = supabase
-    .from("blog_posts")
-    .eq("status", "published")
-    .order("published_at", { ascending: false })
-    .limit(limit);
+  const makeQuery = (columns) =>
+    supabase
+      .from("blog_posts")
+      .select(columns)
+      .eq("status", "published")
+      .order("published_at", { ascending: false })
+      .limit(limit);
 
-  const { data, error } = await baseQuery.select(POST_LIST_COLUMNS_WITH_VIEWS);
+  const { data, error } = await makeQuery(POST_LIST_COLUMNS_WITH_VIEWS);
 
   if (error) {
     if (String(error.message || "").includes("view_count")) {
-      const fallback = await baseQuery.select(POST_LIST_COLUMNS_BASE);
+      const fallback = await makeQuery(POST_LIST_COLUMNS_BASE);
       if (fallback.error) return { posts: [], error: fallback.error.message };
       return { posts: (fallback.data || []).map(normalizePost), error: null };
     }
@@ -150,17 +154,19 @@ export async function listPostsForAdmin({ limit = 100 } = {}) {
   const client = await getAdminReadClient();
   if (!client) return { posts: [], error: "Supabase client غير متاح" };
 
-  const baseQuery = client
-    .from("blog_posts")
-    .order("published_at", { ascending: false, nullsFirst: false })
-    .order("created_at", { ascending: false })
-    .limit(limit);
+  const makeQuery = (columns) =>
+    client
+      .from("blog_posts")
+      .select(columns)
+      .order("published_at", { ascending: false, nullsFirst: false })
+      .order("created_at", { ascending: false })
+      .limit(limit);
 
-  const { data, error } = await baseQuery.select(POST_LIST_COLUMNS_WITH_VIEWS);
+  const { data, error } = await makeQuery(POST_LIST_COLUMNS_WITH_VIEWS);
 
   if (error) {
     if (String(error.message || "").includes("view_count")) {
-      const fallback = await baseQuery.select(POST_LIST_COLUMNS_BASE);
+      const fallback = await makeQuery(POST_LIST_COLUMNS_BASE);
       if (fallback.error) return { posts: [], error: fallback.error.message };
       return { posts: (fallback.data || []).map(normalizePost), error: null };
     }

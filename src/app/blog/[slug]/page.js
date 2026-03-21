@@ -4,6 +4,7 @@ import { estimateReadingTime, formatArabicDate } from "@/lib/blog/render";
 import { renderStoredBlogContent } from "@/lib/blog/content";
 import BlogImage from "@/components/blog/BlogImage";
 import PostInteractions from "@/components/blog/PostInteractions";
+import PostViewTracker from "@/components/blog/PostViewTracker";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -73,6 +74,7 @@ export default async function BlogPostPage({ params }) {
 
   return (
     <div className="w-full bg-[linear-gradient(180deg,#fff7ed_0%,#fff 26%,#f8fafc_100%)]">
+      <PostViewTracker postId={post.id} />
       <section className="pb-10 pt-10 sm:pb-14 sm:pt-14">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-[2.25rem] border border-orange-100 bg-white px-6 py-8 shadow-[0_30px_80px_-45px_rgba(15,23,42,0.35)] sm:px-8 sm:py-10">

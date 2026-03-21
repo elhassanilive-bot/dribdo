@@ -13,56 +13,63 @@ export const metadata = {
   alternates: { canonical: "/blog" },
 };
 
-function PostCard({ post, featured = false, commentCount = 0 }) {
-  const imageHeight = featured ? "h-72 lg:h-full" : "h-56";
+function PostCard({ post, commentCount = 0 }) {
+  const imageHeight = "h-28 sm:h-32";
   const readingTime = estimateReadingTime(post.content);
 
   return (
     <article
-      className={[
-        "group overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_22px_60px_-45px_rgba(15,23,42,0.35)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_25px_70px_-40px_rgba(15,23,42,0.45)]",
-        featured ? "lg:col-span-2" : "",
-      ].join(" ")}
+      className="group overflow-hidden rounded-[1.25rem] border border-slate-200 bg-white shadow-[0_14px_35px_-35px_rgba(15,23,42,0.35)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_45px_-35px_rgba(15,23,42,0.45)]"
     >
-      <Link href={`/blog/${post.slug}`} className={featured ? "grid h-full lg:grid-cols-[1.05fr_0.95fr]" : "block"}>
+      <Link href={`/blog/${post.slug}`} className="block">
         <div className={`relative overflow-hidden bg-slate-100 ${imageHeight}`}>
           <BlogImage
             src={post.coverImageUrl}
             alt={post.title}
             fill
-            sizes={featured ? "(max-width: 1024px) 100vw, 50vw" : "(max-width: 768px) 100vw, 33vw"}
+            sizes="(max-width: 768px) 50vw, 33vw"
             className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
           />
         </div>
-        <div className="flex flex-col justify-between p-6 sm:p-7">
+        <div className="flex flex-col justify-between p-3 sm:p-4">
           <div>
-            <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
-              <span className="rounded-full bg-orange-50 px-3 py-1 text-[11px] tracking-[0.18em] text-orange-700">
+            <div className="flex flex-wrap items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+              <span className="rounded-full bg-orange-50 px-2 py-0.5 text-[9px] tracking-[0.14em] text-orange-700">
                 {post.category || "Blog"}
               </span>
               <span>{formatArabicDate(post.publishedAt || post.createdAt)}</span>
               <span>{readingTime} دقائق قراءة</span>
             </div>
-            <h2 className={`mt-5 text-slate-950 ${featured ? "text-3xl font-black leading-tight sm:text-4xl" : "text-2xl font-black leading-tight"}`}>
+            <h2 className="mt-2 text-sm font-black leading-tight text-slate-950 sm:text-base">
               {post.title}
             </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
+            <p className="mt-1.5 text-[11px] leading-5 text-slate-600 sm:text-xs">
               {post.excerpt}
             </p>
           </div>
 
-          <div className="mt-6 flex items-center justify-between">
+          <div className="mt-3 flex items-center justify-between">
             <div className="flex flex-wrap gap-2">
-              {(post.tags || []).slice(0, featured ? 3 : 2).map((tag) => (
-                <span key={tag} className="rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-500">
+              {(post.tags || []).slice(0, 2).map((tag) => (
+                <span key={tag} className="rounded-full border border-slate-200 px-2 py-0.5 text-[10px] font-semibold text-slate-500">
                   #{tag}
                 </span>
               ))}
             </div>
-            <div className="flex items-center gap-3 text-sm font-semibold text-orange-700 transition group-hover:text-orange-800">
+            <div className="flex items-center gap-2 text-[11px] font-semibold text-orange-700 transition group-hover:text-orange-800">
               <span>قراءة المزيد</span>
-              <span className="text-xs text-slate-400">• {commentCount} تعليقات</span>
+              <span className="text-[10px] text-slate-400">• {commentCount} تعليقات</span>
             </div>
+          </div>
+
+          <div className="mt-2 flex items-center gap-2 text-[10px] font-semibold text-slate-500">
+            <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5">
+              <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              {post.viewCount ?? 0} مشاهدة
+            </span>
           </div>
         </div>
       </Link>
@@ -91,7 +98,7 @@ export default async function BlogIndex() {
   const enabled = isBlogEnabled();
   const { posts, error } = await listPostsDetailed({ limit: 30 });
   const commentCounts = await listCommentCountsForPosts(posts.map((post) => post.id));
-  const [featuredPost, ...remainingPosts] = posts;
+  const remainingPosts = posts;
 
   return (
     <div className="w-full bg-[linear-gradient(180deg,#fff7ed_0%,#fff 35%,#f8fafc_100%)]">
@@ -150,23 +157,10 @@ export default async function BlogIndex() {
               ctaLabel="نشر أول مقال"
             />
           ) : (
-            <div className="space-y-10">
-              <div className="grid gap-8 lg:grid-cols-3">
-                {featuredPost ? (
-                  <PostCard post={featuredPost} featured commentCount={commentCounts[featuredPost.id] || 0} />
-                ) : null}
-                {remainingPosts.slice(0, 2).map((post) => (
-                  <PostCard key={post.slug} post={post} commentCount={commentCounts[post.id] || 0} />
-                ))}
-              </div>
-
-              {remainingPosts.length > 2 ? (
-                <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-                  {remainingPosts.slice(2).map((post) => (
-                    <PostCard key={post.slug} post={post} commentCount={commentCounts[post.id] || 0} />
-                  ))}
-                </div>
-              ) : null}
+            <div className="grid gap-4 grid-cols-2 lg:grid-cols-3">
+              {remainingPosts.map((post) => (
+                <PostCard key={post.slug} post={post} commentCount={commentCounts[post.id] || 0} />
+              ))}
             </div>
           )}
         </div>

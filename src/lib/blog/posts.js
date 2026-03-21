@@ -3,7 +3,7 @@ import { getSupabaseAdminClient, isSupabaseAdminConfigured } from "@/lib/supabas
 import { createSlugCandidate } from "@/lib/blog/slug";
 
 const POST_LIST_COLUMNS =
-  "id,slug,title,excerpt,content,cover_image_url,category,tags,published_at,created_at,updated_at,status";
+  "id,slug,title,excerpt,content,cover_image_url,category,tags,published_at,created_at,updated_at,status,view_count";
 
 export function isBlogEnabled() {
   return isSupabaseConfigured();
@@ -29,6 +29,7 @@ function normalizePost(row) {
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     status: row.status,
+    viewCount: row.view_count ?? 0,
   };
 }
 

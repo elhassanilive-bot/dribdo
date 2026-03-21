@@ -1,4 +1,5 @@
-import ForumComposer from "@/components/forum/ForumComposer";
+﻿import ForumComposer from "@/components/forum/ForumComposer";
+import ForumPostCardActions from "@/components/forum/ForumPostCardActions";
 import { listPostsDetailed } from "@/lib/blog/posts";
 import { estimateReadingTime } from "@/lib/blog/render";
 import Link from "next/link";
@@ -53,17 +54,17 @@ export default async function ForumPage() {
             لا توجد مشاركات بعد. كن أول من يكتب تجربة أو مشكلة.
           </div>
         ) : (
-          <div className="grid gap-5">
+          <div className="grid gap-4 grid-cols-2 lg:grid-cols-3">
             {forumPosts.map((post) => {
               const { author, summary } = extractAuthor(post.excerpt);
               return (
                 <article
                   key={post.id}
-                  className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_25px_70px_-60px_rgba(15,23,42,0.5)]"
+                  className="rounded-[1.25rem] border border-slate-200 bg-white p-3 shadow-[0_16px_45px_-45px_rgba(15,23,42,0.45)]"
                 >
-                  <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500">
+                  <div className="flex flex-wrap items-center gap-2 text-[9px] font-semibold text-slate-500">
                     {post.tags?.length ? (
-                      <span className="rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-orange-700">
+                      <span className="rounded-full border border-orange-200 bg-orange-50 px-2 py-0.5 text-orange-700">
                         {post.tags[0]}
                       </span>
                     ) : null}
@@ -71,16 +72,18 @@ export default async function ForumPage() {
                     <span>{estimateReadingTime(post.content)} دقائق قراءة</span>
                   </div>
 
-                  <h3 className="mt-3 text-xl font-bold text-slate-950">{post.title}</h3>
-                  <p className="mt-2 text-sm leading-7 text-slate-600">{summary || post.excerpt}</p>
+                  <h3 className="mt-2 text-sm font-black text-slate-950">{post.title}</h3>
+                  <p className="mt-1.5 text-[11px] leading-5 text-slate-600">{summary || post.excerpt}</p>
 
-                  <div className="mt-4 flex flex-wrap items-center gap-3">
-                    <Link href={`/blog/${post.slug}`} className="text-sm font-semibold text-orange-600 hover:text-orange-700">
+                  <div className="mt-2.5 flex flex-wrap items-center gap-3">
+                    <Link href={`/blog/${post.slug}`} className="text-[11px] font-semibold text-orange-600 hover:text-orange-700">
                       قراءة التفاصيل
                     </Link>
-                    {post.tags?.length ? (
-                      <span className="text-xs text-slate-400">الوسوم: {post.tags.join(" • ")}</span>
-                    ) : null}
+                    <span className="text-[9px] text-slate-400">الرابط: /blog/{post.slug}</span>
+                  </div>
+
+                  <div className="origin-top-right scale-[0.95]">
+                    <ForumPostCardActions postId={post.id} />
                   </div>
                 </article>
               );
@@ -91,4 +94,3 @@ export default async function ForumPage() {
     </div>
   );
 }
-

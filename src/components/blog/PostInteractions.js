@@ -22,6 +22,8 @@ export default function PostInteractions({ postId }) {
   const [myReaction, setMyReaction] = useState("");
   const [authUser, setAuthUser] = useState(null);
   const [authEmail, setAuthEmail] = useState("");
+  const [authPassword, setAuthPassword] = useState("");
+  const [authMode, setAuthMode] = useState("login");
   const [editingCommentId, setEditingCommentId] = useState("");
   const [editingContent, setEditingContent] = useState("");
   const [reportState, setReportState] = useState({ open: false, commentId: "", reason: "إساءة", details: "" });
@@ -85,8 +87,11 @@ export default function PostInteractions({ postId }) {
 
   async function handleAuth(event) {
     event.preventDefault();
-    if (!authEmail.trim()) {
-      setStatus({ type: "error", message: "أدخل بريدك الإلكتروني لتسجيل الدخول." });
+    const email = authEmail.trim();
+    const password = authPassword.trim();
+
+    if (!email) {
+      setStatus({ type: "error", message: "أدخل بريدك الإلكتروني أولًا." });
       return;
     }
 
@@ -96,13 +101,40 @@ export default function PostInteractions({ postId }) {
       return;
     }
 
-    const { error } = await supabase.auth.signInWithOtp({ email: authEmail.trim() });
-    if (error) {
-      setStatus({ type: "error", message: error.message || "تعذر إرسال رابط الدخول." });
+    if (authMode === "reset") {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: typeof window !== "undefined" ? `${window.location.origin}/auth/reset` : undefined,
+      });
+      if (error) {
+        setStatus({ type: "error", message: error.message || "تعذر إرسال رابط استعادة كلمة المرور." });
+        return;
+      }
+      setStatus({ type: "success", message: "تم إرسال رابط استعادة كلمة المرور إلى بريدك." });
       return;
     }
 
-    setStatus({ type: "success", message: "تم إرسال رابط الدخول إلى بريدك الإلكتروني." });
+    if (!password) {
+      setStatus({ type: "error", message: "أدخل كلمة المرور." });
+      return;
+    }
+
+    if (authMode === "signup") {
+      const { error } = await supabase.auth.signUp({ email, password });
+      if (error) {
+        setStatus({ type: "error", message: error.message || "تعذر إنشاء الحساب." });
+        return;
+      }
+      setStatus({ type: "success", message: "تم إنشاء الحساب. افحص بريدك لتأكيد الحساب." });
+      return;
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      setStatus({ type: "error", message: error.message || "تعذر تسجيل الدخول." });
+      return;
+    }
+
+    setStatus({ type: "success", message: "تم تسجيل الدخول بنجاح." });
   }
 
   async function handleSignOut() {
@@ -339,7 +371,11 @@ export default function PostInteractions({ postId }) {
             ].join(" ")}
             disabled={isPending}
           >
-            👍 إعجاب
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M14 10V5a3 3 0 0 0-6 0v5" />
+              <path d="M5 10h12.2a2 2 0 0 1 2 2.4l-1.2 6a2 2 0 0 1-2 1.6H7a2 2 0 0 1-2-2v-8z" />
+            </svg>
+            إعجاب
             <span className="text-xs text-slate-500">{reactionCounts.like}</span>
           </button>
           <button
@@ -351,7 +387,11 @@ export default function PostInteractions({ postId }) {
             ].join(" ")}
             disabled={isPending}
           >
-            👎 لم يعجبني
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M10 14v5a3 3 0 0 0 6 0v-5" />
+              <path d="M19 14H6.8a2 2 0 0 1-2-2.4l1.2-6a2 2 0 0 1 2-1.6H17a2 2 0 0 1 2 2v8z" />
+            </svg>
+            لم يعجبني
             <span className="text-xs text-slate-500">{reactionCounts.dislike}</span>
           </button>
         </div>
@@ -367,19 +407,55 @@ export default function PostInteractions({ postId }) {
                 type="email"
                 value={authEmail}
                 onChange={(event) => setAuthEmail(event.target.value)}
-                placeholder="بريدك الإلكتروني لتسجيل الدخول"
+                placeholder="البريد الإلكتروني"
                 className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-orange-300 focus:bg-white"
                 required
               />
-              <div className="text-xs text-slate-500">
-                سيتم إرسال رابط تسجيل الدخول إلى بريدك، ثم يمكنك التعليق.
-              </div>
+              {authMode !== "reset" ? (
+                <input
+                  type="password"
+                  value={authPassword}
+                  onChange={(event) => setAuthPassword(event.target.value)}
+                  placeholder="كلمة المرور"
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-orange-300 focus:bg-white"
+                  required
+                />
+              ) : (
+                <div className="text-xs text-slate-500">
+                  سنرسل لك رابط استعادة كلمة المرور على بريدك.
+                </div>
+              )}
+            </div>
+            <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-600">
+              <button
+                type="button"
+                onClick={() => setAuthMode("login")}
+                className={authMode === "login" ? "text-orange-600" : "hover:text-orange-600"}
+              >
+                تسجيل الدخول
+              </button>
+              <span>•</span>
+              <button
+                type="button"
+                onClick={() => setAuthMode("signup")}
+                className={authMode === "signup" ? "text-orange-600" : "hover:text-orange-600"}
+              >
+                إنشاء حساب
+              </button>
+              <span>•</span>
+              <button
+                type="button"
+                onClick={() => setAuthMode("reset")}
+                className={authMode === "reset" ? "text-orange-600" : "hover:text-orange-600"}
+              >
+                نسيت كلمة المرور
+              </button>
             </div>
             <button
               type="submit"
               className="inline-flex min-w-40 items-center justify-center rounded-2xl bg-[var(--blog-accent)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[var(--blog-accent-strong)]"
             >
-              إرسال رابط الدخول
+              {authMode === "signup" ? "إنشاء حساب" : authMode === "reset" ? "إرسال رابط الاستعادة" : "تسجيل الدخول"}
             </button>
           </form>
         ) : (

@@ -30,14 +30,14 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Cairo", "Tajawal", "Almarai", "Noto Kufi Arabic", "Noto Sans Arabic", system-ui, -apple-system,
+  font-family: "Tajawal", "Cairo", "Almarai", "Noto Kufi Arabic", "Noto Sans Arabic", system-ui, -apple-system,
     "Segoe UI", Arial, sans-serif;
 }
 
 .blog-prose {
   color: var(--blog-muted);
-  line-height: 2;
-  font-size: 1.05rem;
+  line-height: 1.75;
+  font-size: 0.92rem;
 }
 
 .blog-prose > * + * {
@@ -57,15 +57,15 @@ body {
 }
 
 .blog-prose h1 {
-  font-size: 2.1rem;
+  font-size: 1.55rem;
 }
 
 .blog-prose h2 {
-  font-size: 1.8rem;
+  font-size: 1.35rem;
 }
 
 .blog-prose h3 {
-  font-size: 1.45rem;
+  font-size: 1.15rem;
 }
 
 .blog-prose p {
@@ -127,7 +127,7 @@ body {
   max-width: 100%;
   border-radius: 1.5rem;
   border: 1px solid #e2e8f0;
-  margin-top: 1.5rem;
+  margin-top: 1.1rem;
 }
 
 .blog-prose iframe,
@@ -195,6 +195,7 @@ body {
 
 .blog-image-figure {
   width: 100%;
+  max-width: 100%;
 }
 
 .blog-image-caption {
@@ -262,8 +263,10 @@ body {
   min-height: 26rem;
   outline: none;
   color: #0f172a;
-  font-size: 1rem;
-  line-height: 2;
+  font-family: "Tajawal", "Cairo", "Almarai", "Noto Kufi Arabic", "Noto Sans Arabic", system-ui, -apple-system,
+    "Segoe UI", Arial, sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.75;
 }
 
 .blog-editor-surface p.is-editor-empty:first-child::before {
@@ -283,15 +286,15 @@ body {
 }
 
 .blog-editor-surface h1 {
-  font-size: 2rem;
+  font-size: 1.55rem;
 }
 
 .blog-editor-surface h2 {
-  font-size: 1.6rem;
+  font-size: 1.25rem;
 }
 
 .blog-editor-surface h3 {
-  font-size: 1.3rem;
+  font-size: 1.08rem;
 }
 
 .blog-editor-surface blockquote {

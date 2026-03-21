@@ -22,6 +22,13 @@ to anon, authenticated
 using (true)
 with check (true);
 
+drop policy if exists blog_posts_delete_temp on public.blog_posts;
+create policy blog_posts_delete_temp
+on public.blog_posts
+for delete
+to anon, authenticated
+using (true);
+
 -- Assets
 drop policy if exists blog_assets_insert_temp on public.blog_post_assets;
 create policy blog_assets_insert_temp
@@ -37,4 +44,3 @@ on public.blog_post_links
 for insert
 to anon, authenticated
 with check (true);
-

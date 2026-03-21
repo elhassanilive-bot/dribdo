@@ -878,12 +878,13 @@ const ResizableImage = Image.extend({
       "figure",
       {
         class: `blog-image-figure blog-align-${align}`,
+        style: `width:${widthPercent}%;`,
       },
       [
         "img",
         mergeAttributes(rest, {
           class: `blog-resizable-image blog-align-${align}`,
-          style: `width:${widthPercent}%;transform:rotate(${rotation}deg);`,
+          style: `width:100%;transform:rotate(${rotation}deg);`,
           "data-width": String(widthPercent),
           "data-align": align,
           "data-rotation": String(rotation),
@@ -907,6 +908,8 @@ export default function RichTextEditorField({
   const videoInputRef = useRef(null);
   const audioInputRef = useRef(null);
   const savedSelectionRef = useRef(null);
+  const lastNonEmptySelectionRef = useRef(null);
+  const modalOpenRef = useRef(false);
   const [uploadState, setUploadState] = useState({ kind: "", message: "", error: false });
   const [cropState, setCropState] = useState(null);
   const [modalState, setModalState] = useState(null);
@@ -959,8 +962,12 @@ export default function RichTextEditorField({
       onChange(currentEditor.getHTML());
     },
     onSelectionUpdate({ editor: currentEditor }) {
+      if (modalOpenRef.current) return;
       const { from, to } = currentEditor.state.selection;
-      savedSelectionRef.current = { from, to };
+      if (from === to) return;
+      const range = { from, to };
+      savedSelectionRef.current = range;
+      lastNonEmptySelectionRef.current = range;
     },
     editorProps: {
       attributes: {
@@ -976,6 +983,10 @@ export default function RichTextEditorField({
       editor.commands.setContent(nextValue, false);
     }
   }, [editor, value]);
+
+  useEffect(() => {
+    modalOpenRef.current = Boolean(modalState?.open);
+  }, [modalState]);
 
   if (!editor) {
     return (
@@ -1079,7 +1090,10 @@ export default function RichTextEditorField({
 
   function openInputModal(action) {
     const { from, to } = editor.state.selection;
-    savedSelectionRef.current = { from, to };
+    if (from !== to) {
+      savedSelectionRef.current = { from, to };
+      lastNonEmptySelectionRef.current = { from, to };
+    }
     const initialValues = {};
     action.fields.forEach((field) => {
       initialValues[field.key] = field.defaultValue || "";
@@ -1094,13 +1108,16 @@ export default function RichTextEditorField({
 
   function rememberSelection() {
     const { from, to } = editor.state.selection;
+    if (from === to) return;
     savedSelectionRef.current = { from, to };
+    lastNonEmptySelectionRef.current = { from, to };
   }
 
   function chainWithSelection() {
     const chain = editor.chain().focus();
-    if (savedSelectionRef.current) {
-      chain.setTextSelection(savedSelectionRef.current);
+    const selection = savedSelectionRef.current || lastNonEmptySelectionRef.current;
+    if (selection) {
+      chain.setTextSelection(selection);
     }
     return chain;
   }
@@ -1261,7 +1278,8 @@ export default function RichTextEditorField({
                 if (!values.href?.trim()) {
                   return { ok: false, error: "الرابط مطلوب." };
                 }
-                const selection = savedSelectionRef.current || editor.state.selection;
+                const selection =
+                  savedSelectionRef.current || lastNonEmptySelectionRef.current || editor.state.selection;
                 if (!selection || selection.from === selection.to) {
                   return { ok: false, error: "حدّد النص أولًا ثم أضف الرابط إليه." };
                 }

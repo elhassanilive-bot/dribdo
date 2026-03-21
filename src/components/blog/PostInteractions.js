@@ -27,6 +27,8 @@ export default function PostInteractions({ postId }) {
   const [authSubmitting, setAuthSubmitting] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState("");
   const [editingContent, setEditingContent] = useState("");
+  const [replyingToId, setReplyingToId] = useState("");
+  const [replyText, setReplyText] = useState("");
   const [reportState, setReportState] = useState({ open: false, commentId: "", reason: "إساءة", details: "" });
   const [isPending, startTransition] = useTransition();
 
@@ -44,7 +46,7 @@ export default function PostInteractions({ postId }) {
 
       const { data: commentRows } = await supabase
         .from("blog_post_comments")
-        .select("id, author_name, content, created_at, session_id, user_id")
+        .select("id, author_name, content, created_at, session_id, user_id, parent_id")
         .eq("post_id", postId)
         .order("created_at", { ascending: false });
 
@@ -160,6 +162,11 @@ export default function PostInteractions({ postId }) {
     setCommentForm({ name: "", content: "" });
   }
 
+  function resetReply() {
+    setReplyingToId("");
+    setReplyText("");
+  }
+
   function handleReaction(nextReaction) {
     if (!postId) return;
     setStatus({ type: "", message: "" });
@@ -260,6 +267,58 @@ export default function PostInteractions({ postId }) {
       setComments((current) => [data, ...current]);
       setStatus({ type: "success", message: "تم نشر تعليقك بنجاح." });
       resetCommentForm();
+    });
+  }
+
+  function handleReplySubmit(event) {
+    event.preventDefault();
+    setStatus({ type: "", message: "" });
+
+    if (!replyingToId) {
+      return;
+    }
+
+    if (!authUser) {
+      setStatus({ type: "error", message: "ÙŠØ±Ø¬Ù‰ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù‚Ø¨Ù„ Ø§Ù„ØªØ¹Ù„ÙŠÙ‚." });
+      return;
+    }
+
+    const content = replyText.trim();
+    if (!content || content.length < 2) {
+      setStatus({ type: "error", message: "Ø§ÙƒØªØ¨ Ø±Ø¯Ù‹Ø§ Ù…Ù†Ø§Ø³Ø¨Ø§Ù‹." });
+      return;
+    }
+
+    const name = commentForm.name.trim() || "Ø²Ø§Ø¦Ø±";
+
+    startTransition(async () => {
+      const supabase = await getSupabaseClient();
+      if (!supabase) {
+        setStatus({ type: "error", message: "Supabase ØºÙŠØ± Ù…ÙØ¹Ø¯." });
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("blog_post_comments")
+        .insert({
+          post_id: postId,
+          parent_id: replyingToId,
+          session_id: sessionId,
+          user_id: authUser.id,
+          author_name: name || authUser.email || "Ù…Ø³ØªØ®Ø¯Ù…",
+          content,
+        })
+        .select("id, author_name, content, created_at, session_id, user_id, parent_id")
+        .single();
+
+      if (error) {
+        setStatus({ type: "error", message: error.message || "ØªØ¹Ø°Ø± Ù†Ø´Ø± Ø§Ù„Ø±Ø¯." });
+        return;
+      }
+
+      setComments((current) => [data, ...current]);
+      setStatus({ type: "success", message: "ØªÙ… Ù†Ø´Ø± Ø§Ù„Ø±Ø¯." });
+      resetReply();
     });
   }
 
@@ -379,9 +438,8 @@ export default function PostInteractions({ postId }) {
             ].join(" ")}
             disabled={isPending}
           >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M14 10V5a3 3 0 0 0-6 0v5" />
-              <path d="M5 10h12.2a2 2 0 0 1 2 2.4l-1.2 6a2 2 0 0 1-2 1.6H7a2 2 0 0 1-2-2v-8z" />
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
+              <path d="M7.493 18.5c-.425 0-.82-.236-.975-.632A7.48 7.48 0 0 1 6 15.125c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75A.75.75 0 0 1 15 2a2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23h-.777ZM2.331 10.727a11.969 11.969 0 0 0-.831 4.398 12 12 0 0 0 .52 3.507C2.28 19.482 3.105 20 3.994 20H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 0 1-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227Z" />
             </svg>
             إعجاب
             <span className="text-xs text-slate-500">{reactionCounts.like}</span>
@@ -395,9 +453,8 @@ export default function PostInteractions({ postId }) {
             ].join(" ")}
             disabled={isPending}
           >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M10 14v5a3 3 0 0 0 6 0v-5" />
-              <path d="M19 14H6.8a2 2 0 0 1-2-2.4l1.2-6a2 2 0 0 1 2-1.6H17a2 2 0 0 1 2 2v8z" />
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
+              <path d="M15.73 5.5h1.035A7.465 7.465 0 0 1 18 9.625a7.465 7.465 0 0 1-1.235 4.125h-.148c-.806 0-1.534.446-2.031 1.08a9.04 9.04 0 0 1-2.861 2.4c-.723.384-1.35.956-1.653 1.715a4.499 4.499 0 0 0-.322 1.672v.633A.75.75 0 0 1 9 22a2.25 2.25 0 0 1-2.25-2.25c0-1.152.26-2.243.723-3.218.266-.558-.107-1.282-.725-1.282H3.622c-1.026 0-1.945-.694-2.054-1.715A12.137 12.137 0 0 1 1.5 12.25c0-2.848.992-5.464 2.649-7.521C4.537 4.247 5.136 4 5.754 4H9.77a4.5 4.5 0 0 1 1.423.23l3.114 1.04a4.5 4.5 0 0 0 1.423.23ZM21.669 14.023c.536-1.362.831-2.845.831-4.398 0-1.22-.182-2.398-.52-3.507-.26-.85-1.084-1.368-1.973-1.368H19.1c-.445 0-.72.498-.523.898.591 1.2.924 2.55.924 3.977a8.958 8.958 0 0 1-1.302 4.666c-.245.403.028.959.5.959h1.053c.832 0 1.612-.453 1.918-1.227Z" />
             </svg>
             لم يعجبني
             <span className="text-xs text-slate-500">{reactionCounts.dislike}</span>
@@ -516,72 +573,154 @@ export default function PostInteractions({ postId }) {
               لا توجد تعليقات بعد. كن أول من يشارك رأيه.
             </div>
           ) : (
-            comments.map((comment) => (
-              <div key={comment.id} className="rounded-2xl border border-slate-200 bg-white px-4 py-4">
-                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
-                  <span className="font-semibold text-slate-700">{comment.author_name}</span>
-                  <span>•</span>
-                  <span>{new Date(comment.created_at).toLocaleString("ar-MA")}</span>
-                </div>
-                {editingCommentId === comment.id ? (
-                  <div className="mt-3 space-y-3">
-                    <textarea
-                      value={editingContent}
-                      onChange={(event) => setEditingContent(event.target.value)}
-                      rows={3}
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-orange-300 focus:bg-white"
-                    />
-                    <div className="flex flex-wrap gap-2">
-                      <button
-                        type="button"
-                        onClick={() => saveEdit(comment.id)}
-                        className="rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-700"
-                        disabled={isPending}
-                      >
-                        حفظ التعديل
-                      </button>
-                      <button
-                        type="button"
-                        onClick={cancelEdit}
-                        className="rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 transition hover:border-slate-300"
-                      >
-                        إلغاء
-                      </button>
+            comments
+              .filter((comment) => !comment.parent_id)
+              .map((comment) => {
+                const replies = comments.filter((reply) => reply.parent_id === comment.id);
+                return (
+                  <div key={comment.id} className="rounded-2xl border border-slate-200 bg-white px-4 py-4">
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                      <span className="font-semibold text-slate-700">{comment.author_name}</span>
+                      <span>•</span>
+                      <span>{new Date(comment.created_at).toLocaleString("ar-MA")}</span>
                     </div>
-                  </div>
-                ) : (
-                  <p className="mt-2 text-sm leading-7 text-slate-700">{comment.content}</p>
-                )}
+                    {editingCommentId === comment.id ? (
+                      <div className="mt-3 space-y-3">
+                        <textarea
+                          value={editingContent}
+                          onChange={(event) => setEditingContent(event.target.value)}
+                          rows={3}
+                          className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-orange-300 focus:bg-white"
+                        />
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            onClick={() => saveEdit(comment.id)}
+                            className="rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-700"
+                            disabled={isPending}
+                          >
+                            حفظ التعديل
+                          </button>
+                          <button
+                            type="button"
+                            onClick={cancelEdit}
+                            className="rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 transition hover:border-slate-300"
+                          >
+                            إلغاء
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="mt-2 text-sm leading-7 text-slate-700">{comment.content}</p>
+                    )}
 
-                <div className="mt-3 flex flex-wrap items-center gap-3 text-xs font-semibold">
-                  <button
-                    type="button"
-                    onClick={() => openReport(comment.id)}
-                    className="text-rose-600 hover:text-rose-700"
-                  >
-                    بلاغ
-                  </button>
-                  {authUser && comment.user_id && comment.user_id === authUser.id ? (
-                    <>
+                    <div className="mt-3 flex flex-wrap items-center gap-3 text-xs font-semibold">
                       <button
                         type="button"
-                        onClick={() => startEdit(comment)}
-                        className="text-slate-600 hover:text-slate-800"
+                        onClick={() => openReport(comment.id)}
+                        className="text-rose-600 hover:text-rose-700"
                       >
-                        تعديل
+                        بلاغ
                       </button>
                       <button
                         type="button"
-                        onClick={() => deleteComment(comment.id)}
+                        onClick={() => setReplyingToId(comment.id)}
                         className="text-slate-600 hover:text-slate-800"
                       >
-                        حذف
+                        رد
                       </button>
-                    </>
-                  ) : null}
-                </div>
-              </div>
-            ))
+                      {authUser && comment.user_id && comment.user_id === authUser.id ? (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => startEdit(comment)}
+                            className="text-slate-600 hover:text-slate-800"
+                          >
+                            تعديل
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => deleteComment(comment.id)}
+                            className="text-slate-600 hover:text-slate-800"
+                          >
+                            حذف
+                          </button>
+                        </>
+                      ) : null}
+                    </div>
+
+                    {replyingToId === comment.id ? (
+                      <form onSubmit={handleReplySubmit} className="mt-4 rounded-2xl border border-dashed border-orange-200 bg-orange-50/40 px-4 py-4">
+                        <textarea
+                          value={replyText}
+                          onChange={(event) => setReplyText(event.target.value)}
+                          rows={3}
+                          placeholder="اكتب ردّك..."
+                          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-orange-300"
+                        />
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          <button
+                            type="submit"
+                            disabled={isPending}
+                            className="rounded-full bg-[var(--blog-accent)] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[var(--blog-accent-strong)] disabled:opacity-70"
+                          >
+                            إرسال الرد
+                          </button>
+                          <button
+                            type="button"
+                            onClick={resetReply}
+                            className="rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600"
+                          >
+                            إلغاء
+                          </button>
+                        </div>
+                      </form>
+                    ) : null}
+
+                    {replies.length > 0 ? (
+                      <div className="mt-4 space-y-3 border-r-2 border-orange-100 pr-4">
+                        {replies.map((reply) => (
+                          <div key={reply.id} className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+                            <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                              <span className="font-semibold text-slate-700">{reply.author_name}</span>
+                              <span>•</span>
+                              <span>{new Date(reply.created_at).toLocaleString("ar-MA")}</span>
+                            </div>
+                            <p className="mt-2 text-sm leading-7 text-slate-700">{reply.content}</p>
+                            <div className="mt-2 flex flex-wrap items-center gap-3 text-xs font-semibold">
+                              <button
+                                type="button"
+                                onClick={() => openReport(reply.id)}
+                                className="text-rose-600 hover:text-rose-700"
+                              >
+                                بلاغ
+                              </button>
+                              {authUser && reply.user_id && reply.user_id === authUser.id ? (
+                                <>
+                                  <button
+                                    type="button"
+                                    onClick={() => startEdit(reply)}
+                                    className="text-slate-600 hover:text-slate-800"
+                                  >
+                                    تعديل
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => deleteComment(reply.id)}
+                                    className="text-slate-600 hover:text-slate-800"
+                                  >
+                                    حذف
+                                  </button>
+                                </>
+                              ) : null}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              })
           )}
         </div>
       </section>

@@ -3,6 +3,7 @@
 create table if not exists public.blog_post_comments (
   id uuid primary key default gen_random_uuid(),
   post_id uuid not null references public.blog_posts(id) on delete cascade,
+  parent_id uuid references public.blog_post_comments(id) on delete cascade,
   session_id text not null default '',
   user_id uuid,
   author_name text not null,
@@ -18,8 +19,17 @@ alter table public.blog_post_comments
 alter table public.blog_post_comments
   add column if not exists is_hidden boolean not null default false;
 
+alter table public.blog_post_comments
+  add column if not exists session_id text not null default '';
+
+alter table public.blog_post_comments
+  add column if not exists parent_id uuid references public.blog_post_comments(id) on delete cascade;
+
 create index if not exists blog_post_comments_post_id_created_at_idx
   on public.blog_post_comments (post_id, created_at desc);
+
+create index if not exists blog_post_comments_parent_id_idx
+  on public.blog_post_comments (parent_id);
 
 create table if not exists public.blog_post_comment_reports (
   id uuid primary key default gen_random_uuid(),

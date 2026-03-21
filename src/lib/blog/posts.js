@@ -2,8 +2,9 @@ import { getSupabaseClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { getSupabaseAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 import { createSlugCandidate } from "@/lib/blog/slug";
 
-const POST_LIST_COLUMNS =
-  "id,slug,title,excerpt,content,cover_image_url,category,tags,published_at,created_at,updated_at,status,view_count";
+const POST_LIST_COLUMNS_BASE =
+  "id,slug,title,excerpt,content,cover_image_url,category,tags,published_at,created_at,updated_at,status";
+const POST_LIST_COLUMNS_WITH_VIEWS = `${POST_LIST_COLUMNS_BASE},view_count`;
 
 export function isBlogEnabled() {
   return isSupabaseConfigured();
@@ -81,14 +82,23 @@ export async function listPosts({ limit = 20 } = {}) {
   const supabase = await getSupabaseClient();
   if (!supabase) return [];
 
-  const { data, error } = await supabase
+  const baseQuery = supabase
     .from("blog_posts")
-    .select(POST_LIST_COLUMNS)
     .eq("status", "published")
     .order("published_at", { ascending: false })
     .limit(limit);
 
-  if (error) return [];
+  const { data, error } = await baseQuery.select(POST_LIST_COLUMNS_WITH_VIEWS);
+
+  if (error) {
+    if (String(error.message || "").includes("view_count")) {
+      const fallback = await baseQuery.select(POST_LIST_COLUMNS_BASE);
+      if (fallback.error) return [];
+      return (fallback.data || []).map(normalizePost);
+    }
+    return [];
+  }
+
   return (data || []).map(normalizePost);
 }
 
@@ -98,14 +108,23 @@ export async function listPostsDetailed({ limit = 20 } = {}) {
   const supabase = await getSupabaseClient();
   if (!supabase) return { posts: [], error: "Supabase client غير متاح" };
 
-  const { data, error } = await supabase
+  const baseQuery = supabase
     .from("blog_posts")
-    .select(POST_LIST_COLUMNS)
     .eq("status", "published")
     .order("published_at", { ascending: false })
     .limit(limit);
 
-  if (error) return { posts: [], error: error.message };
+  const { data, error } = await baseQuery.select(POST_LIST_COLUMNS_WITH_VIEWS);
+
+  if (error) {
+    if (String(error.message || "").includes("view_count")) {
+      const fallback = await baseQuery.select(POST_LIST_COLUMNS_BASE);
+      if (fallback.error) return { posts: [], error: fallback.error.message };
+      return { posts: (fallback.data || []).map(normalizePost), error: null };
+    }
+    return { posts: [], error: error.message };
+  }
+
   return { posts: (data || []).map(normalizePost), error: null };
 }
 
@@ -131,14 +150,23 @@ export async function listPostsForAdmin({ limit = 100 } = {}) {
   const client = await getAdminReadClient();
   if (!client) return { posts: [], error: "Supabase client غير متاح" };
 
-  const { data, error } = await client
+  const baseQuery = client
     .from("blog_posts")
-    .select(POST_LIST_COLUMNS)
     .order("published_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false })
     .limit(limit);
 
-  if (error) return { posts: [], error: error.message };
+  const { data, error } = await baseQuery.select(POST_LIST_COLUMNS_WITH_VIEWS);
+
+  if (error) {
+    if (String(error.message || "").includes("view_count")) {
+      const fallback = await baseQuery.select(POST_LIST_COLUMNS_BASE);
+      if (fallback.error) return { posts: [], error: fallback.error.message };
+      return { posts: (fallback.data || []).map(normalizePost), error: null };
+    }
+    return { posts: [], error: error.message };
+  }
+
   return { posts: (data || []).map(normalizePost), error: null };
 }
 
@@ -150,12 +178,25 @@ export async function getPostBySlug(slug) {
 
   const { data, error } = await supabase
     .from("blog_posts")
-    .select(POST_LIST_COLUMNS)
+    .select(POST_LIST_COLUMNS_WITH_VIEWS)
     .eq("slug", slug)
     .eq("status", "published")
     .maybeSingle();
 
-  if (error || !data) return null;
+  if (error) {
+    if (String(error.message || "").includes("view_count")) {
+      const fallback = await supabase
+        .from("blog_posts")
+        .select(POST_LIST_COLUMNS_BASE)
+        .eq("slug", slug)
+        .eq("status", "published")
+        .maybeSingle();
+      if (fallback.error || !fallback.data) return null;
+      return normalizePost(fallback.data);
+    }
+    return null;
+  }
+  if (!data) return null;
   return normalizePost(data);
 }
 
@@ -167,12 +208,25 @@ export async function getPostBySlugDetailed(slug) {
 
   const { data, error } = await supabase
     .from("blog_posts")
-    .select(POST_LIST_COLUMNS)
+    .select(POST_LIST_COLUMNS_WITH_VIEWS)
     .eq("slug", slug)
     .eq("status", "published")
     .maybeSingle();
 
-  if (error) return { post: null, error: error.message };
+  if (error) {
+    if (String(error.message || "").includes("view_count")) {
+      const fallback = await supabase
+        .from("blog_posts")
+        .select(POST_LIST_COLUMNS_BASE)
+        .eq("slug", slug)
+        .eq("status", "published")
+        .maybeSingle();
+      if (fallback.error) return { post: null, error: fallback.error.message };
+      if (!fallback.data) return { post: null, error: null };
+      return { post: normalizePost(fallback.data), error: null };
+    }
+    return { post: null, error: error.message };
+  }
   if (!data) return { post: null, error: null };
   return { post: normalizePost(data), error: null };
 }

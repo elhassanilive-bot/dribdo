@@ -23,6 +23,8 @@ function createEmptyForm() {
     category: "",
     tagsInput: "",
     adminToken: "",
+    permalinkStyle: "",
+    permalinkTemplate: "",
     content: EMPTY_CONTENT,
   };
 }
@@ -161,6 +163,8 @@ function mapPostToForm(post, adminToken) {
     category: post.category || "",
     tagsInput: Array.isArray(post.tags) ? post.tags.join(", ") : "",
     adminToken: adminToken || "",
+    permalinkStyle: post.permalinkStyle || "",
+    permalinkTemplate: post.permalinkTemplate || "",
     content: prepareBlogContentForEditor(post.content),
   };
 }
@@ -186,6 +190,7 @@ export default function AdminBlogDashboard({
   const [isDeleting, startDeleteTransition] = useTransition();
   const editing = Boolean(form.id);
   const visibleSlug = manualSlug ? form.slug : createSlugCandidate(form.title);
+  const resolvedPermalinkStyle = form.permalinkStyle || getPermalinkStyle();
 
   const categories = useMemo(() => {
     return [...new Set(posts.map((post) => post.category).filter(Boolean))];
@@ -220,12 +225,17 @@ export default function AdminBlogDashboard({
   const titleWords = useMemo(() => form.title.trim().split(/\s+/).filter(Boolean).length, [form.title]);
   const permalinkPreview = useMemo(
     () =>
-      buildPermalink({
-        id: form.id || "post-id",
-        slug: visibleSlug || "عنوان-المقال",
-        publishedAt: new Date().toISOString(),
-      }),
-    [form.id, visibleSlug]
+      buildPermalink(
+        {
+          id: form.id || "post-id",
+          slug: visibleSlug || "عنوان-المقال",
+          publishedAt: new Date().toISOString(),
+          permalinkStyle: resolvedPermalinkStyle,
+          permalinkTemplate: form.permalinkTemplate,
+        },
+        resolvedPermalinkStyle
+      ),
+    [form.id, visibleSlug, resolvedPermalinkStyle, form.permalinkTemplate]
   );
 
   function updateField(key, value) {
@@ -303,6 +313,8 @@ export default function AdminBlogDashboard({
     formData.set("category", form.category);
     formData.set("tags", form.tagsInput);
     formData.set("content", form.content);
+    formData.set("permalinkStyle", form.permalinkStyle);
+    formData.set("permalinkTemplate", form.permalinkTemplate);
     formData.set("adminToken", form.adminToken);
 
     startSaveTransition(() => {
@@ -487,6 +499,38 @@ export default function AdminBlogDashboard({
             </label>
           </div>
 
+          <div className="mt-6 grid gap-6 md:grid-cols-2">
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold text-slate-900">تركيبة الرابط</span>
+              <select
+                value={form.permalinkStyle || "inherit"}
+                onChange={(event) => updateField("permalinkStyle", event.target.value === "inherit" ? "" : event.target.value)}
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition focus:border-orange-300 focus:bg-white"
+              >
+                <option value="inherit">افتراضي الموقع (ENV)</option>
+                {PERMALINK_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold text-slate-900">قالب مخصص (اختياري)</span>
+              <input
+                value={form.permalinkTemplate}
+                onChange={(event) => updateField("permalinkTemplate", event.target.value)}
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-left text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-orange-300 focus:bg-white"
+                dir="ltr"
+                placeholder="/blog/%year%/%monthnum%/%postname%"
+              />
+              <span className="mt-2 block text-xs text-slate-500" dir="ltr">
+                %postname% · %post_id% · %year% · %monthnum% · %day%
+              </span>
+            </label>
+          </div>
+
           <label className="mt-6 block">
             <span className="mb-2 block text-sm font-semibold text-slate-900">الملخص</span>
             <textarea
@@ -618,7 +662,15 @@ export default function AdminBlogDashboard({
         </form>
 
         <aside className="space-y-6">
-          <PermalinkBox samplePost={{ id: form.id || "post-id", slug: visibleSlug || "عنوان-المقال", publishedAt: new Date().toISOString() }} />
+          <PermalinkBox
+            samplePost={{
+              id: form.id || "post-id",
+              slug: visibleSlug || "عنوان-المقال",
+              publishedAt: new Date().toISOString(),
+              permalinkStyle: resolvedPermalinkStyle,
+              permalinkTemplate: form.permalinkTemplate,
+            }}
+          />
           <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_20px_55px_-45px_rgba(15,23,42,0.5)]">
             <div className="text-sm font-semibold text-slate-500">معاينة سريعة</div>
             <h2 className="mt-4 text-2xl font-black text-slate-950">

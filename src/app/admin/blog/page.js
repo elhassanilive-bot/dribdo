@@ -102,19 +102,21 @@ export default async function AdminBlogPage() {
       return { ok: false, error: tokenError };
     }
 
-    const payload = {
-      id: formData.get("id"),
-      title: formData.get("title"),
-      slug: formData.get("slug"),
-      excerpt: formData.get("excerpt"),
-      coverImageUrl: formData.get("coverImageUrl"),
-      category: formData.get("category"),
-      tags: String(formData.get("tags") || "")
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean),
-      content: formData.get("content"),
-    };
+      const payload = {
+        id: formData.get("id"),
+        title: formData.get("title"),
+        slug: formData.get("slug"),
+        excerpt: formData.get("excerpt"),
+        coverImageUrl: formData.get("coverImageUrl"),
+        category: formData.get("category"),
+        tags: String(formData.get("tags") || "")
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean),
+        content: formData.get("content"),
+        permalinkStyle: formData.get("permalinkStyle"),
+        permalinkTemplate: formData.get("permalinkTemplate"),
+      };
 
     const result = payload.id ? await updatePost(payload) : await createPost(payload);
 

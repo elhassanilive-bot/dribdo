@@ -9,18 +9,22 @@ function toDateParts(value) {
   return { year, month, day };
 }
 
-export function getPermalinkStyle() {
+export function getPermalinkStyle(post) {
+  if (post?.permalinkStyle) return post.permalinkStyle;
   return process.env.NEXT_PUBLIC_BLOG_PERMALINK_STYLE || "id-slug";
 }
 
-export function buildPermalink(post, style = getPermalinkStyle()) {
+export function buildPermalink(post, style = getPermalinkStyle(post)) {
   if (!post) return "/blog";
   const slugRaw = String(post.slug || "").trim();
   const slug = slugRaw ? encodeURIComponent(slugRaw) : "";
   const id = String(post.id || "").trim();
   const date = toDateParts(post.publishedAt || post.createdAt);
 
-  const template = process.env.NEXT_PUBLIC_BLOG_PERMALINK_TEMPLATE || "/blog/%post_id%-%postname%";
+  const template =
+    post?.permalinkTemplate ||
+    process.env.NEXT_PUBLIC_BLOG_PERMALINK_TEMPLATE ||
+    "/blog/%post_id%-%postname%";
 
   switch (style) {
     case "plain":

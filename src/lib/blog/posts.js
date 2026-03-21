@@ -3,7 +3,7 @@ import { getSupabaseAdminClient, isSupabaseAdminConfigured } from "@/lib/supabas
 import { createSlugCandidate } from "@/lib/blog/slug";
 
 const POST_LIST_COLUMNS_BASE =
-  "id,slug,title,excerpt,content,cover_image_url,category,tags,published_at,created_at,updated_at,status";
+  "id,slug,title,excerpt,content,cover_image_url,category,tags,published_at,created_at,updated_at,status,permalink_style,permalink_template";
 const POST_LIST_COLUMNS_WITH_VIEWS = `${POST_LIST_COLUMNS_BASE},view_count`;
 
 export function isBlogEnabled() {
@@ -31,6 +31,8 @@ function normalizePost(row) {
     updatedAt: row.updated_at,
     status: row.status,
     viewCount: row.view_count ?? 0,
+    permalinkStyle: row.permalink_style || "",
+    permalinkTemplate: row.permalink_template || "",
   };
 }
 
@@ -383,6 +385,8 @@ function normalizePostInput(input) {
   const category = String(input?.category || "").trim() || null;
   const tags = normalizeTags(input?.tags);
   const desiredSlug = String(input?.slug || "").trim();
+  const permalinkStyle = String(input?.permalinkStyle || "").trim() || null;
+  const permalinkTemplate = String(input?.permalinkTemplate || "").trim() || null;
 
   return {
     title,
@@ -392,6 +396,8 @@ function normalizePostInput(input) {
     category,
     tags,
     desiredSlug,
+    permalinkStyle,
+    permalinkTemplate,
   };
 }
 
@@ -444,6 +450,8 @@ export async function createPost(input) {
       cover_image_url: normalized.coverImageUrl,
       category: normalized.category,
       tags: normalized.tags,
+      permalink_style: normalized.permalinkStyle,
+      permalink_template: normalized.permalinkTemplate,
       status: "published",
       published_at: new Date().toISOString(),
     })
@@ -503,6 +511,8 @@ export async function updatePost(input) {
       cover_image_url: normalized.coverImageUrl,
       category: normalized.category,
       tags: normalized.tags,
+      permalink_style: normalized.permalinkStyle,
+      permalink_template: normalized.permalinkTemplate,
       status: "published",
       published_at: new Date().toISOString(),
     })

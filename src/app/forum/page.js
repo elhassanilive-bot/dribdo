@@ -1,12 +1,12 @@
-﻿import ForumComposer from "@/components/forum/ForumComposer";
+import ForumComposer from "@/components/forum/ForumComposer";
 import ForumPostCardActions from "@/components/forum/ForumPostCardActions";
 import { listPostsDetailed } from "@/lib/blog/posts";
 import { estimateReadingTime } from "@/lib/blog/render";
 import Link from "next/link";
 
 export const metadata = {
-  title: "المنتدى",
-  description: "شارك رأيك أو مشكلتك مع مجتمع Dribdo، وشاهد ما ينشره الآخرون.",
+  title: "???????",
+  description: "???? ???? ?? ?????? ?? ????? Dribdo? ????? ?? ????? ???????.",
 };
 
 function extractAuthor(excerpt) {
@@ -14,7 +14,7 @@ function extractAuthor(excerpt) {
   const parts = String(excerpt).split("|");
   if (parts.length < 2) return { author: "", summary: excerpt };
   return {
-    author: parts[0].replace("بقلم", "").trim(),
+    author: parts[0].replace("????", "").trim(),
     summary: parts.slice(1).join("|").trim(),
   };
 }
@@ -28,10 +28,10 @@ export default async function ForumPage() {
       <header className="rounded-[2.5rem] border border-orange-100 bg-[radial-gradient(circle_at_top_left,_rgba(249,115,22,0.18),_transparent_35%),linear-gradient(135deg,#fff7ed_0%,#ffffff_55%,#f8fafc_100%)] px-6 py-10 text-center shadow-[0_30px_80px_-60px_rgba(15,23,42,0.35)]">
         <p className="text-xs font-semibold uppercase tracking-[0.45em] text-orange-400">Dribdo Forum</p>
         <h1 className="mt-4 text-3xl font-black text-slate-950 sm:text-4xl">
-          المنتدى المفتوح لملاحظات وتجارب المستخدمين
+          ??????? ??????? ???????? ?????? ??????????
         </h1>
         <p className="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-          شاركنا رأيك أو المشكلة التي تواجهها، وستظهر مشاركتك هنا وفي المدونة ليطّلع عليها الجميع.
+          ?????? ???? ?? ??????? ???? ???????? ?????? ??????? ??? ??? ??????? ?????? ????? ??????.
         </p>
       </header>
 
@@ -39,19 +39,19 @@ export default async function ForumPage() {
 
       <section className="space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-2xl font-black text-slate-950">آخر مشاركات المنتدى</h2>
+          <h2 className="text-2xl font-black text-slate-950">??? ??????? ???????</h2>
           <Link href="/blog" className="text-sm font-semibold text-orange-600 hover:text-orange-700">
-            عرضها داخل المدونة
+            ????? ???? ???????
           </Link>
         </div>
 
         {error ? (
           <div className="rounded-[2rem] border border-rose-200 bg-rose-50 px-6 py-5 text-rose-900">
-            تعذر تحميل مشاركات المنتدى: {error}
+            ???? ????? ??????? ???????: {error}
           </div>
         ) : forumPosts.length === 0 ? (
           <div className="rounded-[2rem] border border-slate-200 bg-white px-6 py-8 text-center text-slate-600">
-            لا توجد مشاركات بعد. كن أول من يكتب تجربة أو مشكلة.
+            ?? ???? ??????? ???. ?? ??? ?? ???? ????? ?? ?????.
           </div>
         ) : (
           <div className="grid gap-4 grid-cols-2 lg:grid-cols-3">
@@ -68,8 +68,8 @@ export default async function ForumPage() {
                         {post.tags[0]}
                       </span>
                     ) : null}
-                    {author ? <span>الكاتب: {author}</span> : null}
-                    <span>{estimateReadingTime(post.content)} دقائق قراءة</span>
+                    {author ? <span>??????: {author}</span> : null}
+                    <span>{estimateReadingTime(post.content)} ????? ?????</span>
                   </div>
 
                   <h3 className="mt-2 text-sm font-black text-slate-950">{post.title}</h3>
@@ -77,14 +77,12 @@ export default async function ForumPage() {
 
                   <div className="mt-2.5 flex flex-wrap items-center gap-3">
                     <Link href={`/blog/${post.slug}`} className="text-[11px] font-semibold text-orange-600 hover:text-orange-700">
-                      قراءة التفاصيل
+                      ????? ????????
                     </Link>
-                    <span className="text-[9px] text-slate-400">الرابط: /blog/{post.slug}</span>
+                    <span className="text-[9px] text-slate-400">??????: /blog/{post.slug}</span>
                   </div>
 
-                  <div className="origin-top-right scale-[0.95]">
-                    <ForumPostCardActions postId={post.id} />
-                  </div>
+                  <ForumPostCardActions postId={post.id} viewCount={post.viewCount || 0} />
                 </article>
               );
             })}

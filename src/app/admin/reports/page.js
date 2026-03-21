@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import { getSupabaseAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
+import { getSupabaseClient } from "@/lib/supabase/client";
 
 export const metadata = {
   title: "بلاغات التعليقات",
@@ -10,16 +11,13 @@ export const metadata = {
 };
 
 async function fetchReports() {
-  if (!isSupabaseAdminConfigured()) {
-    return { reports: [], error: "SUPABASE_SERVICE_ROLE_KEY غير مُعد" };
+  const adminReady = isSupabaseAdminConfigured();
+  const client = adminReady ? await getSupabaseAdminClient() : await getSupabaseClient();
+  if (!client) {
+    return { reports: [], error: "Supabase client غير متاح" };
   }
 
-  const admin = await getSupabaseAdminClient();
-  if (!admin) {
-    return { reports: [], error: "Supabase admin client غير متاح" };
-  }
-
-  const { data, error } = await admin
+  const { data, error } = await client
     .from("blog_post_comment_reports")
     .select(
       "id, reason, details, created_at, session_id, comment:blog_post_comments(id, content, author_name, created_at, is_hidden, post:blog_posts(id, title, slug))"
@@ -45,9 +43,9 @@ export default async function AdminReportsPage() {
     const commentId = String(formData.get("commentId") || "");
     if (!commentId) return;
 
-    const admin = await getSupabaseAdminClient();
-    if (!admin) return;
-    await admin.from("blog_post_comments").update({ is_hidden: true }).eq("id", commentId);
+    const client = isSupabaseAdminConfigured() ? await getSupabaseAdminClient() : await getSupabaseClient();
+    if (!client) return;
+    await client.from("blog_post_comments").update({ is_hidden: true }).eq("id", commentId);
     revalidatePath("/admin/reports");
     revalidatePath("/blog");
   }
@@ -57,9 +55,9 @@ export default async function AdminReportsPage() {
     const commentId = String(formData.get("commentId") || "");
     if (!commentId) return;
 
-    const admin = await getSupabaseAdminClient();
-    if (!admin) return;
-    await admin.from("blog_post_comments").update({ is_hidden: false }).eq("id", commentId);
+    const client = isSupabaseAdminConfigured() ? await getSupabaseAdminClient() : await getSupabaseClient();
+    if (!client) return;
+    await client.from("blog_post_comments").update({ is_hidden: false }).eq("id", commentId);
     revalidatePath("/admin/reports");
     revalidatePath("/blog");
   }
@@ -69,9 +67,9 @@ export default async function AdminReportsPage() {
     const commentId = String(formData.get("commentId") || "");
     if (!commentId) return;
 
-    const admin = await getSupabaseAdminClient();
-    if (!admin) return;
-    await admin.from("blog_post_comments").delete().eq("id", commentId);
+    const client = isSupabaseAdminConfigured() ? await getSupabaseAdminClient() : await getSupabaseClient();
+    if (!client) return;
+    await client.from("blog_post_comments").delete().eq("id", commentId);
     revalidatePath("/admin/reports");
     revalidatePath("/blog");
   }
@@ -164,4 +162,3 @@ export default async function AdminReportsPage() {
     </div>
   );
 }
-

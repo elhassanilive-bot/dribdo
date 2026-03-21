@@ -92,6 +92,14 @@ for select
 to anon, authenticated
 using (false);
 
+-- TEMP: allow reading reports without service role (DEV ONLY)
+drop policy if exists blog_comment_reports_read_temp on public.blog_post_comment_reports;
+create policy blog_comment_reports_read_temp
+on public.blog_post_comment_reports
+for select
+to anon, authenticated
+using (true);
+
 -- TEMP write policies (DEV ONLY)
 drop policy if exists blog_comments_insert_temp on public.blog_post_comments;
 create policy blog_comments_insert_temp

@@ -24,6 +24,7 @@ export default function PostInteractions({ postId }) {
   const [authEmail, setAuthEmail] = useState("");
   const [authPassword, setAuthPassword] = useState("");
   const [authMode, setAuthMode] = useState("login");
+  const [authSubmitting, setAuthSubmitting] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState("");
   const [editingContent, setEditingContent] = useState("");
   const [reportState, setReportState] = useState({ open: false, commentId: "", reason: "إساءة", details: "" });
@@ -89,6 +90,10 @@ export default function PostInteractions({ postId }) {
     event.preventDefault();
     const email = authEmail.trim();
     const password = authPassword.trim();
+    if (authSubmitting) return;
+    setAuthSubmitting(true);
+    setStatus({ type: "", message: "" });
+    try {
 
     if (!email) {
       setStatus({ type: "error", message: "أدخل بريدك الإلكتروني أولًا." });
@@ -135,6 +140,9 @@ export default function PostInteractions({ postId }) {
     }
 
     setStatus({ type: "success", message: "تم تسجيل الدخول بنجاح." });
+  } finally {
+    setAuthSubmitting(false);
+  }
   }
 
   async function handleSignOut() {
@@ -453,10 +461,16 @@ export default function PostInteractions({ postId }) {
             </div>
             <button
               type="submit"
-              className="inline-flex min-w-40 items-center justify-center rounded-2xl bg-[var(--blog-accent)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[var(--blog-accent-strong)]"
+              disabled={authSubmitting}
+              className="inline-flex min-w-40 items-center justify-center rounded-2xl bg-[var(--blog-accent)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[var(--blog-accent-strong)] disabled:cursor-not-allowed disabled:opacity-70"
             >
               {authMode === "signup" ? "إنشاء حساب" : authMode === "reset" ? "إرسال رابط الاستعادة" : "تسجيل الدخول"}
             </button>
+            {status.message ? (
+              <div className={status.type === "error" ? "text-sm text-rose-600" : "text-sm text-emerald-600"}>
+                {status.message}
+              </div>
+            ) : null}
           </form>
         ) : (
           <form onSubmit={handleCommentSubmit} className="mt-4 space-y-4">

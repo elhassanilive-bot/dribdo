@@ -126,7 +126,7 @@ export default async function AdminReportsPage() {
                 <div className="mt-4 text-xs text-slate-500">
                   الكاتب: {comment?.author_name || "غير معروف"} • المقال:{" "}
                   {post ? (
-                    <Link href={`/blog/${post.slug}`} className="text-orange-600 hover:text-orange-700">
+                    <Link href={`/blog/${post.id}-${post.slug}`} className="text-orange-600 hover:text-orange-700">
                       {post.title}
                     </Link>
                   ) : (

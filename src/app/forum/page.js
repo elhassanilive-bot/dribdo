@@ -76,10 +76,10 @@ export default async function ForumPage() {
                   <p className="mt-1.5 text-[11px] leading-5 text-slate-600">{summary || post.excerpt}</p>
 
                   <div className="mt-2.5 flex flex-wrap items-center gap-3">
-                    <Link href={`/blog/${post.slug}`} className="text-[11px] font-semibold text-orange-600 hover:text-orange-700">
+                    <Link href={`/blog/${post.id}-${post.slug}`} className="text-[11px] font-semibold text-orange-600 hover:text-orange-700">
                       ????? ????????
                     </Link>
-                    <span className="text-[9px] text-slate-400">??????: /blog/{post.slug}</span>
+                    <span className="text-[9px] text-slate-400">??????: /blog/{post.id}-{post.slug}</span>
                   </div>
 
                   <ForumPostCardActions postId={post.id} viewCount={post.viewCount || 0} />

@@ -122,6 +122,9 @@ export default async function AdminBlogPage() {
       revalidatePath("/blog");
       revalidatePath("/admin/blog");
       revalidatePath(`/blog/${result.slug}`);
+      if (result.id) {
+        revalidatePath(`/blog/${result.id}-${result.slug || ""}`);
+      }
     }
 
     return result;

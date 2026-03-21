@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { getPostBySlugDetailed } from "@/lib/blog/posts";
+import { redirect } from "next/navigation";
+import { getPostByIdDetailed, getPostBySlugDetailed } from "@/lib/blog/posts";
 import { estimateReadingTime, formatArabicDate } from "@/lib/blog/render";
 import { renderStoredBlogContent } from "@/lib/blog/content";
 import BlogImage from "@/components/blog/BlogImage";
@@ -10,16 +11,37 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 export const fetchCache = "force-no-store";
 
+function extractIdFromParam(value) {
+  const raw = String(value || "");
+  const match = raw.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i);
+  return match ? match[0] : "";
+}
+
+async function resolvePostByParam(rawParam) {
+  const decoded = rawParam ? decodeURIComponent(rawParam) : "";
+  const id = extractIdFromParam(decoded);
+  if (id) {
+    return getPostByIdDetailed(id);
+  }
+  return getPostBySlugDetailed(decoded);
+}
+
+function buildCanonicalParam(post) {
+  if (!post?.id) return "";
+  const slug = post.slug ? String(post.slug) : "";
+  return slug ? `${post.id}-${slug}` : post.id;
+}
+
 export async function generateMetadata({ params }) {
-  const slug = params?.slug ? decodeURIComponent(params.slug) : "";
-  if (!slug) {
+  const rawParam = params?.slug || "";
+  if (!rawParam) {
     return {
       title: "المقال غير موجود",
       description: "تعذر العثور على المقال المطلوب.",
     };
   }
 
-  const { post } = await getPostBySlugDetailed(slug);
+  const { post } = await resolvePostByParam(rawParam);
   if (!post) {
     return {
       title: "المقال غير موجود",
@@ -30,7 +52,7 @@ export async function generateMetadata({ params }) {
   return {
     title: post.title,
     description: post.excerpt || post.title,
-    alternates: { canonical: `/blog/${post.slug}` },
+    alternates: { canonical: `/blog/${post.id}-${post.slug}` },
   };
 }
 
@@ -52,10 +74,10 @@ function CoverPlaceholder() {
 }
 
 export default async function BlogPostPage({ params }) {
-  const slug = params?.slug ? decodeURIComponent(params.slug) : "";
-  const { post, error } = await getPostBySlugDetailed(slug);
+  const rawParam = params?.slug || "";
+  const { post, error } = await resolvePostByParam(rawParam);
 
-  if (!slug || !post) {
+  if (!rawParam || !post) {
     return (
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="rounded-[2rem] border border-slate-200 bg-white p-8 text-center shadow-[0_20px_60px_-45px_rgba(15,23,42,0.45)]">
@@ -75,6 +97,11 @@ export default async function BlogPostPage({ params }) {
         </div>
       </div>
     );
+  }
+
+  const canonicalParam = buildCanonicalParam(post);
+  if (canonicalParam && canonicalParam !== rawParam) {
+    redirect(`/blog/${canonicalParam}`);
   }
 
   const contentHtml = renderStoredBlogContent(post.content);

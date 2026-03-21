@@ -79,6 +79,12 @@ async function ensureUniqueSlug(client, baseSlug, excludeId = null) {
 export async function listPosts({ limit = 20 } = {}) {
   if (!isSupabaseConfigured()) return [];
 
+  const normalizedSlug = String(slug || "").trim();
+  if (!normalizedSlug) return { post: null, error: null };
+
+  const normalizedSlug = String(slug || "").trim();
+  if (!normalizedSlug) return { post: null, error: null };
+
   const supabase = await getSupabaseClient();
   if (!supabase) return [];
 
@@ -185,9 +191,6 @@ export async function getPostBySlug(slug) {
   const supabase = await getSupabaseClient();
   if (!supabase) return null;
 
-  const normalizedSlug = String(slug || "").trim();
-  if (!normalizedSlug) return { post: null, error: null };
-
   const baseQuery = (column, value) =>
     supabase
       .from("blog_posts")
@@ -203,7 +206,7 @@ export async function getPostBySlug(slug) {
       const fallback = await supabase
         .from("blog_posts")
         .select(POST_LIST_COLUMNS_BASE)
-        .eq("slug", slug)
+        .eq("slug", normalizedSlug)
         .eq("status", "published")
         .maybeSingle();
       if (fallback.error || !fallback.data) return null;
@@ -221,7 +224,42 @@ export async function getPostBySlug(slug) {
   return normalizePost(data);
 }
 
+export async function getPostById(id) {
+  if (!isSupabaseConfigured()) return null;
+
+  const normalizedId = String(id || "").trim();
+  if (!normalizedId) return null;
+
+  const supabase = await getSupabaseClient();
+  if (!supabase) return null;
+
+  const { data, error } = await supabase
+    .from("blog_posts")
+    .select(POST_LIST_COLUMNS_WITH_VIEWS)
+    .eq("id", normalizedId)
+    .eq("status", "published")
+    .maybeSingle();
+
+  if (error) {
+    if (String(error.message || "").includes("view_count")) {
+      const fallback = await supabase
+        .from("blog_posts")
+        .select(POST_LIST_COLUMNS_BASE)
+        .eq("id", normalizedId)
+        .eq("status", "published")
+        .maybeSingle();
+      if (fallback.error || !fallback.data) return null;
+      return normalizePost(fallback.data);
+    }
+    return null;
+  }
+  if (!data) return null;
+  return normalizePost(data);
+}
+
 export async function getPostBySlugDetailed(slug) {
+  const normalizedSlug = String(slug || "").trim();
+  if (!normalizedSlug) return { post: null, error: null };
   if (!isSupabaseConfigured()) return { post: null, error: "Supabase غير مُعد" };
 
   const supabase = await getSupabaseClient();
@@ -242,7 +280,7 @@ export async function getPostBySlugDetailed(slug) {
       const fallback = await supabase
         .from("blog_posts")
         .select(POST_LIST_COLUMNS_BASE)
-        .eq("slug", slug)
+        .eq("slug", normalizedSlug)
         .eq("status", "published")
         .maybeSingle();
       if (fallback.error) return { post: null, error: fallback.error.message };
@@ -256,6 +294,40 @@ export async function getPostBySlugDetailed(slug) {
     if (caseInsensitive.data) return { post: normalizePost(caseInsensitive.data), error: null };
     const prefixMatch = await baseQuery("ilike", `${normalizedSlug}%`);
     if (prefixMatch.data) return { post: normalizePost(prefixMatch.data), error: null };
+  }
+  if (!data) return { post: null, error: null };
+  return { post: normalizePost(data), error: null };
+}
+
+export async function getPostByIdDetailed(id) {
+  if (!isSupabaseConfigured()) return { post: null, error: "Supabase is not configured" };
+
+  const normalizedId = String(id || "").trim();
+  if (!normalizedId) return { post: null, error: null };
+
+  const supabase = await getSupabaseClient();
+  if (!supabase) return { post: null, error: "Supabase client is not available" };
+
+  const { data, error } = await supabase
+    .from("blog_posts")
+    .select(POST_LIST_COLUMNS_WITH_VIEWS)
+    .eq("id", normalizedId)
+    .eq("status", "published")
+    .maybeSingle();
+
+  if (error) {
+    if (String(error.message || "").includes("view_count")) {
+      const fallback = await supabase
+        .from("blog_posts")
+        .select(POST_LIST_COLUMNS_BASE)
+        .eq("id", normalizedId)
+        .eq("status", "published")
+        .maybeSingle();
+      if (fallback.error) return { post: null, error: fallback.error.message };
+      if (!fallback.data) return { post: null, error: null };
+      return { post: normalizePost(fallback.data), error: null };
+    }
+    return { post: null, error: error.message };
   }
   if (!data) return { post: null, error: null };
   return { post: normalizePost(data), error: null };

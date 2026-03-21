@@ -21,7 +21,7 @@ function PostCard({ post, commentCount = 0 }) {
     <article
       className="group overflow-hidden rounded-[1.25rem] border border-slate-200 bg-white shadow-[0_14px_35px_-35px_rgba(15,23,42,0.35)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_45px_-35px_rgba(15,23,42,0.45)]"
     >
-      <Link href={`/blog/${post.slug}`} className="block">
+      <Link href={`/blog/${post.id}-${post.slug}`} className="block">
         <div className={`relative overflow-hidden bg-slate-100 ${imageHeight}`}>
           <BlogImage
             src={post.coverImageUrl}

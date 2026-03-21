@@ -132,7 +132,7 @@ export default function AdminBlogDashboard({
   const coverInputRef = useRef(null);
   const [form, setForm] = useState(createEmptyForm);
   const [manualSlug, setManualSlug] = useState(false);
-  const [flash, setFlash] = useState({ type: "", message: "", slug: "" });
+  const [flash, setFlash] = useState({ type: "", message: "", slug: "", id: "" });
   const [query, setQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [coverUpload, setCoverUpload] = useState({ message: "", error: false });
@@ -258,6 +258,7 @@ export default function AdminBlogDashboard({
             type: "error",
             message: result?.error || "تعذر حفظ المقال.",
             slug: "",
+            id: "",
           });
           return;
         }
@@ -266,6 +267,7 @@ export default function AdminBlogDashboard({
           type: "success",
           message: editing ? "تم تحديث المقال بنجاح." : "تم نشر المقال بنجاح.",
           slug: result.slug || "",
+          id: result.id || "",
         });
         resetForm();
         router.refresh();
@@ -286,6 +288,7 @@ export default function AdminBlogDashboard({
             type: "error",
             message: result?.error || "تعذر حذف المقال.",
             slug: "",
+            id: "",
           });
           return;
         }
@@ -297,7 +300,8 @@ export default function AdminBlogDashboard({
         setFlash({
           type: "success",
           message: "تم حذف المقال بنجاح.",
-          slug: "",
+            slug: "",
+            id: "",
         });
         setDeleteTarget(null);
         router.refresh();
@@ -372,10 +376,10 @@ export default function AdminBlogDashboard({
           ].join(" ")}
         >
           {flash.message}
-          {flash.slug ? (
+          {flash.slug && flash.id ? (
             <>
               {" "}
-              <Link href={`/blog/${flash.slug}`} className="font-semibold underline underline-offset-4">
+              <Link href={`/blog/${flash.id}-${flash.slug}`} className="font-semibold underline underline-offset-4">
                 افتح المقال
               </Link>
             </>
@@ -651,13 +655,13 @@ export default function AdminBlogDashboard({
                       ))}
                     </div>
                     <div className="mt-4 text-xs text-slate-400" dir="ltr">
-                      /blog/{post.slug}
+                      /blog/{post.id}-{post.slug}
                     </div>
                   </div>
 
                   <div className="flex flex-wrap gap-3">
                     <Link
-                      href={`/blog/${post.slug}`}
+                      href={`/blog/${post.id}-${post.slug}`}
                       className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
                     >
                       عرض

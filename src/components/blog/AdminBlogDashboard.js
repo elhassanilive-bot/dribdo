@@ -8,6 +8,7 @@ import BlogImage from "@/components/blog/BlogImage";
 import { createSlugCandidate } from "@/lib/blog/slug";
 import { prepareBlogContentForEditor } from "@/lib/blog/content";
 import { getSupabaseClient } from "@/lib/supabase/client";
+import { buildPermalink, PERMALINK_OPTIONS, getPermalinkStyle } from "@/lib/blog/permalinks";
 
 const EMPTY_CONTENT = "<p></p>";
 const BLOG_MEDIA_BUCKET = process.env.NEXT_PUBLIC_SUPABASE_BLOG_BUCKET || "blog-media";
@@ -44,6 +45,50 @@ function StatCard({ label, value, hint }) {
       <div className="text-sm text-slate-500">{label}</div>
       <div className="mt-2 text-2xl font-bold text-slate-900">{value}</div>
       <div className="mt-1 text-xs text-slate-500">{hint}</div>
+    </div>
+  );
+}
+
+function PermalinkBox({ samplePost }) {
+  const currentStyle = getPermalinkStyle();
+  const currentTemplate = process.env.NEXT_PUBLIC_BLOG_PERMALINK_TEMPLATE || "/blog/%post_id%-%postname%";
+  const previewPost = samplePost || {
+    id: "post-id",
+    slug: "عنوان-المقال",
+    publishedAt: new Date().toISOString(),
+  };
+
+  return (
+    <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+      <div className="text-sm font-semibold text-slate-900">تركيبة الروابط</div>
+      <p className="mt-2 text-xs leading-6 text-slate-600">
+        اختر الصيغة من البيئة عبر المتغير <code>NEXT_PUBLIC_BLOG_PERMALINK_STYLE</code>. القيم المتاحة:
+      </p>
+      <div className="mt-3 grid gap-2">
+        {PERMALINK_OPTIONS.map((option) => (
+          <div key={option.value} className="flex items-start gap-3 rounded-2xl border border-slate-200 px-3 py-2 text-xs">
+            <span
+              className={`mt-0.5 inline-flex h-4 w-4 items-center justify-center rounded-full border ${
+                option.value === currentStyle ? "border-orange-400 bg-orange-100 text-orange-600" : "border-slate-300"
+              }`}
+            >
+              {option.value === currentStyle ? "✓" : ""}
+            </span>
+            <div>
+              <div className="font-semibold text-slate-900">{option.label}</div>
+              <div className="text-[11px] text-slate-500">{option.example}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-[11px] text-slate-700">
+        معاينة الرابط الحالي: {buildPermalink(previewPost, currentStyle)}
+      </div>
+      {currentStyle === "custom" ? (
+        <div className="mt-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-[11px] text-slate-700">
+          القالب الحالي: {currentTemplate}
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -173,6 +218,15 @@ export default function AdminBlogDashboard({
   );
 
   const titleWords = useMemo(() => form.title.trim().split(/\s+/).filter(Boolean).length, [form.title]);
+  const permalinkPreview = useMemo(
+    () =>
+      buildPermalink({
+        id: form.id || "post-id",
+        slug: visibleSlug || "عنوان-المقال",
+        publishedAt: new Date().toISOString(),
+      }),
+    [form.id, visibleSlug]
+  );
 
   function updateField(key, value) {
     setForm((current) => ({ ...current, [key]: value }));
@@ -379,7 +433,7 @@ export default function AdminBlogDashboard({
           {flash.slug && flash.id ? (
             <>
               {" "}
-              <Link href={`/blog/${flash.id}-${flash.slug}`} className="font-semibold underline underline-offset-4">
+              <Link href={buildPermalink({ id: flash.id, slug: flash.slug })} className="font-semibold underline underline-offset-4">
                 افتح المقال
               </Link>
             </>
@@ -564,6 +618,7 @@ export default function AdminBlogDashboard({
         </form>
 
         <aside className="space-y-6">
+          <PermalinkBox samplePost={{ id: form.id || "post-id", slug: visibleSlug || "عنوان-المقال", publishedAt: new Date().toISOString() }} />
           <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_20px_55px_-45px_rgba(15,23,42,0.5)]">
             <div className="text-sm font-semibold text-slate-500">معاينة سريعة</div>
             <h2 className="mt-4 text-2xl font-black text-slate-950">
@@ -580,7 +635,7 @@ export default function AdminBlogDashboard({
               ))}
             </div>
             <div className="mt-6 rounded-3xl bg-slate-950 px-5 py-4 text-sm text-slate-300" dir="ltr">
-              /blog/{visibleSlug || "your-story-slug"}
+              {permalinkPreview}
             </div>
           </div>
 
@@ -655,13 +710,13 @@ export default function AdminBlogDashboard({
                       ))}
                     </div>
                     <div className="mt-4 text-xs text-slate-400" dir="ltr">
-                      /blog/{post.id}-{post.slug}
+                      {buildPermalink(post)}
                     </div>
                   </div>
 
                   <div className="flex flex-wrap gap-3">
                     <Link
-                      href={`/blog/${post.id}-${post.slug}`}
+                      href={buildPermalink(post)}
                       className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
                     >
                       عرض

@@ -40,6 +40,14 @@ function normalizeTags(tags) {
   return [...new Set(tags.map((tag) => String(tag || "").trim()).filter(Boolean))];
 }
 
+function buildSlugVariants(slug) {
+  const base = String(slug || "").trim();
+  if (!base) return [];
+  const spaced = base.replace(/-/g, " ");
+  const compact = base.replace(/\s+/g, "-");
+  return Array.from(new Set([base, spaced, compact].filter(Boolean)));
+}
+
 async function getWriteClient() {
   return isSupabaseAdminConfigured() ? getSupabaseAdminClient() : getSupabaseClient();
 }
@@ -209,10 +217,15 @@ export async function getPostBySlug(slug) {
     return null;
   }
   if (!data && normalizedSlug) {
-    const caseInsensitive = await baseQuery("ilike", normalizedSlug);
-    if (caseInsensitive.data) return normalizePost(caseInsensitive.data);
-    const prefixMatch = await baseQuery("ilike", `${normalizedSlug}%`);
-    if (prefixMatch.data) return normalizePost(prefixMatch.data);
+    const variants = buildSlugVariants(normalizedSlug);
+    for (const variant of variants) {
+      const caseInsensitive = await baseQuery("ilike", variant);
+      if (caseInsensitive.data) return normalizePost(caseInsensitive.data);
+      const prefixMatch = await baseQuery("ilike", `${variant}%`);
+      if (prefixMatch.data) return normalizePost(prefixMatch.data);
+      const containsMatch = await baseQuery("ilike", `%${variant}%`);
+      if (containsMatch.data) return normalizePost(containsMatch.data);
+    }
   }
   if (!data) return null;
   return normalizePost(data);
@@ -284,10 +297,15 @@ export async function getPostBySlugDetailed(slug) {
     return { post: null, error: error.message };
   }
   if (!data && normalizedSlug) {
-    const caseInsensitive = await baseQuery("ilike", normalizedSlug);
-    if (caseInsensitive.data) return { post: normalizePost(caseInsensitive.data), error: null };
-    const prefixMatch = await baseQuery("ilike", `${normalizedSlug}%`);
-    if (prefixMatch.data) return { post: normalizePost(prefixMatch.data), error: null };
+    const variants = buildSlugVariants(normalizedSlug);
+    for (const variant of variants) {
+      const caseInsensitive = await baseQuery("ilike", variant);
+      if (caseInsensitive.data) return { post: normalizePost(caseInsensitive.data), error: null };
+      const prefixMatch = await baseQuery("ilike", `${variant}%`);
+      if (prefixMatch.data) return { post: normalizePost(prefixMatch.data), error: null };
+      const containsMatch = await baseQuery("ilike", `%${variant}%`);
+      if (containsMatch.data) return { post: normalizePost(containsMatch.data), error: null };
+    }
   }
   if (!data && isSupabaseAdminConfigured()) {
     const admin = await getSupabaseAdminClient();
@@ -315,7 +333,9 @@ export async function getPostBySlugDetailed(slug) {
       }
     }
   }
-  if (!data) return { post: null, error: null };
+  if (!data) {
+    return { post: null, error: "تعذر العثور على المقال في هذا المشروع. تحقق من مفاتيح Supabase." };
+  }
   return { post: normalizePost(data), error: null };
 }
 
@@ -349,7 +369,9 @@ export async function getPostByIdDetailed(id) {
     }
     return { post: null, error: error.message };
   }
-  if (!data) return { post: null, error: null };
+  if (!data) {
+    return { post: null, error: "تعذر العثور على المقال في هذا المشروع. تحقق من مفاتيح Supabase." };
+  }
   return { post: normalizePost(data), error: null };
 }
 

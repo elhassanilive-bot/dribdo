@@ -28,6 +28,24 @@ function extractSlugFromParam(value) {
   return after.startsWith("-") ? after.slice(1) : after;
 }
 
+function extractSlugFromPathParts(rawValue) {
+  const raw = String(rawValue || "");
+  if (!raw.includes("/")) return raw;
+  const parts = raw.split("/").filter(Boolean);
+  if (!parts.length) return raw;
+  if (parts[0] === "archives" && parts[1]) return parts[1];
+  const year = /^\d{4}$/;
+  const month = /^\d{2}$/;
+  const day = /^\d{2}$/;
+  if (parts.length >= 4 && year.test(parts[0]) && month.test(parts[1]) && day.test(parts[2])) {
+    return parts.slice(3).join("-");
+  }
+  if (parts.length >= 3 && year.test(parts[0]) && month.test(parts[1])) {
+    return parts.slice(2).join("-");
+  }
+  return parts[parts.length - 1];
+}
+
 async function resolvePostByParam(rawParam) {
   const decoded = rawParam ? decodeURIComponent(rawParam) : "";
   const id = extractIdFromParam(decoded);
@@ -40,7 +58,8 @@ async function resolvePostByParam(rawParam) {
     }
     return byId;
   }
-  return getPostBySlugDetailed(decoded);
+  const pathSlug = extractSlugFromPathParts(decoded);
+  return getPostBySlugDetailed(pathSlug);
 }
 
 function buildCanonicalParam(post) {

@@ -1,8 +1,7 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState, useTransition } from "react";
 import RichTextEditorField from "@/components/blog/RichTextEditorField";
-import { createSlugCandidate } from "@/lib/blog/slug";
 import { getSupabaseClient } from "@/lib/supabase/client";
 
 const EMPTY_CONTENT = "<p></p>";
@@ -15,11 +14,29 @@ function stripHtml(text) {
     .trim();
 }
 
+function generateForumSlug() {
+  const now = new Date();
+  const stamp = [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, "0"),
+    String(now.getDate()).padStart(2, "0"),
+    String(now.getHours()).padStart(2, "0"),
+    String(now.getMinutes()).padStart(2, "0"),
+    String(now.getSeconds()).padStart(2, "0"),
+  ].join("");
+  return `post-${stamp}`;
+}
+
 async function ensureUniqueSlug(client, baseSlug) {
-  const safeBase = createSlugCandidate(baseSlug);
-  const { data, error } = await client.from("blog_posts").select("id, slug").eq("slug", safeBase).maybeSingle();
-  if (error || !data) return safeBase;
-  return `${safeBase}-${Date.now()}`;
+  let candidate = baseSlug;
+  let attempt = 0;
+  while (attempt < 20) {
+    const { data } = await client.from("blog_posts").select("id, slug").eq("slug", candidate).maybeSingle();
+    if (!data) return candidate;
+    attempt += 1;
+    candidate = `${baseSlug}-${attempt}`;
+  }
+  return `${baseSlug}-${Date.now()}`;
 }
 
 export default function ForumComposer() {
@@ -31,6 +48,7 @@ export default function ForumComposer() {
     content: EMPTY_CONTENT,
   });
   const [status, setStatus] = useState({ type: "", message: "" });
+  const [lastSlug, setLastSlug] = useState("");
   const [isPending, startTransition] = useTransition();
 
   const tagList = useMemo(
@@ -78,7 +96,7 @@ export default function ForumComposer() {
           return;
         }
 
-        const slug = await ensureUniqueSlug(supabase, title);
+        const slug = await ensureUniqueSlug(supabase, generateForumSlug());
         const excerpt = name ? `بقلم ${name} | ${summary}` : summary;
         const tags = [form.type, ...tagList];
 
@@ -99,6 +117,7 @@ export default function ForumComposer() {
           return;
         }
 
+        setLastSlug(slug);
         setStatus({ type: "success", message: "تم نشر مشاركتك بنجاح وستظهر للجميع." });
         resetForm();
       } catch (err) {
@@ -184,6 +203,11 @@ export default function ForumComposer() {
             ].join(" ")}
           >
             {status.message}
+            {status.type === "success" && lastSlug ? (
+              <div className="mt-2 text-xs text-emerald-700">
+                رابط المشاركة: <span className="font-semibold">/blog/{lastSlug}</span>
+              </div>
+            ) : null}
           </div>
         ) : null}
 
@@ -203,4 +227,3 @@ export default function ForumComposer() {
     </section>
   );
 }
-

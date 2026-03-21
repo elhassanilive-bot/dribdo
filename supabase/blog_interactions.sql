@@ -11,6 +11,13 @@ create table if not exists public.blog_post_comments (
   created_at timestamptz not null default now()
 );
 
+-- Ensure new columns exist when table was created previously
+alter table public.blog_post_comments
+  add column if not exists user_id uuid;
+
+alter table public.blog_post_comments
+  add column if not exists is_hidden boolean not null default false;
+
 create index if not exists blog_post_comments_post_id_created_at_idx
   on public.blog_post_comments (post_id, created_at desc);
 

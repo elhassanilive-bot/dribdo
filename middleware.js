@@ -1,29 +1,16 @@
-﻿import { NextResponse } from "next/server";
-import {
-  SECRET_ADMIN_BASE_PATH,
-  SECRET_ADMIN_BLOG_PATH,
-  SECRET_ADMIN_REPORTS_PATH,
-} from "@/lib/admin/paths";
+import { NextResponse } from "next/server";
 
 export function middleware(request) {
   const { pathname } = request.nextUrl;
 
-  if (pathname === "/admin") {
-    const url = request.nextUrl.clone();
-    url.pathname = SECRET_ADMIN_BASE_PATH;
-    return NextResponse.redirect(url);
-  }
-
-  if (pathname === "/admin/blog") {
-    const url = request.nextUrl.clone();
-    url.pathname = SECRET_ADMIN_BLOG_PATH;
-    return NextResponse.redirect(url);
-  }
-
-  if (pathname === "/admin/reports") {
-    const url = request.nextUrl.clone();
-    url.pathname = SECRET_ADMIN_REPORTS_PATH;
-    return NextResponse.redirect(url);
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) {
+    return new NextResponse("Not Found", {
+      status: 404,
+      headers: {
+        "content-type": "text/plain; charset=utf-8",
+        "x-robots-tag": "noindex, nofollow",
+      },
+    });
   }
 
   return NextResponse.next();

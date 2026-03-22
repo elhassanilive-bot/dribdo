@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { isBlogEnabled, listCategorySummaries, listPostsDetailedPaginated, listTagSummaries, listTopPosts } from "@/lib/blog/posts";
 import BlogPostsPaginatedGrid from "@/components/blog/BlogPostsPaginatedGrid";
 import { formatCategoryLabel } from "@/lib/blog/render";
@@ -61,30 +61,30 @@ export default async function BlogIndex({ searchParams }) {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {!enabled ? (
             <EmptyState
-              title="المدونة جاهزة للانطلاق"
-              description="أضف مفاتيح Supabase إلى البيئة ثم شغّل مخطط الجداول وسيبدأ نظام المقالات بالعمل مباشرة."
-              ctaHref="/admin/blog"
-              ctaLabel="فتح لوحة النشر"
+              title="Ø§Ù„Ù…Ø¯ÙˆÙ†Ø© Ø¬Ø§Ù‡Ø²Ø© Ù„Ù„Ø§Ù†Ø·Ù„Ø§Ù‚"
+              description="Ø£Ø¶Ù Ù…ÙØ§ØªÙŠØ­ Supabase Ø¥Ù„Ù‰ Ø§Ù„Ø¨ÙŠØ¦Ø© Ø«Ù… Ø´ØºÙ‘Ù„ Ù…Ø®Ø·Ø· Ø§Ù„Ø¬Ø¯Ø§ÙˆÙ„ ÙˆØ³ÙŠØ¨Ø¯Ø£ Ù†Ø¸Ø§Ù… Ø§Ù„Ù…Ù‚Ø§Ù„Ø§Øª Ø¨Ø§Ù„Ø¹Ù…Ù„ Ù…Ø¨Ø§Ø´Ø±Ø©."
+              ctaHref="/login"
+              ctaLabel="ÙØªØ­ Ù„ÙˆØ­Ø© Ø§Ù„Ù†Ø´Ø±"
             />
           ) : error ? (
             <EmptyState
-              title="تعذر تحميل المقالات"
-              description={`تعذّر الاتصال بـ Supabase أو قراءة المقالات المنشورة. الرسالة: ${error}`}
-              ctaHref="/admin/blog"
-              ctaLabel="التحقق من الإعداد"
+              title="ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù…Ù‚Ø§Ù„Ø§Øª"
+              description={`ØªØ¹Ø°Ù‘Ø± Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ù€ Supabase Ø£Ùˆ Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„Ù…Ù‚Ø§Ù„Ø§Øª Ø§Ù„Ù…Ù†Ø´ÙˆØ±Ø©. Ø§Ù„Ø±Ø³Ø§Ù„Ø©: ${error}`}
+              ctaHref="/login"
+              ctaLabel="Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯"
             />
           ) : posts.length === 0 ? (
             <EmptyState
-              title="لا توجد مقالات منشورة بعد"
-              description="استخدم لوحة الإدارة لإضافة أول مقال، وسيظهر هنا تلقائيًا بمجرد نشره."
-              ctaHref="/admin/blog"
-              ctaLabel="نشر أول مقال"
+              title="Ù„Ø§ ØªÙˆØ¬Ø¯ Ù…Ù‚Ø§Ù„Ø§Øª Ù…Ù†Ø´ÙˆØ±Ø© Ø¨Ø¹Ø¯"
+              description="Ø§Ø³ØªØ®Ø¯Ù… Ù„ÙˆØ­Ø© Ø§Ù„Ø¥Ø¯Ø§Ø±Ø© Ù„Ø¥Ø¶Ø§ÙØ© Ø£ÙˆÙ„ Ù…Ù‚Ø§Ù„ØŒ ÙˆØ³ÙŠØ¸Ù‡Ø± Ù‡Ù†Ø§ ØªÙ„Ù‚Ø§Ø¦ÙŠÙ‹Ø§ Ø¨Ù…Ø¬Ø±Ø¯ Ù†Ø´Ø±Ù‡."
+              ctaHref="/login"
+              ctaLabel="Ù†Ø´Ø± Ø£ÙˆÙ„ Ù…Ù‚Ø§Ù„"
             />
           ) : (
             <div className="space-y-6">
               {topPosts.length ? (
                 <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                  <div className="mb-3 text-sm font-bold text-slate-900">الأكثر قراءة هذا الأسبوع</div>
+                  <div className="mb-3 text-sm font-bold text-slate-900">Ø§Ù„Ø£ÙƒØ«Ø± Ù‚Ø±Ø§Ø¡Ø© Ù‡Ø°Ø§ Ø§Ù„Ø£Ø³Ø¨ÙˆØ¹</div>
                   <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                     {topPosts.map((post, index) => (
                       <Link
@@ -104,7 +104,7 @@ export default async function BlogIndex({ searchParams }) {
                 <div className="rounded-2xl border border-slate-200 bg-white p-4">
                   {categories.length ? (
                     <div>
-                      <div className="mb-2 text-xs font-bold text-slate-700">تصنيفات المدونة</div>
+                      <div className="mb-2 text-xs font-bold text-slate-700">ØªØµÙ†ÙŠÙØ§Øª Ø§Ù„Ù…Ø¯ÙˆÙ†Ø©</div>
                       <div className="mb-3 flex flex-wrap gap-2">
                         {categories.slice(0, INITIAL_CATEGORIES_VISIBLE).map((category) => (
                           <Link
@@ -119,7 +119,7 @@ export default async function BlogIndex({ searchParams }) {
                       {categories.length > INITIAL_CATEGORIES_VISIBLE ? (
                         <details className="mb-3 rounded-xl border border-slate-200 bg-slate-50/60 p-2.5">
                           <summary className="cursor-pointer select-none text-[11px] font-bold text-orange-700 marker:text-orange-500">
-                            عرض المزيد من التصنيفات (+{categories.length - INITIAL_CATEGORIES_VISIBLE})
+                            Ø¹Ø±Ø¶ Ø§Ù„Ù…Ø²ÙŠØ¯ Ù…Ù† Ø§Ù„ØªØµÙ†ÙŠÙØ§Øª (+{categories.length - INITIAL_CATEGORIES_VISIBLE})
                           </summary>
                           <div className="mt-2 flex flex-wrap gap-2">
                             {categories.slice(INITIAL_CATEGORIES_VISIBLE).map((category) => (
@@ -138,7 +138,7 @@ export default async function BlogIndex({ searchParams }) {
                   ) : null}
                   {tags.length ? (
                     <div>
-                      <div className="mb-2 text-xs font-bold text-slate-700">وسوم شائعة</div>
+                      <div className="mb-2 text-xs font-bold text-slate-700">ÙˆØ³ÙˆÙ… Ø´Ø§Ø¦Ø¹Ø©</div>
                       <div className="flex flex-wrap gap-2">
                         {tags.slice(0, INITIAL_TAGS_VISIBLE).map((tag) => (
                           <Link
@@ -153,7 +153,7 @@ export default async function BlogIndex({ searchParams }) {
                       {tags.length > INITIAL_TAGS_VISIBLE ? (
                         <details className="mt-2 rounded-xl border border-slate-200 bg-slate-50/60 p-2.5">
                           <summary className="cursor-pointer select-none text-[11px] font-bold text-orange-700 marker:text-orange-500">
-                            عرض المزيد من الوسوم (+{tags.length - INITIAL_TAGS_VISIBLE})
+                            Ø¹Ø±Ø¶ Ø§Ù„Ù…Ø²ÙŠØ¯ Ù…Ù† Ø§Ù„ÙˆØ³ÙˆÙ… (+{tags.length - INITIAL_TAGS_VISIBLE})
                           </summary>
                           <div className="mt-2 flex flex-wrap gap-2">
                             {tags.slice(INITIAL_TAGS_VISIBLE).map((tag) => (
@@ -192,4 +192,5 @@ export default async function BlogIndex({ searchParams }) {
     </div>
   );
 }
+
 

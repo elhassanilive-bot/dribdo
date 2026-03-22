@@ -18,15 +18,16 @@ import {
   setAdminSessionCookie,
   validateAdminAccessToken,
 } from "@/lib/admin/access";
+import { SECRET_ADMIN_BASE_PATH, SECRET_ADMIN_BLOG_PATH } from "@/lib/admin/paths";
 
 export const metadata = {
   title: "لوحة المدونة",
   description: "نشر وإدارة مقالات دريبدو.",
   robots: { index: false, follow: false },
-  alternates: { canonical: "/admin/blog" },
+  alternates: { canonical: SECRET_ADMIN_BLOG_PATH },
 };
 
-function buildLoginHref(nextPath = "/admin/blog", denied = false) {
+function buildLoginHref(nextPath = SECRET_ADMIN_BLOG_PATH, denied = false) {
   const search = new URLSearchParams({ next: nextPath });
   if (denied) search.set("admin", "denied");
   return `/login?${search.toString()}`;
@@ -50,21 +51,21 @@ export default async function AdminBlogPage() {
 
     const result = await validateAdminAccessToken(formData.get("accessToken"));
     if (!result.ok) {
-      redirect(buildLoginHref("/admin/blog", true));
+      redirect(buildLoginHref(SECRET_ADMIN_BLOG_PATH, true));
     }
 
     await setAdminSessionCookie();
-    revalidatePath("/admin");
-    revalidatePath("/admin/blog");
-    redirect("/admin/blog");
+    revalidatePath(SECRET_ADMIN_BASE_PATH);
+    revalidatePath(SECRET_ADMIN_BLOG_PATH);
+    redirect(SECRET_ADMIN_BLOG_PATH);
   }
 
   async function logoutAction() {
     "use server";
     await clearAdminSessionCookie();
-    revalidatePath("/admin");
-    revalidatePath("/admin/blog");
-    redirect(buildLoginHref("/admin/blog"));
+    revalidatePath(SECRET_ADMIN_BASE_PATH);
+    revalidatePath(SECRET_ADMIN_BLOG_PATH);
+    redirect(buildLoginHref(SECRET_ADMIN_BLOG_PATH));
   }
 
   async function savePostAction(formData) {
@@ -93,7 +94,7 @@ export default async function AdminBlogPage() {
 
     if (result.ok) {
       revalidatePath("/blog");
-      revalidatePath("/admin/blog");
+      revalidatePath(SECRET_ADMIN_BLOG_PATH);
       revalidatePath(`/blog/${result.slug}`);
       revalidatePath("/rss.xml");
       revalidatePath("/sitemap.xml");
@@ -114,7 +115,7 @@ export default async function AdminBlogPage() {
 
     if (result.ok) {
       revalidatePath("/blog");
-      revalidatePath("/admin/blog");
+      revalidatePath(SECRET_ADMIN_BLOG_PATH);
       revalidatePath("/rss.xml");
       revalidatePath("/sitemap.xml");
       revalidatePath("/blog/category/[slug]", "page");
@@ -134,7 +135,7 @@ export default async function AdminBlogPage() {
 
     if (result.ok || (Array.isArray(result.deletedIds) && result.deletedIds.length > 0)) {
       revalidatePath("/blog");
-      revalidatePath("/admin/blog");
+      revalidatePath(SECRET_ADMIN_BLOG_PATH);
       revalidatePath("/rss.xml");
       revalidatePath("/sitemap.xml");
       revalidatePath("/blog/category/[slug]", "page");
@@ -154,8 +155,8 @@ export default async function AdminBlogPage() {
         <AdminOwnerGate
           authorizeAction={authorizeAction}
           title="دخول لوحة المقالات"
-          description="إذا لم تكن مسجل الدخول أو لم يكن حسابك مضافًا في جدول إدارة المدونة فسيتم تحويلك إلى صفحة تسجيل الدخول."
-          loginHref={buildLoginHref("/admin/blog")}
+          description="هذا المسار الإداري خاص. إذا لم تكن مسجل الدخول أو لم يكن حسابك مضافًا في جدول إدارة المدونة فسيتم تحويلك إلى صفحة تسجيل الدخول."
+          loginHref={buildLoginHref(SECRET_ADMIN_BLOG_PATH)}
         />
       </div>
     );

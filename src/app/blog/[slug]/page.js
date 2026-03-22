@@ -53,7 +53,7 @@ function NotFoundState({ error }) {
           <Link href="/blog" className="rounded-2xl bg-[var(--blog-accent)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[var(--blog-accent-strong)]">
             العودة إلى المدونة
           </Link>
-          <Link href="/admin/blog" className="rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700">
+          <Link href="/login" className="rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700">
             فتح لوحة النشر
           </Link>
         </div>
@@ -200,7 +200,7 @@ export default async function BlogPostPage({ params }) {
                 <Link href="/blog" className="rounded-2xl border border-slate-200 px-4 py-3 text-[13px] font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700">
                   كل المقالات
                 </Link>
-                <Link href="/admin/blog" className="rounded-2xl border border-slate-200 px-4 py-3 text-[13px] font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700">
+                <Link href="/login" className="rounded-2xl border border-slate-200 px-4 py-3 text-[13px] font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700">
                   نشر مقال جديد
                 </Link>
               </div>
@@ -249,6 +249,7 @@ export default async function BlogPostPage({ params }) {
     </div>
   );
 }
+
 
 
 

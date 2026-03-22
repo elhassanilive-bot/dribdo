@@ -5,15 +5,16 @@ import { getSupabaseAdminClient, isSupabaseAdminConfigured } from "@/lib/supabas
 import { getSupabaseClient } from "@/lib/supabase/client";
 import AdminOwnerGate from "@/components/admin/AdminOwnerGate";
 import { hasValidAdminSession, requireAdminSession, setAdminSessionCookie, validateAdminAccessToken } from "@/lib/admin/access";
+import { SECRET_ADMIN_BASE_PATH, SECRET_ADMIN_REPORTS_PATH } from "@/lib/admin/paths";
 
 export const metadata = {
   title: "بلاغات التعليقات",
   description: "مراجعة بلاغات التعليقات في المنتدى والمدونة.",
   robots: { index: false, follow: false },
-  alternates: { canonical: "/admin/reports" },
+  alternates: { canonical: SECRET_ADMIN_REPORTS_PATH },
 };
 
-function buildLoginHref(nextPath = "/admin/reports", denied = false) {
+function buildLoginHref(nextPath = SECRET_ADMIN_REPORTS_PATH, denied = false) {
   const search = new URLSearchParams({ next: nextPath });
   if (denied) search.set("admin", "denied");
   return `/login?${search.toString()}`;
@@ -45,11 +46,11 @@ export default async function AdminReportsPage() {
 
     const result = await validateAdminAccessToken(formData.get("accessToken"));
     if (!result.ok) {
-      redirect(buildLoginHref("/admin/reports", true));
+      redirect(buildLoginHref(SECRET_ADMIN_REPORTS_PATH, true));
     }
 
     await setAdminSessionCookie();
-    redirect("/admin/reports");
+    redirect(SECRET_ADMIN_REPORTS_PATH);
   }
 
   if (!sessionValid) {
@@ -58,8 +59,8 @@ export default async function AdminReportsPage() {
         <AdminOwnerGate
           authorizeAction={authorizeAction}
           title="دخول صفحة البلاغات"
-          description="إذا لم تكن مسجل الدخول أو لم يكن حسابك مضافًا في جدول إدارة المدونة فسيتم تحويلك إلى صفحة تسجيل الدخول."
-          loginHref={buildLoginHref("/admin/reports")}
+          description="هذا المسار الإداري خاص. إذا لم تكن مسجل الدخول أو لم يكن حسابك مضافًا في جدول إدارة المدونة فسيتم تحويلك إلى صفحة تسجيل الدخول."
+          loginHref={buildLoginHref(SECRET_ADMIN_REPORTS_PATH)}
         />
       </div>
     );
@@ -84,7 +85,7 @@ export default async function AdminReportsPage() {
     const client = isSupabaseAdminConfigured() ? await getSupabaseAdminClient() : await getSupabaseClient();
     if (!client) return;
     await client.from("blog_post_comments").update({ is_hidden: true }).eq("id", commentId);
-    revalidatePath("/admin/reports");
+    revalidatePath(SECRET_ADMIN_REPORTS_PATH);
     revalidatePath("/blog");
   }
 
@@ -98,7 +99,7 @@ export default async function AdminReportsPage() {
     const client = isSupabaseAdminConfigured() ? await getSupabaseAdminClient() : await getSupabaseClient();
     if (!client) return;
     await client.from("blog_post_comments").update({ is_hidden: false }).eq("id", commentId);
-    revalidatePath("/admin/reports");
+    revalidatePath(SECRET_ADMIN_REPORTS_PATH);
     revalidatePath("/blog");
   }
 
@@ -112,7 +113,7 @@ export default async function AdminReportsPage() {
     const client = isSupabaseAdminConfigured() ? await getSupabaseAdminClient() : await getSupabaseClient();
     if (!client) return;
     await client.from("blog_post_comments").delete().eq("id", commentId);
-    revalidatePath("/admin/reports");
+    revalidatePath(SECRET_ADMIN_REPORTS_PATH);
     revalidatePath("/blog");
   }
 
@@ -123,7 +124,7 @@ export default async function AdminReportsPage() {
           <h1 className="text-3xl font-black text-slate-950">بلاغات التعليقات</h1>
           <p className="mt-2 text-sm text-slate-600">راجع البلاغات واتخذ الإجراء المناسب: إخفاء، إظهار، أو حذف.</p>
         </div>
-        <Link href="/admin" className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700">
+        <Link href={SECRET_ADMIN_BASE_PATH} className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700">
           العودة إلى لوحة الأدمن
         </Link>
       </div>

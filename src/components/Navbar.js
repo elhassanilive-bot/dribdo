@@ -1,16 +1,15 @@
-'use client';
+﻿"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
+import Link from "next/link";
+import { useState } from "react";
 
 const links = [
-  { href: '/', label: 'الرئيسية' },
-  { href: '/features', label: 'المميزات' },
-  { href: '/forum', label: 'المنتدى' },
-  { href: '/blog', label: 'المدونة' },
-  { href: '/download', label: 'التحميل' },
-  { href: '/account', label: 'الحساب' },
-  { href: '/admin', label: 'الإدارة' },
+  { href: "/", label: "الرئيسية" },
+  { href: "/features", label: "المميزات" },
+  { href: "/forum", label: "المنتدى" },
+  { href: "/blog", label: "المدونة" },
+  { href: "/download", label: "التحميل" },
+  { href: "/account", label: "الحساب" },
 ];
 
 export default function Navbar() {
@@ -44,7 +43,7 @@ export default function Navbar() {
             type="button"
             onClick={() => setIsOpen((value) => !value)}
             className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-black/10 text-black transition hover:bg-black/5 md:hidden"
-            aria-label={isOpen ? 'إغلاق القائمة' : 'فتح القائمة'}
+            aria-label={isOpen ? "إغلاق القائمة" : "فتح القائمة"}
             aria-expanded={isOpen}
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">

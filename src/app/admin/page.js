@@ -7,25 +7,33 @@ import {
   setAdminSessionCookie,
   validateAdminAccessToken,
 } from "@/lib/admin/access";
+import { SECRET_ADMIN_BASE_PATH, SECRET_ADMIN_BLOG_PATH, SECRET_ADMIN_REPORTS_PATH } from "@/lib/admin/paths";
 
 export const metadata = {
   title: "لوحة الأدمن",
   description: "لوحة إدارة موقع دريبدو.",
   robots: { index: false, follow: false },
-  alternates: { canonical: "/admin" },
+  alternates: { canonical: SECRET_ADMIN_BASE_PATH },
 };
 
-function buildLoginHref(nextPath = "/admin", denied = false) {
-  const search = new URLSearchParams({ next: nextPath });
+function normalizeAdminPath(candidate) {
+  const value = String(candidate || "");
+  if (value === "/admin" || value === SECRET_ADMIN_BASE_PATH) return SECRET_ADMIN_BASE_PATH;
+  if (value === "/admin/blog" || value === SECRET_ADMIN_BLOG_PATH) return SECRET_ADMIN_BLOG_PATH;
+  if (value === "/admin/reports" || value === SECRET_ADMIN_REPORTS_PATH) return SECRET_ADMIN_REPORTS_PATH;
+  if (value.startsWith(`${SECRET_ADMIN_BASE_PATH}/`)) return value;
+  return SECRET_ADMIN_BASE_PATH;
+}
+
+function buildLoginHref(nextPath = SECRET_ADMIN_BASE_PATH, denied = false) {
+  const search = new URLSearchParams({ next: normalizeAdminPath(nextPath) });
   if (denied) search.set("admin", "denied");
   return `/login?${search.toString()}`;
 }
 
 export default async function AdminHome({ searchParams }) {
   const resolvedSearchParams = await searchParams;
-  const nextPath = typeof resolvedSearchParams?.from === "string" && resolvedSearchParams.from.startsWith("/admin")
-    ? resolvedSearchParams.from
-    : "/admin";
+  const nextPath = normalizeAdminPath(resolvedSearchParams?.from);
   const sessionValid = await hasValidAdminSession();
 
   async function authorizeAction(formData) {
@@ -43,7 +51,7 @@ export default async function AdminHome({ searchParams }) {
   async function logoutAction() {
     "use server";
     await clearAdminSessionCookie();
-    redirect(buildLoginHref("/admin"));
+    redirect(buildLoginHref(SECRET_ADMIN_BASE_PATH));
   }
 
   if (!sessionValid) {
@@ -52,7 +60,7 @@ export default async function AdminHome({ searchParams }) {
         <AdminOwnerGate
           authorizeAction={authorizeAction}
           title="دخول لوحة الأدمن"
-          description="إذا لم تكن مسجل الدخول أو لم يكن حسابك مضافًا في جدول إدارة المدونة فسيتم تحويلك إلى صفحة تسجيل الدخول."
+          description="هذا المسار الإداري خاص. إذا لم تكن مسجل الدخول أو لم يكن حسابك مضافًا في جدول إدارة المدونة فسيتم تحويلك إلى صفحة تسجيل الدخول."
           loginHref={buildLoginHref(nextPath)}
         />
       </div>
@@ -86,7 +94,7 @@ export default async function AdminHome({ searchParams }) {
               <p className="mt-3 leading-relaxed text-gray-700">إنشاء وكتابة ونشر المقالات من لوحة التحرير.</p>
               <div className="mt-8 flex gap-4">
                 <Link
-                  href="/admin/blog"
+                  href={SECRET_ADMIN_BLOG_PATH}
                   className="inline-flex items-center justify-center rounded-lg bg-red-700 px-8 py-3 font-semibold text-white transition-colors hover:bg-red-800"
                 >
                   محرر المقالات
@@ -105,7 +113,7 @@ export default async function AdminHome({ searchParams }) {
               <p className="mt-3 leading-relaxed text-gray-700">مراجعة البلاغات واتخاذ الإجراء المناسب.</p>
               <div className="mt-8 flex gap-4">
                 <Link
-                  href="/admin/reports"
+                  href={SECRET_ADMIN_REPORTS_PATH}
                   className="inline-flex items-center justify-center rounded-lg bg-red-700 px-8 py-3 font-semibold text-white transition-colors hover:bg-red-800"
                 >
                   مراجعة البلاغات

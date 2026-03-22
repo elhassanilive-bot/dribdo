@@ -1,4 +1,9 @@
 ﻿import { NextResponse } from "next/server";
+import {
+  SECRET_ADMIN_BASE_PATH,
+  SECRET_ADMIN_BLOG_PATH,
+  SECRET_ADMIN_REPORTS_PATH,
+} from "@/lib/admin/paths";
 
 const ADMIN_SESSION_COOKIE = "dribdo_admin_owner_session";
 
@@ -11,14 +16,40 @@ async function createAdminSessionValue() {
     .join("");
 }
 
+function isProtectedAdminPath(pathname) {
+  return pathname.startsWith("/admin/") || pathname.startsWith(`${SECRET_ADMIN_BASE_PATH}/`);
+}
+
+function isAdminEntryPath(pathname) {
+  return pathname === "/admin" || pathname === SECRET_ADMIN_BASE_PATH;
+}
+
 export async function middleware(request) {
   const { pathname } = request.nextUrl;
 
-  if (pathname === "/admin") {
+  if (!isAdminEntryPath(pathname) && !isProtectedAdminPath(pathname)) {
     return NextResponse.next();
   }
 
-  if (!pathname.startsWith("/admin/")) {
+  if (pathname === "/admin") {
+    const url = request.nextUrl.clone();
+    url.pathname = SECRET_ADMIN_BASE_PATH;
+    return NextResponse.redirect(url);
+  }
+
+  if (pathname === "/admin/blog") {
+    const url = request.nextUrl.clone();
+    url.pathname = SECRET_ADMIN_BLOG_PATH;
+    return NextResponse.redirect(url);
+  }
+
+  if (pathname === "/admin/reports") {
+    const url = request.nextUrl.clone();
+    url.pathname = SECRET_ADMIN_REPORTS_PATH;
+    return NextResponse.redirect(url);
+  }
+
+  if (pathname === SECRET_ADMIN_BASE_PATH) {
     return NextResponse.next();
   }
 
@@ -30,11 +61,11 @@ export async function middleware(request) {
   }
 
   const url = request.nextUrl.clone();
-  url.pathname = "/admin";
+  url.pathname = SECRET_ADMIN_BASE_PATH;
   url.searchParams.set("from", pathname);
   return NextResponse.redirect(url);
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/dribdo-vault-7q9m2n8x5r4k1p6t3s-admin-portal/:path*", "/admin"],
 };

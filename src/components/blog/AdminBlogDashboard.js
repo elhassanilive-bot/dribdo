@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useRef, useState, useTransition } from "react";
 import Link from "next/link";
@@ -8,6 +8,7 @@ import BlogImage from "@/components/blog/BlogImage";
 import { createSlugCandidate } from "@/lib/blog/slug";
 import { prepareBlogContentForEditor } from "@/lib/blog/content";
 import { getSupabaseClient } from "@/lib/supabase/client";
+import { SECRET_ADMIN_BASE_PATH } from "@/lib/admin/paths";
 
 const EMPTY_CONTENT = "<p></p>";
 const BLOG_MEDIA_BUCKET = process.env.NEXT_PUBLIC_SUPABASE_BLOG_BUCKET || "blog-media";
@@ -37,7 +38,7 @@ function SubmitButton({ pending, editing }) {
       disabled={pending}
       className="inline-flex min-w-44 items-center justify-center rounded-2xl bg-[var(--blog-accent)] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-500/20 transition hover:bg-[var(--blog-accent-strong)] disabled:cursor-not-allowed disabled:opacity-70"
     >
-      {pending ? "جارٍ حفظ المقال..." : editing ? "حفظ التعديلات" : "نشر المقال"}
+      {pending ? "Ø¬Ø§Ø±Ù Ø­ÙØ¸ Ø§Ù„Ù…Ù‚Ø§Ù„..." : editing ? "Ø­ÙØ¸ Ø§Ù„ØªØ¹Ø¯ÙŠÙ„Ø§Øª" : "Ù†Ø´Ø± Ø§Ù„Ù…Ù‚Ø§Ù„"}
     </button>
   );
 }
@@ -64,9 +65,9 @@ function DeletePostModal({ post, pending, errorMessage, onCancel, onConfirm }) {
       <div className="w-full max-w-xl rounded-[2rem] bg-white p-6 shadow-2xl">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h3 className="text-2xl font-black text-slate-950">تأكيد حذف المقال</h3>
+            <h3 className="text-2xl font-black text-slate-950">ØªØ£ÙƒÙŠØ¯ Ø­Ø°Ù Ø§Ù„Ù…Ù‚Ø§Ù„</h3>
             <p className="mt-2 text-sm leading-7 text-slate-600">
-              سيتم حذف المقال <span className="font-semibold text-slate-900">{post.title}</span> من لوحة النشر. هذا الإجراء لا يمكن التراجع عنه.
+              Ø³ÙŠØªÙ… Ø­Ø°Ù Ø§Ù„Ù…Ù‚Ø§Ù„ <span className="font-semibold text-slate-900">{post.title}</span> Ù…Ù† Ù„ÙˆØ­Ø© Ø§Ù„Ù†Ø´Ø±. Ù‡Ø°Ø§ Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡ Ù„Ø§ ÙŠÙ…ÙƒÙ† Ø§Ù„ØªØ±Ø§Ø¬Ø¹ Ø¹Ù†Ù‡.
             </p>
           </div>
           <button
@@ -74,16 +75,16 @@ function DeletePostModal({ post, pending, errorMessage, onCancel, onConfirm }) {
             onClick={onCancel}
             className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-950"
           >
-            إغلاق
+            Ø¥ØºÙ„Ø§Ù‚
           </button>
         </div>
 
         <div className="mt-6 rounded-[1.5rem] border border-rose-200 bg-rose-50 px-5 py-4 text-sm text-rose-900">
-          الرابط المختصر الحالي: <span className="font-semibold">/{post.slug}</span>
+          Ø§Ù„Ø±Ø§Ø¨Ø· Ø§Ù„Ù…Ø®ØªØµØ± Ø§Ù„Ø­Ø§Ù„ÙŠ: <span className="font-semibold">/{post.slug}</span>
         </div>
         {errorMessage ? (
           <div className="mt-3 rounded-[1.1rem] border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">
-            سبب الفشل: {errorMessage}
+            Ø³Ø¨Ø¨ Ø§Ù„ÙØ´Ù„: {errorMessage}
           </div>
         ) : null}
 
@@ -93,7 +94,7 @@ function DeletePostModal({ post, pending, errorMessage, onCancel, onConfirm }) {
             onClick={onCancel}
             className="inline-flex items-center justify-center rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-950"
           >
-            إلغاء
+            Ø¥Ù„ØºØ§Ø¡
           </button>
           <button
             type="button"
@@ -101,7 +102,7 @@ function DeletePostModal({ post, pending, errorMessage, onCancel, onConfirm }) {
             disabled={pending}
             className="inline-flex items-center justify-center rounded-2xl bg-rose-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-rose-700 disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {pending ? "جارٍ الحذف..." : "تأكيد الحذف"}
+            {pending ? "Ø¬Ø§Ø±Ù Ø§Ù„Ø­Ø°Ù..." : "ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø­Ø°Ù"}
           </button>
         </div>
       </div>
@@ -117,13 +118,13 @@ function BulkDeleteModal({ count, pending, errorMessage, onCancel, onConfirm }) 
       <div className="w-full max-w-xl rounded-[2rem] bg-white p-6 shadow-2xl">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h3 className="text-2xl font-black text-slate-950">تأكيد حذف جماعي</h3>
+            <h3 className="text-2xl font-black text-slate-950">ØªØ£ÙƒÙŠØ¯ Ø­Ø°Ù Ø¬Ù…Ø§Ø¹ÙŠ</h3>
             <p className="mt-2 text-sm leading-7 text-slate-600">
-              سيتم حذف
+              Ø³ÙŠØªÙ… Ø­Ø°Ù
               {" "}
               <span className="font-semibold text-slate-900">{count}</span>
               {" "}
-              مقال(ات) دفعة واحدة. هذا الإجراء لا يمكن التراجع عنه.
+              Ù…Ù‚Ø§Ù„(Ø§Øª) Ø¯ÙØ¹Ø© ÙˆØ§Ø­Ø¯Ø©. Ù‡Ø°Ø§ Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡ Ù„Ø§ ÙŠÙ…ÙƒÙ† Ø§Ù„ØªØ±Ø§Ø¬Ø¹ Ø¹Ù†Ù‡.
             </p>
           </div>
           <button
@@ -131,13 +132,13 @@ function BulkDeleteModal({ count, pending, errorMessage, onCancel, onConfirm }) 
             onClick={onCancel}
             className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-950"
           >
-            إغلاق
+            Ø¥ØºÙ„Ø§Ù‚
           </button>
         </div>
 
         {errorMessage ? (
           <div className="mt-4 rounded-[1.1rem] border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">
-            سبب الفشل: {errorMessage}
+            Ø³Ø¨Ø¨ Ø§Ù„ÙØ´Ù„: {errorMessage}
           </div>
         ) : null}
 
@@ -147,7 +148,7 @@ function BulkDeleteModal({ count, pending, errorMessage, onCancel, onConfirm }) 
             onClick={onCancel}
             className="inline-flex items-center justify-center rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-950"
           >
-            إلغاء
+            Ø¥Ù„ØºØ§Ø¡
           </button>
           <button
             type="button"
@@ -155,7 +156,7 @@ function BulkDeleteModal({ count, pending, errorMessage, onCancel, onConfirm }) 
             disabled={pending}
             className="inline-flex items-center justify-center rounded-2xl bg-rose-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-rose-700 disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {pending ? "جارٍ الحذف..." : "تأكيد حذف المحدد"}
+            {pending ? "Ø¬Ø§Ø±Ù Ø§Ù„Ø­Ø°Ù..." : "ØªØ£ÙƒÙŠØ¯ Ø­Ø°Ù Ø§Ù„Ù…Ø­Ø¯Ø¯"}
           </button>
         </div>
       </div>
@@ -326,7 +327,7 @@ export default function AdminBlogDashboard({
   async function uploadCoverFile(file) {
     const supabase = await getSupabaseClient();
     if (!supabase) {
-      throw new Error("Supabase غير مُعد. أضف المفاتيح أولًا.");
+      throw new Error("Supabase ØºÙŠØ± Ù…ÙØ¹Ø¯. Ø£Ø¶Ù Ø§Ù„Ù…ÙØ§ØªÙŠØ­ Ø£ÙˆÙ„Ù‹Ø§.");
     }
 
     const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
@@ -338,13 +339,13 @@ export default function AdminBlogDashboard({
 
     if (error) {
       throw new Error(
-        `تعذر رفع صورة الغلاف إلى bucket "${BLOG_MEDIA_BUCKET}". شغّل supabase/blog_storage.sql أو تأكد من اسم الـ bucket في .env.local.`
+        `ØªØ¹Ø°Ø± Ø±ÙØ¹ ØµÙˆØ±Ø© Ø§Ù„ØºÙ„Ø§Ù Ø¥Ù„Ù‰ bucket "${BLOG_MEDIA_BUCKET}". Ø´ØºÙ‘Ù„ supabase/blog_storage.sql Ø£Ùˆ ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ø³Ù… Ø§Ù„Ù€ bucket ÙÙŠ .env.local.`
       );
     }
 
     const { data } = supabase.storage.from(BLOG_MEDIA_BUCKET).getPublicUrl(path);
     if (!data?.publicUrl) {
-      throw new Error("تم الرفع لكن تعذر إنشاء الرابط العام لصورة الغلاف.");
+      throw new Error("ØªÙ… Ø§Ù„Ø±ÙØ¹ Ù„ÙƒÙ† ØªØ¹Ø°Ø± Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø±Ø§Ø¨Ø· Ø§Ù„Ø¹Ø§Ù… Ù„ØµÙˆØ±Ø© Ø§Ù„ØºÙ„Ø§Ù.");
     }
 
     return data.publicUrl;
@@ -356,13 +357,13 @@ export default function AdminBlogDashboard({
     if (!file) return;
 
     try {
-      setCoverUpload({ message: "جارٍ رفع صورة الغلاف...", error: false });
+      setCoverUpload({ message: "Ø¬Ø§Ø±Ù Ø±ÙØ¹ ØµÙˆØ±Ø© Ø§Ù„ØºÙ„Ø§Ù...", error: false });
       const publicUrl = await uploadCoverFile(file);
       updateField("coverImageUrl", publicUrl);
-      setCoverUpload({ message: "تم رفع صورة الغلاف بنجاح.", error: false });
+      setCoverUpload({ message: "ØªÙ… Ø±ÙØ¹ ØµÙˆØ±Ø© Ø§Ù„ØºÙ„Ø§Ù Ø¨Ù†Ø¬Ø§Ø­.", error: false });
     } catch (error) {
       setCoverUpload({
-        message: error instanceof Error ? error.message : "تعذر رفع صورة الغلاف.",
+        message: error instanceof Error ? error.message : "ØªØ¹Ø°Ø± Ø±ÙØ¹ ØµÙˆØ±Ø© Ø§Ù„ØºÙ„Ø§Ù.",
         error: true,
       });
     }
@@ -403,7 +404,7 @@ export default function AdminBlogDashboard({
         if (!result?.ok) {
           setFlash({
             type: "error",
-            message: result?.error || "تعذر حفظ المقال.",
+            message: result?.error || "ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø§Ù„Ù…Ù‚Ø§Ù„.",
             slug: "",
           });
           return;
@@ -411,7 +412,7 @@ export default function AdminBlogDashboard({
 
         setFlash({
           type: "success",
-          message: editing ? "تم تحديث المقال بنجاح." : "تم نشر المقال بنجاح.",
+          message: editing ? "ØªÙ… ØªØ­Ø¯ÙŠØ« Ø§Ù„Ù…Ù‚Ø§Ù„ Ø¨Ù†Ø¬Ø§Ø­." : "ØªÙ… Ù†Ø´Ø± Ø§Ù„Ù…Ù‚Ø§Ù„ Ø¨Ù†Ø¬Ø§Ø­.",
           slug: result.slug || "",
         });
         resetForm();
@@ -430,7 +431,7 @@ export default function AdminBlogDashboard({
     if (!normalizedIds.length) {
       setFlash({
         type: "error",
-        message: "حدد مقالًا واحدًا على الأقل قبل الحذف الجماعي.",
+        message: "Ø­Ø¯Ø¯ Ù…Ù‚Ø§Ù„Ù‹Ø§ ÙˆØ§Ø­Ø¯Ù‹Ø§ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„ Ù‚Ø¨Ù„ Ø§Ù„Ø­Ø°Ù Ø§Ù„Ø¬Ù…Ø§Ø¹ÙŠ.",
         slug: "",
       });
       return;
@@ -447,7 +448,7 @@ export default function AdminBlogDashboard({
       deleteAction({ id: deleteTarget.id, adminToken: form.adminToken })
         .then((result) => {
           if (!result?.ok) {
-            const reason = result?.error || "تعذر حذف المقال.";
+            const reason = result?.error || "ØªØ¹Ø°Ø± Ø­Ø°Ù Ø§Ù„Ù…Ù‚Ø§Ù„.";
             setDeleteError(reason);
             setFlash({
               type: "error",
@@ -475,14 +476,14 @@ export default function AdminBlogDashboard({
           setDeleteError("");
           setFlash({
             type: "success",
-            message: "تم حذف المقال بنجاح.",
+            message: "ØªÙ… Ø­Ø°Ù Ø§Ù„Ù…Ù‚Ø§Ù„ Ø¨Ù†Ø¬Ø§Ø­.",
             slug: "",
           });
           setDeleteTarget(null);
           router.refresh();
         })
         .catch((error) => {
-          const reason = error instanceof Error ? error.message : "حدث خطأ غير متوقع أثناء الحذف.";
+          const reason = error instanceof Error ? error.message : "Ø­Ø¯Ø« Ø®Ø·Ø£ ØºÙŠØ± Ù…ØªÙˆÙ‚Ø¹ Ø£Ø«Ù†Ø§Ø¡ Ø§Ù„Ø­Ø°Ù.";
           setDeleteError(reason);
           setFlash({
             type: "error",
@@ -517,7 +518,7 @@ export default function AdminBlogDashboard({
           }
 
           if (!result?.ok) {
-            const reason = result?.error || "تعذر حذف المقالات المحددة.";
+            const reason = result?.error || "ØªØ¹Ø°Ø± Ø­Ø°Ù Ø§Ù„Ù…Ù‚Ø§Ù„Ø§Øª Ø§Ù„Ù…Ø­Ø¯Ø¯Ø©.";
             const unresolvedIds = bulkDeleteTargetIds.filter((id) => !deletedIds.includes(id));
             setBulkDeleteError(reason);
             setBulkDeleteTargetIds(unresolvedIds);
@@ -535,13 +536,13 @@ export default function AdminBlogDashboard({
           setVisiblePostsCount((current) => Math.max(Math.min(current, filteredPosts.length - deletedIds.length), 0));
           setFlash({
             type: "success",
-            message: `تم حذف ${deletedIds.length} مقال(ات) بنجاح.`,
+            message: `ØªÙ… Ø­Ø°Ù ${deletedIds.length} Ù…Ù‚Ø§Ù„(Ø§Øª) Ø¨Ù†Ø¬Ø§Ø­.`,
             slug: "",
           });
           router.refresh();
         })
         .catch((error) => {
-          const reason = error instanceof Error ? error.message : "حدث خطأ غير متوقع أثناء الحذف الجماعي.";
+          const reason = error instanceof Error ? error.message : "Ø­Ø¯Ø« Ø®Ø·Ø£ ØºÙŠØ± Ù…ØªÙˆÙ‚Ø¹ Ø£Ø«Ù†Ø§Ø¡ Ø§Ù„Ø­Ø°Ù Ø§Ù„Ø¬Ù…Ø§Ø¹ÙŠ.";
           setBulkDeleteError(reason);
           setFlash({
             type: "error",
@@ -583,17 +584,17 @@ export default function AdminBlogDashboard({
               href="/blog"
               className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
             >
-              معاينة المدونة
+              Ù…Ø¹Ø§ÙŠÙ†Ø© Ø§Ù„Ù…Ø¯ÙˆÙ†Ø©
             </Link>
             <Link
-              href="/admin"
+              href={SECRET_ADMIN_BASE_PATH}
               className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-600 transition hover:border-slate-300 hover:text-slate-900"
             >
-              لوحة الأدمن
+              Ù„ÙˆØ­Ø© Ø§Ù„Ø£Ø¯Ù…Ù†
             </Link>
           </div>
           <div className="inline-flex items-center gap-1.5 rounded-xl border border-orange-200/80 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-700">
-            <span className="text-slate-500">عدد المقالات</span>
+            <span className="text-slate-500">Ø¹Ø¯Ø¯ Ø§Ù„Ù…Ù‚Ø§Ù„Ø§Øª</span>
             <span className="font-black text-slate-950">{localPosts.length}</span>
           </div>
         </div>
@@ -601,13 +602,13 @@ export default function AdminBlogDashboard({
 
       {!publishingEnabled ? (
         <div className="rounded-[2rem] border border-amber-200 bg-amber-50 px-6 py-5 text-amber-950">
-          النشر المباشر يحتاج سياسات `insert` ويفضّل أيضًا سياسات `update/delete` أو Service Role إذا كنت تريد إدارة كاملة من هذه اللوحة.
+          Ø§Ù„Ù†Ø´Ø± Ø§Ù„Ù…Ø¨Ø§Ø´Ø± ÙŠØ­ØªØ§Ø¬ Ø³ÙŠØ§Ø³Ø§Øª `insert` ÙˆÙŠÙØ¶Ù‘Ù„ Ø£ÙŠØ¶Ù‹Ø§ Ø³ÙŠØ§Ø³Ø§Øª `update/delete` Ø£Ùˆ Service Role Ø¥Ø°Ø§ ÙƒÙ†Øª ØªØ±ÙŠØ¯ Ø¥Ø¯Ø§Ø±Ø© ÙƒØ§Ù…Ù„Ø© Ù…Ù† Ù‡Ø°Ù‡ Ø§Ù„Ù„ÙˆØ­Ø©.
         </div>
       ) : null}
 
       {adminListError ? (
         <div className="rounded-[2rem] border border-amber-200 bg-amber-50 px-6 py-5 text-amber-950">
-          تعذر تحميل قائمة المقالات كاملة: {adminListError}
+          ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ù…Ù‚Ø§Ù„Ø§Øª ÙƒØ§Ù…Ù„Ø©: {adminListError}
         </div>
       ) : null}
 
@@ -625,7 +626,7 @@ export default function AdminBlogDashboard({
             <>
               {" "}
               <Link href={`/blog/${flash.slug}`} className="font-semibold underline underline-offset-4">
-                افتح المقال
+                Ø§ÙØªØ­ Ø§Ù„Ù…Ù‚Ø§Ù„
               </Link>
             </>
           ) : null}
@@ -637,8 +638,8 @@ export default function AdminBlogDashboard({
           <input ref={coverInputRef} type="file" accept="image/*" className="hidden" onChange={handleCoverSelection} />
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <div className="text-sm font-semibold text-slate-500">محرر المقال</div>
-              <h2 className="mt-1 text-2xl font-black text-slate-950">{editing ? "تعديل المقال" : "إضافة مقال جديد"}</h2>
+              <div className="text-sm font-semibold text-slate-500">Ù…Ø­Ø±Ø± Ø§Ù„Ù…Ù‚Ø§Ù„</div>
+              <h2 className="mt-1 text-2xl font-black text-slate-950">{editing ? "ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù…Ù‚Ø§Ù„" : "Ø¥Ø¶Ø§ÙØ© Ù…Ù‚Ø§Ù„ Ø¬Ø¯ÙŠØ¯"}</h2>
             </div>
             {editing ? (
               <button
@@ -646,20 +647,20 @@ export default function AdminBlogDashboard({
                 onClick={() => resetForm()}
                 className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
               >
-                مقال جديد
+                Ù…Ù‚Ø§Ù„ Ø¬Ø¯ÙŠØ¯
               </button>
             ) : null}
           </div>
 
           <div className="mt-6 grid gap-6 md:grid-cols-2">
             <label className="block">
-              <span className="mb-2 block text-sm font-semibold text-slate-900">عنوان المقال</span>
+              <span className="mb-2 block text-sm font-semibold text-slate-900">Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…Ù‚Ø§Ù„</span>
               <input
                 value={form.title}
                 onChange={(event) => updateField("title", event.target.value)}
                 required
                 className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-orange-300 focus:bg-white"
-                placeholder="مثال: كيف تبني غرفة أخبار رقمية قابلة للتوسع؟"
+                placeholder="Ù…Ø«Ø§Ù„: ÙƒÙŠÙ ØªØ¨Ù†ÙŠ ØºØ±ÙØ© Ø£Ø®Ø¨Ø§Ø± Ø±Ù‚Ù…ÙŠØ© Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„ØªÙˆØ³Ø¹ØŸ"
               />
             </label>
 
@@ -679,20 +680,20 @@ export default function AdminBlogDashboard({
           </div>
 
           <label className="mt-6 block">
-            <span className="mb-2 block text-sm font-semibold text-slate-900">الملخص</span>
+            <span className="mb-2 block text-sm font-semibold text-slate-900">Ø§Ù„Ù…Ù„Ø®Øµ</span>
             <textarea
               value={form.excerpt}
               onChange={(event) => updateField("excerpt", event.target.value)}
               required
               rows={4}
               className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-orange-300 focus:bg-white"
-              placeholder="ملخص قصير واحترافي يظهر في بطاقات المقال ونتائج المشاركة."
+              placeholder="Ù…Ù„Ø®Øµ Ù‚ØµÙŠØ± ÙˆØ§Ø­ØªØ±Ø§ÙÙŠ ÙŠØ¸Ù‡Ø± ÙÙŠ Ø¨Ø·Ø§Ù‚Ø§Øª Ø§Ù„Ù…Ù‚Ø§Ù„ ÙˆÙ†ØªØ§Ø¦Ø¬ Ø§Ù„Ù…Ø´Ø§Ø±ÙƒØ©."
             />
           </label>
 
           <div className="mt-6 grid gap-6 md:grid-cols-2">
             <label className="block">
-              <span className="mb-2 block text-sm font-semibold text-slate-900">صورة الغلاف</span>
+              <span className="mb-2 block text-sm font-semibold text-slate-900">ØµÙˆØ±Ø© Ø§Ù„ØºÙ„Ø§Ù</span>
               <div className="overflow-hidden rounded-[1.5rem] border border-slate-200 bg-slate-50">
                 <div className="flex flex-wrap items-center gap-3 border-b border-slate-200 px-4 py-4">
                   <button
@@ -700,7 +701,7 @@ export default function AdminBlogDashboard({
                     onClick={() => coverInputRef.current?.click()}
                     className="inline-flex items-center justify-center rounded-2xl bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
                   >
-                    رفع صورة الغلاف
+                    Ø±ÙØ¹ ØµÙˆØ±Ø© Ø§Ù„ØºÙ„Ø§Ù
                   </button>
                   {form.coverImageUrl ? (
                     <button
@@ -708,10 +709,10 @@ export default function AdminBlogDashboard({
                       onClick={() => updateField("coverImageUrl", "")}
                       className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
                     >
-                      إزالة الصورة
+                      Ø¥Ø²Ø§Ù„Ø© Ø§Ù„ØµÙˆØ±Ø©
                     </button>
                   ) : null}
-                  <span className="text-sm text-slate-500">من جهازك مباشرة بدل إدخال رابط يدوي.</span>
+                  <span className="text-sm text-slate-500">Ù…Ù† Ø¬Ù‡Ø§Ø²Ùƒ Ù…Ø¨Ø§Ø´Ø±Ø© Ø¨Ø¯Ù„ Ø¥Ø¯Ø®Ø§Ù„ Ø±Ø§Ø¨Ø· ÙŠØ¯ÙˆÙŠ.</span>
                 </div>
 
                 {coverUpload.message ? (
@@ -733,7 +734,7 @@ export default function AdminBlogDashboard({
                     </div>
                   ) : (
                     <div className="mt-4 rounded-[1.25rem] border border-dashed border-slate-200 bg-white px-4 py-10 text-center text-sm text-slate-500">
-                      لم يتم اختيار صورة غلاف بعد.
+                      Ù„Ù… ÙŠØªÙ… Ø§Ø®ØªÙŠØ§Ø± ØµÙˆØ±Ø© ØºÙ„Ø§Ù Ø¨Ø¹Ø¯.
                     </div>
                   )}
                 </div>
@@ -741,41 +742,41 @@ export default function AdminBlogDashboard({
             </label>
 
             <label className="block">
-              <span className="mb-2 block text-sm font-semibold text-slate-900">التصنيف</span>
+              <span className="mb-2 block text-sm font-semibold text-slate-900">Ø§Ù„ØªØµÙ†ÙŠÙ</span>
               <input
                 value={form.category}
                 onChange={(event) => updateField("category", event.target.value)}
                 className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-orange-300 focus:bg-white"
-                placeholder="تقارير، أخبار، أدلة، منتج"
+                placeholder="ØªÙ‚Ø§Ø±ÙŠØ±ØŒ Ø£Ø®Ø¨Ø§Ø±ØŒ Ø£Ø¯Ù„Ø©ØŒ Ù…Ù†ØªØ¬"
               />
             </label>
 
             <label className="block">
-              <span className="mb-2 block text-sm font-semibold text-slate-900">حالة النشر</span>
+              <span className="mb-2 block text-sm font-semibold text-slate-900">Ø­Ø§Ù„Ø© Ø§Ù„Ù†Ø´Ø±</span>
               <select
                 value={form.status}
                 onChange={(event) => updateField("status", event.target.value)}
                 className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition focus:border-orange-300 focus:bg-white"
               >
-                <option value="published">منشور</option>
-                <option value="draft">مسودة</option>
-                <option value="archived">مؤرشف</option>
+                <option value="published">Ù…Ù†Ø´ÙˆØ±</option>
+                <option value="draft">Ù…Ø³ÙˆØ¯Ø©</option>
+                <option value="archived">Ù…Ø¤Ø±Ø´Ù</option>
               </select>
             </label>
           </div>
 
           <label className="mt-6 block">
-            <span className="mb-2 block text-sm font-semibold text-slate-900">الوسوم</span>
+            <span className="mb-2 block text-sm font-semibold text-slate-900">Ø§Ù„ÙˆØ³ÙˆÙ…</span>
             <input
               value={form.tagsInput}
               onChange={(event) => updateField("tagsInput", event.target.value)}
               className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-orange-300 focus:bg-white"
-              placeholder="تحليلات، Dribdo، مجتمع، تحديثات"
+              placeholder="ØªØ­Ù„ÙŠÙ„Ø§ØªØŒ DribdoØŒ Ù…Ø¬ØªÙ…Ø¹ØŒ ØªØ­Ø¯ÙŠØ«Ø§Øª"
             />
           </label>
 
           <label className="mt-6 block">
-            <span className="mb-2 block text-sm font-semibold text-slate-900">تاريخ/وقت النشر</span>
+            <span className="mb-2 block text-sm font-semibold text-slate-900">ØªØ§Ø±ÙŠØ®/ÙˆÙ‚Øª Ø§Ù„Ù†Ø´Ø±</span>
             <input
               type="datetime-local"
               value={form.publishedAt}
@@ -786,7 +787,7 @@ export default function AdminBlogDashboard({
 
           {requiresToken ? (
             <label className="mt-6 block">
-              <span className="mb-2 block text-sm font-semibold text-slate-900">رمز الإدارة</span>
+              <span className="mb-2 block text-sm font-semibold text-slate-900">Ø±Ù…Ø² Ø§Ù„Ø¥Ø¯Ø§Ø±Ø©</span>
               <input
                 type="password"
                 value={form.adminToken}
@@ -801,8 +802,8 @@ export default function AdminBlogDashboard({
           <div className="mt-8">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
               <div>
-                <div className="text-sm font-semibold text-slate-900">المحتوى الغني</div>
-                <div className="mt-1 text-sm text-slate-500">عناوين، ألوان، جداول، وسائط، أزرار، embeds ومحاذاة كاملة.</div>
+                <div className="text-sm font-semibold text-slate-900">Ø§Ù„Ù…Ø­ØªÙˆÙ‰ Ø§Ù„ØºÙ†ÙŠ</div>
+                <div className="mt-1 text-sm text-slate-500">Ø¹Ù†Ø§ÙˆÙŠÙ†ØŒ Ø£Ù„ÙˆØ§Ù†ØŒ Ø¬Ø¯Ø§ÙˆÙ„ØŒ ÙˆØ³Ø§Ø¦Ø·ØŒ Ø£Ø²Ø±Ø§Ø±ØŒ embeds ÙˆÙ…Ø­Ø§Ø°Ø§Ø© ÙƒØ§Ù…Ù„Ø©.</div>
               </div>
               <div className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs font-semibold text-slate-600">
                 Rich Text / HTML
@@ -814,31 +815,31 @@ export default function AdminBlogDashboard({
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <SubmitButton pending={isSaving} editing={editing} />
             <p className="text-sm text-slate-500">
-              سيتم حفظ المقال بحالة
+              Ø³ÙŠØªÙ… Ø­ÙØ¸ Ø§Ù„Ù…Ù‚Ø§Ù„ Ø¨Ø­Ø§Ù„Ø©
               {" "}
               <span className="font-semibold text-slate-900">{form.status || "published"}</span>
               {" "}
-              مع
+              Ù…Ø¹
               {" "}
               <code>published_at</code>
               {" "}
-              وتحديث
+              ÙˆØªØ­Ø¯ÙŠØ«
               {" "}
               <code>updated_at</code>
               {" "}
-              تلقائيًا من trigger الحالي.
+              ØªÙ„Ù‚Ø§Ø¦ÙŠÙ‹Ø§ Ù…Ù† trigger Ø§Ù„Ø­Ø§Ù„ÙŠ.
             </p>
           </div>
         </form>
 
         <aside className="space-y-6">
           <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_20px_55px_-45px_rgba(15,23,42,0.5)]">
-            <div className="text-sm font-semibold text-slate-500">معاينة سريعة</div>
+            <div className="text-sm font-semibold text-slate-500">Ù…Ø¹Ø§ÙŠÙ†Ø© Ø³Ø±ÙŠØ¹Ø©</div>
             <h2 className="mt-4 text-2xl font-black text-slate-950">
-              {form.title || "عنوان المقال سيظهر هنا"}
+              {form.title || "Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…Ù‚Ø§Ù„ Ø³ÙŠØ¸Ù‡Ø± Ù‡Ù†Ø§"}
             </h2>
             <p className="mt-3 text-sm leading-7 text-slate-600">
-              {form.excerpt || "أضف ملخصًا مقنعًا يشرح قيمة المقال خلال سطرين إلى ثلاثة أسطر."}
+              {form.excerpt || "Ø£Ø¶Ù Ù…Ù„Ø®ØµÙ‹Ø§ Ù…Ù‚Ù†Ø¹Ù‹Ø§ ÙŠØ´Ø±Ø­ Ù‚ÙŠÙ…Ø© Ø§Ù„Ù…Ù‚Ø§Ù„ Ø®Ù„Ø§Ù„ Ø³Ø·Ø±ÙŠÙ† Ø¥Ù„Ù‰ Ø«Ù„Ø§Ø«Ø© Ø£Ø³Ø·Ø±."}
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
               {(tagsPreview.length ? tagsPreview : ["featured", "analysis"]).map((tag) => (
@@ -853,18 +854,18 @@ export default function AdminBlogDashboard({
           </div>
 
           <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_20px_55px_-45px_rgba(15,23,42,0.5)]">
-            <div className="text-sm font-semibold text-slate-500">جودة التحرير</div>
+            <div className="text-sm font-semibold text-slate-500">Ø¬ÙˆØ¯Ø© Ø§Ù„ØªØ­Ø±ÙŠØ±</div>
             <div className="mt-4 space-y-4">
               <div className="rounded-2xl bg-slate-50 px-4 py-4">
-                <div className="text-xs font-semibold text-slate-500">عدد كلمات العنوان</div>
+                <div className="text-xs font-semibold text-slate-500">Ø¹Ø¯Ø¯ ÙƒÙ„Ù…Ø§Øª Ø§Ù„Ø¹Ù†ÙˆØ§Ù†</div>
                 <div className="mt-1 text-xl font-bold text-slate-950">{titleWords}</div>
               </div>
               <div className="rounded-2xl bg-slate-50 px-4 py-4">
-                <div className="text-xs font-semibold text-slate-500">طول الملخص</div>
+                <div className="text-xs font-semibold text-slate-500">Ø·ÙˆÙ„ Ø§Ù„Ù…Ù„Ø®Øµ</div>
                 <div className="mt-1 text-xl font-bold text-slate-950">{form.excerpt.trim().length}</div>
               </div>
               <div className="rounded-2xl bg-slate-50 px-4 py-4 text-sm leading-7 text-slate-600">
-                يمكن تحرير المقالات القديمة أيضًا. إذا كان المحتوى مخزّنًا بـ Markdown فسيتم تحويله تلقائيًا إلى HTML داخل المحرر قبل التعديل.
+                ÙŠÙ…ÙƒÙ† ØªØ­Ø±ÙŠØ± Ø§Ù„Ù…Ù‚Ø§Ù„Ø§Øª Ø§Ù„Ù‚Ø¯ÙŠÙ…Ø© Ø£ÙŠØ¶Ù‹Ø§. Ø¥Ø°Ø§ ÙƒØ§Ù† Ø§Ù„Ù…Ø­ØªÙˆÙ‰ Ù…Ø®Ø²Ù‘Ù†Ù‹Ø§ Ø¨Ù€ Markdown ÙØ³ÙŠØªÙ… ØªØ­ÙˆÙŠÙ„Ù‡ ØªÙ„Ù‚Ø§Ø¦ÙŠÙ‹Ø§ Ø¥Ù„Ù‰ HTML Ø¯Ø§Ø®Ù„ Ø§Ù„Ù…Ø­Ø±Ø± Ù‚Ø¨Ù„ Ø§Ù„ØªØ¹Ø¯ÙŠÙ„.
               </div>
             </div>
           </div>
@@ -874,22 +875,22 @@ export default function AdminBlogDashboard({
       <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_20px_55px_-45px_rgba(15,23,42,0.35)] sm:p-8">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <div className="text-sm font-semibold text-slate-500">إدارة المقالات</div>
-            <h2 className="mt-1 text-2xl font-black text-slate-950">قائمة المقالات الحالية</h2>
+            <div className="text-sm font-semibold text-slate-500">Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ù…Ù‚Ø§Ù„Ø§Øª</div>
+            <h2 className="mt-1 text-2xl font-black text-slate-950">Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ù…Ù‚Ø§Ù„Ø§Øª Ø§Ù„Ø­Ø§Ù„ÙŠØ©</h2>
           </div>
           <div className="flex w-full flex-wrap gap-3 lg:w-auto">
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               className="min-w-64 flex-1 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-orange-300 focus:bg-white"
-              placeholder="ابحث بالعنوان أو slug أو الوسوم"
+              placeholder="Ø§Ø¨Ø­Ø« Ø¨Ø§Ù„Ø¹Ù†ÙˆØ§Ù† Ø£Ùˆ slug Ø£Ùˆ Ø§Ù„ÙˆØ³ÙˆÙ…"
             />
             <select
               value={categoryFilter}
               onChange={(event) => setCategoryFilter(event.target.value)}
               className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition focus:border-orange-300 focus:bg-white"
             >
-              <option value="all">كل التصنيفات</option>
+              <option value="all">ÙƒÙ„ Ø§Ù„ØªØµÙ†ÙŠÙØ§Øª</option>
               {categories.map((category) => (
                 <option key={category} value={category}>
                   {category}
@@ -902,7 +903,7 @@ export default function AdminBlogDashboard({
         {filteredPosts.length > 0 ? (
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5">
             <div className="text-xs font-semibold text-slate-600">
-              المحدد الآن: {selectedCount} / {filteredPosts.length}
+              Ø§Ù„Ù…Ø­Ø¯Ø¯ Ø§Ù„Ø¢Ù†: {selectedCount} / {filteredPosts.length}
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <button
@@ -910,7 +911,7 @@ export default function AdminBlogDashboard({
                 onClick={selectAllVisiblePosts}
                 className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
               >
-                تحديد الظاهر ({visiblePosts.length})
+                ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø¸Ø§Ù‡Ø± ({visiblePosts.length})
               </button>
               {selectedVisibleCount > 0 ? (
                 <button
@@ -918,7 +919,7 @@ export default function AdminBlogDashboard({
                   onClick={clearVisibleSelection}
                   className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
                 >
-                  إلغاء تحديد الظاهر
+                  Ø¥Ù„ØºØ§Ø¡ ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø¸Ø§Ù‡Ø±
                 </button>
               ) : null}
               <button
@@ -926,7 +927,7 @@ export default function AdminBlogDashboard({
                 onClick={selectAllFilteredPosts}
                 className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
               >
-                تحديد الكل ({filteredPosts.length})
+                ØªØ­Ø¯ÙŠØ¯ Ø§Ù„ÙƒÙ„ ({filteredPosts.length})
               </button>
               {selectedFilteredCount > 0 ? (
                 <button
@@ -934,7 +935,7 @@ export default function AdminBlogDashboard({
                   onClick={clearAllSelection}
                   className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
                 >
-                  إلغاء الكل
+                  Ø¥Ù„ØºØ§Ø¡ Ø§Ù„ÙƒÙ„
                 </button>
               ) : null}
               <button
@@ -943,7 +944,7 @@ export default function AdminBlogDashboard({
                 disabled={isDeleting || selectedCount === 0}
                 className="rounded-xl border border-rose-200 bg-white px-3 py-1.5 text-xs font-semibold text-rose-700 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                حذف المحدد
+                Ø­Ø°Ù Ø§Ù„Ù…Ø­Ø¯Ø¯
               </button>
             </div>
           </div>
@@ -951,7 +952,7 @@ export default function AdminBlogDashboard({
 
         {filteredPosts.length === 0 ? (
           <div className="mt-8 rounded-[1.75rem] border border-dashed border-slate-200 bg-slate-50 px-6 py-12 text-center text-slate-500">
-            لا توجد مقالات مطابقة للفلاتر الحالية.
+            Ù„Ø§ ØªÙˆØ¬Ø¯ Ù…Ù‚Ø§Ù„Ø§Øª Ù…Ø·Ø§Ø¨Ù‚Ø© Ù„Ù„ÙÙ„Ø§ØªØ± Ø§Ù„Ø­Ø§Ù„ÙŠØ©.
           </div>
         ) : (
           <div className="mt-8 grid gap-4">
@@ -965,7 +966,7 @@ export default function AdminBlogDashboard({
                       onChange={() => toggleSelectPost(post.id)}
                       className="h-4 w-4 rounded border-slate-300 text-orange-600 focus:ring-orange-500"
                     />
-                    تحديد
+                    ØªØ­Ø¯ÙŠØ¯
                   </label>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-3">
@@ -991,14 +992,14 @@ export default function AdminBlogDashboard({
                       href={`/blog/${post.slug}`}
                       className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
                     >
-                      عرض
+                      Ø¹Ø±Ø¶
                     </Link>
                     <button
                       type="button"
                       onClick={() => handleEdit(post)}
                       className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
                     >
-                      تعديل
+                      ØªØ¹Ø¯ÙŠÙ„
                     </button>
                     <button
                       type="button"
@@ -1006,7 +1007,7 @@ export default function AdminBlogDashboard({
                       disabled={isDeleting}
                       className="rounded-2xl border border-rose-200 bg-white px-4 py-3 text-sm font-semibold text-rose-700 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-70"
                     >
-                      حذف
+                      Ø­Ø°Ù
                     </button>
                   </div>
                 </div>
@@ -1017,7 +1018,7 @@ export default function AdminBlogDashboard({
         {filteredPosts.length > 0 ? (
           <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
             <div className="text-xs font-semibold text-slate-500">
-              عرض {visiblePosts.length} من {filteredPosts.length} مقالة
+              Ø¹Ø±Ø¶ {visiblePosts.length} Ù…Ù† {filteredPosts.length} Ù…Ù‚Ø§Ù„Ø©
             </div>
             <div className="flex flex-wrap items-center gap-2">
               {canReopenFold ? (
@@ -1026,7 +1027,7 @@ export default function AdminBlogDashboard({
                   onClick={reopenFoldedPostsList}
                   className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
                 >
-                  فتح الطي
+                  ÙØªØ­ Ø§Ù„Ø·ÙŠ
                 </button>
               ) : null}
               {canLoadMore ? (
@@ -1035,7 +1036,7 @@ export default function AdminBlogDashboard({
                   onClick={showMorePosts}
                   className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
                 >
-                  عرض المزيد
+                  Ø¹Ø±Ø¶ Ø§Ù„Ù…Ø²ÙŠØ¯
                 </button>
               ) : null}
               {canCollapse ? (
@@ -1044,7 +1045,7 @@ export default function AdminBlogDashboard({
                   onClick={collapsePostsList}
                   className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
                 >
-                  طي القائمة
+                  Ø·ÙŠ Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©
                 </button>
               ) : null}
             </div>
@@ -1054,3 +1055,7 @@ export default function AdminBlogDashboard({
     </div>
   );
 }
+
+
+
+

@@ -1747,3 +1747,5 @@ Import trace for requested module:
 ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
  GET /admin 200 in 6.2s (compile: 2.7s, render: 3.5s)
  GET /blog/post-20260322174029 200 in 8.0s (compile: 3.3s, render: 4.7s)
+ GET /admin 200 in 750ms (compile: 68ms, render: 682ms)
+ GET /blog/post-20260322174029 200 in 723ms (compile: 263ms, render: 460ms)

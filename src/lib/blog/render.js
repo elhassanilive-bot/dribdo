@@ -31,6 +31,13 @@ export function estimateReadingTime(content) {
   return Math.max(1, Math.ceil(words / 220));
 }
 
+export function formatCategoryLabel(category) {
+  const value = String(category || "").trim();
+  if (!value) return "";
+  if (value.toLowerCase() === "forum") return "منتدى الأعضاء";
+  return value;
+}
+
 export function renderPlainContent(content) {
   const text = stripHtml(content);
   if (!text) return [];

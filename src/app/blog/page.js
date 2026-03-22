@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { isBlogEnabled, listCategorySummaries, listPostsDetailedPaginated, listTagSummaries, listTopPosts } from "@/lib/blog/posts";
 import BlogPostsPaginatedGrid from "@/components/blog/BlogPostsPaginatedGrid";
+import { formatCategoryLabel } from "@/lib/blog/render";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -111,7 +112,7 @@ export default async function BlogIndex({ searchParams }) {
                             href={`/blog/category/${category.slug}`}
                             className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-semibold text-slate-700 hover:border-orange-200 hover:text-orange-700"
                           >
-                            {category.name} ({category.count})
+                            {formatCategoryLabel(category.name)} ({category.count})
                           </Link>
                         ))}
                       </div>
@@ -127,7 +128,7 @@ export default async function BlogIndex({ searchParams }) {
                                 href={`/blog/category/${category.slug}`}
                                 className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-700 hover:border-orange-200 hover:text-orange-700"
                               >
-                                {category.name} ({category.count})
+                                {formatCategoryLabel(category.name)} ({category.count})
                               </Link>
                             ))}
                           </div>

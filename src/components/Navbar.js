@@ -6,8 +6,10 @@ import { useState } from 'react';
 const links = [
   { href: '/', label: 'الرئيسية' },
   { href: '/features', label: 'المميزات' },
+  { href: '/forum', label: 'المنتدى' },
   { href: '/blog', label: 'المدونة' },
   { href: '/download', label: 'التحميل' },
+  { href: '/account', label: 'الحساب' },
   { href: '/admin', label: 'الإدارة' },
 ];
 

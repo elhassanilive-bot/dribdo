@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Cairo:wght@400;700;800&family=Tajawal:wght@400;500;700;800&display=swap");
+﻿@import url("https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Cairo:wght@400;700;800&family=Tajawal:wght@400;500;700;800&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -210,23 +210,6 @@ body {
   margin: 2rem 0;
 }
 
-.blog-pages-compact .blog-prose {
-  font-size: 0.95rem;
-  line-height: 1.85;
-}
-
-.blog-pages-compact .blog-prose h1 {
-  font-size: 1.76rem;
-}
-
-.blog-pages-compact .blog-prose h2 {
-  font-size: 1.47rem;
-}
-
-.blog-pages-compact .blog-prose h3 {
-  font-size: 1.23rem;
-}
-
 .rt-font-cairo {
   font-family: "Cairo", sans-serif;
 }
@@ -300,15 +283,6 @@ body {
 }
 
 .blog-editor-surface h1 {
-  font-size: 1.75rem;
-}
-
-.blog-editor-surface h2 {
-  font-size: 1.45rem;
-}
-
-.blog-editor-surface h3 {
-  font-size: 1.2rem;
 }
 
 .blog-editor-surface blockquote {

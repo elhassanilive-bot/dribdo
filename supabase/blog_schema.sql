@@ -34,9 +34,22 @@ create table if not exists public.blog_posts (
   tags text[] not null default '{}'::text[],
   status public.blog_post_status not null default 'draft',
   published_at timestamptz,
+  permalink_style text,
+  permalink_template text,
+  view_count int not null default 0,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+-- Ensure new column exists when table was created previously
+alter table public.blog_posts
+  add column if not exists view_count int not null default 0;
+
+alter table public.blog_posts
+  add column if not exists permalink_style text;
+
+alter table public.blog_posts
+  add column if not exists permalink_template text;
 
 create index if not exists blog_posts_status_published_at_idx
   on public.blog_posts (status, published_at desc);
@@ -92,6 +105,27 @@ drop trigger if exists blog_posts_set_updated_at on public.blog_posts;
 create trigger blog_posts_set_updated_at
 before update on public.blog_posts
 for each row execute function public.set_updated_at();
+
+-- Increment views via RPC (bypasses RLS safely for published posts)
+create or replace function public.increment_blog_post_views(p_post_id uuid)
+returns int
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  new_count int;
+begin
+  update public.blog_posts
+  set view_count = view_count + 1
+  where id = p_post_id and status = 'published'
+  returning view_count into new_count;
+
+  return coalesce(new_count, 0);
+end;
+$$;
+
+grant execute on function public.increment_blog_post_views(uuid) to anon, authenticated;
 
 -- RLS
 alter table public.blog_posts enable row level security;
@@ -163,4 +197,3 @@ drop policy if exists blog_links_write_authenticated on public.blog_post_links;
 -- for insert
 -- to anon, authenticated
 -- with check (true);
-

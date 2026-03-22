@@ -158,6 +158,21 @@ export default async function AdminHome({ searchParams }) {
             </div>
 
             <div className="rounded-3xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 p-10">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">بلاغات التعليقات</h2>
+              <p className="mt-3 text-gray-700 dark:text-gray-300 leading-relaxed">
+                راجع البلاغات واتخذ الإجراء المناسب لإخفاء أو حذف التعليقات المخالفة.
+              </p>
+              <div className="mt-8 flex gap-4">
+                <Link
+                  href="/admin/reports"
+                  className="inline-flex items-center justify-center bg-red-700 hover:bg-red-800 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+                >
+                  مراجعة البلاغات
+                </Link>
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 p-10">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white">إعدادات</h2>
               <p className="mt-3 text-gray-700 dark:text-gray-300 leading-relaxed">
                 هذا المكان مخصص لاحقًا لإعدادات الموقع (روابط السوشيال، البريد، SEO…).

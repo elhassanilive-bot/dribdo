@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { estimateReadingTime, formatArabicDate } from "@/lib/blog/render";
+import { estimateReadingTime, formatArabicDate, formatCategoryLabel } from "@/lib/blog/render";
 import BlogImage from "@/components/blog/BlogImage";
 import { createSlugCandidate } from "@/lib/blog/slug";
 
@@ -50,7 +50,7 @@ function PostCard({ post }) {
                   href={`/blog/category/${createSlugCandidate(post.category)}`}
                   className="rounded-full bg-orange-50 px-1.5 py-0.5 text-[8px] tracking-[0.06em] text-orange-700 hover:bg-orange-100"
                 >
-                  {post.category}
+                  {formatCategoryLabel(post.category)}
                 </Link>
               ) : (
                 <span className="rounded-full bg-orange-50 px-1.5 py-0.5 text-[8px] tracking-[0.06em] text-orange-700">Blog</span>
@@ -232,7 +232,7 @@ export default function BlogPostsPaginatedGrid({
             <option value="">كل التصنيفات</option>
             {categories.map((category) => (
               <option key={category} value={category}>
-                {category}
+                {formatCategoryLabel(category)}
               </option>
             ))}
           </select>
@@ -312,3 +312,4 @@ export default function BlogPostsPaginatedGrid({
     </div>
   );
 }
+

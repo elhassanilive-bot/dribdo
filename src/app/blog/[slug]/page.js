@@ -1,9 +1,10 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { getPostBySlugDetailed, getPostViewsCount, listRelatedPosts } from "@/lib/blog/posts";
-import { estimateReadingTime, formatArabicDate } from "@/lib/blog/render";
+import { estimateReadingTime, formatArabicDate, formatCategoryLabel } from "@/lib/blog/render";
 import { buildTableOfContents, injectHeadingAnchors, renderStoredBlogContent } from "@/lib/blog/content";
 import BlogImage from "@/components/blog/BlogImage";
 import BlogViewTracker from "@/components/blog/BlogViewTracker";
+import PostInteractions from "@/components/blog/PostInteractions";
 import { site } from "@/config/site";
 
 export const dynamic = "force-dynamic";
@@ -75,6 +76,8 @@ export default async function BlogPostPage({ params }) {
   const readingTime = estimateReadingTime(post.content);
   const viewsCount = await getPostViewsCount(post.id);
   const relatedPosts = await listRelatedPosts(post, { limit: 3 });
+  const isForumPost = String(post.category || "").toLowerCase() === "forum";
+  const categoryLabel = formatCategoryLabel(post.category) || "مقال";
   const articleUrl = `${site.url}/blog/${post.slug}`;
   const jsonLd = {
     "@context": "https://schema.org",
@@ -110,17 +113,22 @@ export default async function BlogPostPage({ params }) {
                 المدونة
               </Link>
               <span>/</span>
-              <span>{post.category || "مقال"}</span>
+              <span>{categoryLabel}</span>
             </nav>
 
             <div className="mt-6 flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
-              <span className="rounded-full bg-orange-50 px-2.5 py-1 text-orange-700">{post.category || "Blog"}</span>
+              <span className="rounded-full bg-orange-50 px-2.5 py-1 text-orange-700">{categoryLabel}</span>
               <span>{formatArabicDate(post.publishedAt || post.createdAt)}</span>
               <span>{readingTime} دقائق قراءة</span>
               <span>{viewsCount} مشاهدة</span>
             </div>
 
-            <h1 className="mt-4 max-w-4xl text-[1.9rem] font-black tracking-tight text-slate-950 sm:text-[2.4rem] lg:text-[3rem]">
+            <h1
+              className={[
+                "mt-4 max-w-4xl font-black tracking-tight text-slate-950",
+                isForumPost ? "text-[1.3rem] sm:text-[1.6rem] lg:text-[1.9rem]" : "text-[1.9rem] sm:text-[2.4rem] lg:text-[3rem]",
+              ].join(" ")}
+            >
               {post.title}
             </h1>
 
@@ -160,9 +168,12 @@ export default async function BlogPostPage({ params }) {
 
       <section className="pb-16 sm:pb-20">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_290px] lg:px-8">
-          <article className="rounded-[2rem] border border-slate-200 bg-white px-6 py-8 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.45)] sm:px-8 sm:py-10">
-            <div className="blog-prose max-w-none" dangerouslySetInnerHTML={{ __html: html }} />
-          </article>
+          <div className="space-y-6">
+            <article className="rounded-[2rem] border border-slate-200 bg-white px-6 py-8 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.45)] sm:px-8 sm:py-10">
+              <div className="blog-prose max-w-none" dangerouslySetInnerHTML={{ __html: html }} />
+            </article>
+            <PostInteractions postId={post.id} />
+          </div>
 
           <aside className="space-y-6">
             <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_20px_55px_-45px_rgba(15,23,42,0.45)]">
@@ -170,7 +181,7 @@ export default async function BlogPostPage({ params }) {
               <div className="mt-4 space-y-4 text-[13px] text-slate-600">
                 <div className="rounded-2xl bg-slate-50 px-4 py-4">
                   <div className="text-[11px] font-semibold text-slate-500">التصنيف</div>
-                  <div className="mt-1 text-[15px] font-black text-slate-950">{post.category || "عام"}</div>
+                  <div className="mt-1 text-[15px] font-black text-slate-950">{categoryLabel}</div>
                 </div>
                 <div className="rounded-2xl bg-slate-50 px-4 py-4">
                   <div className="text-[11px] font-semibold text-slate-500">تاريخ النشر</div>
@@ -226,7 +237,7 @@ export default async function BlogPostPage({ params }) {
                   href={`/blog/${related.slug}`}
                   className="rounded-2xl border border-slate-200 bg-white px-4 py-4 text-sm transition hover:border-orange-200"
                 >
-                  <div className="text-[11px] font-semibold text-slate-400">{related.category || "Blog"}</div>
+                  <div className="text-[11px] font-semibold text-slate-400">{formatCategoryLabel(related.category) || "Blog"}</div>
                   <div className="mt-1 line-clamp-2 text-[14px] font-bold text-slate-900">{related.title}</div>
                   <div className="mt-1 text-[12px] text-slate-500">{formatArabicDate(related.publishedAt || related.createdAt)}</div>
                 </Link>
@@ -238,5 +249,6 @@ export default async function BlogPostPage({ params }) {
     </div>
   );
 }
+
 
 

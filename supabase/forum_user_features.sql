@@ -1,54 +1,5 @@
--- TEMP Publishing Policies (DEV ONLY)
--- يسمح للنشر من /admin/blog باستخدام anon key بدون تسجيل دخول.
--- غير آمن للإنتاج. احذفه/عطله لاحقًا واستعمل Service Role أو Auth.
-
-alter table public.blog_posts enable row level security;
-alter table public.blog_post_assets enable row level security;
-alter table public.blog_post_links enable row level security;
-
--- Posts
-drop policy if exists blog_posts_insert_temp on public.blog_posts;
-create policy blog_posts_insert_temp
-on public.blog_posts
-for insert
-to anon, authenticated
-with check (true);
-
-drop policy if exists blog_posts_update_temp on public.blog_posts;
-create policy blog_posts_update_temp
-on public.blog_posts
-for update
-to anon, authenticated
-using (true)
-with check (true);
-
-drop policy if exists blog_posts_delete_temp on public.blog_posts;
-create policy blog_posts_delete_temp
-on public.blog_posts
-for delete
-to anon, authenticated
-using (true);
-
--- Assets
-drop policy if exists blog_assets_insert_temp on public.blog_post_assets;
-create policy blog_assets_insert_temp
-on public.blog_post_assets
-for insert
-to anon, authenticated
-with check (true);
-
--- Links
-drop policy if exists blog_links_insert_temp on public.blog_post_links;
-create policy blog_links_insert_temp
-on public.blog_post_links
-for insert
-to anon, authenticated
-with check (true);
-
--- ============================================================
--- Forum ownership + comment reactions (merged)
--- ملاحظة: هذا الجزء يشدّد صلاحيات منشورات المنتدى للمستخدم المسجّل فقط.
--- ============================================================
+-- Forum ownership + comment reactions (production-safe)
+-- Run this after blog_schema.sql + blog_interactions.sql
 
 -- 1) Post ownership columns
 alter table public.blog_posts
@@ -60,7 +11,7 @@ alter table public.blog_posts
 create index if not exists blog_posts_author_user_id_idx
   on public.blog_posts (author_user_id);
 
--- 2) Tighten forum publishing policies (remove wide-open temp policies for posts)
+-- 2) Tighten forum publishing policies (remove wide-open temp policies)
 drop policy if exists blog_posts_insert_temp on public.blog_posts;
 drop policy if exists blog_posts_update_temp on public.blog_posts;
 drop policy if exists blog_posts_delete_temp on public.blog_posts;

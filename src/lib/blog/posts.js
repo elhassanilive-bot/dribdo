@@ -1,4 +1,4 @@
-import { getSupabaseClient, isSupabaseConfigured } from "@/lib/supabase/client";
+﻿import { getSupabaseClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { getSupabaseAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 import { createSlugCandidate } from "@/lib/blog/slug";
 
@@ -117,10 +117,10 @@ export async function listPosts({ limit = 20 } = {}) {
 }
 
 export async function listPostsDetailed({ limit = 20 } = {}) {
-  if (!isSupabaseConfigured()) return { posts: [], error: "Supabase ØºÙŠØ± Ù…ÙØ¹Ø¯" };
+  if (!isSupabaseConfigured()) return { posts: [], error: "Supabase غير مُعد" };
 
   const supabase = await getSupabaseClient();
-  if (!supabase) return { posts: [], error: "Supabase client ØºÙŠØ± Ù…ØªØ§Ø­" };
+  if (!supabase) return { posts: [], error: "Supabase client غير متاح" };
 
   const { data, error } = await supabase
     .from("blog_posts")
@@ -140,10 +140,10 @@ export async function listPostsDetailedPaginated({
   category = "",
   tag = "",
 } = {}) {
-  if (!isSupabaseConfigured()) return { posts: [], total: 0, page: 1, limit, error: "Supabase ØºÙŠØ± Ù…ÙØ¹Ø¯" };
+  if (!isSupabaseConfigured()) return { posts: [], total: 0, page: 1, limit, error: "Supabase غير مُعد" };
 
   const supabase = await getSupabaseClient();
-  if (!supabase) return { posts: [], total: 0, page: 1, limit, error: "Supabase client ØºÙŠØ± Ù…ØªØ§Ø­" };
+  if (!supabase) return { posts: [], total: 0, page: 1, limit, error: "Supabase client غير متاح" };
 
   const safeLimit = Math.max(1, Math.min(Number(limit) || 9, 36));
   const safePage = Math.max(1, Number(page) || 1);
@@ -232,10 +232,10 @@ export async function listTagSummaries({ limit = 40 } = {}) {
 }
 
 export async function listPostsForAdmin({ limit = 100 } = {}) {
-  if (!isSupabaseConfigured()) return { posts: [], error: "Supabase ØºÙŠØ± Ù…ÙØ¹Ø¯" };
+  if (!isSupabaseConfigured()) return { posts: [], error: "Supabase غير مُعد" };
 
   const client = await getAdminReadClient();
-  if (!client) return { posts: [], error: "Supabase client ØºÙŠØ± Ù…ØªØ§Ø­" };
+  if (!client) return { posts: [], error: "Supabase client غير متاح" };
 
   const { data, error } = await client
     .from("blog_posts")
@@ -267,10 +267,10 @@ export async function getPostBySlug(slug) {
 }
 
 export async function getPostBySlugDetailed(slug) {
-  if (!isSupabaseConfigured()) return { post: null, error: "Supabase ØºÙŠØ± Ù…ÙØ¹Ø¯" };
+  if (!isSupabaseConfigured()) return { post: null, error: "Supabase غير مُعد" };
 
   const supabase = await getSupabaseClient();
-  if (!supabase) return { post: null, error: "Supabase client ØºÙŠØ± Ù…ØªØ§Ø­" };
+  if (!supabase) return { post: null, error: "Supabase client غير متاح" };
 
   const { data, error } = await supabase
     .from("blog_posts")
@@ -308,13 +308,13 @@ export async function listRelatedPosts(post, { limit = 3 } = {}) {
 }
 
 export async function trackPostView({ postId, viewerId }) {
-  if (!isSupabaseConfigured()) return { ok: false, error: "Supabase ØºÙŠØ± Ù…ÙØ¹Ø¯" };
+  if (!isSupabaseConfigured()) return { ok: false, error: "Supabase غير مُعد" };
   const supabase = await getSupabaseClient();
-  if (!supabase) return { ok: false, error: "Supabase client ØºÙŠØ± Ù…ØªØ§Ø­" };
+  if (!supabase) return { ok: false, error: "Supabase client غير متاح" };
 
   const safePostId = String(postId || "").trim();
   const safeViewerId = String(viewerId || "").trim();
-  if (!safePostId || !safeViewerId) return { ok: false, error: "Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ØªØªØ¨Ø¹ Ù†Ø§Ù‚ØµØ©" };
+  if (!safePostId || !safeViewerId) return { ok: false, error: "بيانات التتبع ناقصة" };
 
   const { error } = await supabase
     .from("blog_post_views")
@@ -410,7 +410,7 @@ function validatePostInput(input) {
   const hasMedia = /<(img|video|audio|iframe|table)\b/i.test(String(input.content || ""));
 
   if (!input.title || !input.excerpt || (!input.content || (!contentText && !hasMedia))) {
-    return "ÙŠØ±Ø¬Ù‰ ØªØ¹Ø¨Ø¦Ø© Ø§Ù„Ø¹Ù†ÙˆØ§Ù† ÙˆØ§Ù„Ù…Ù„Ø®Øµ ÙˆØ§Ù„Ù…Ø­ØªÙˆÙ‰.";
+    return "يرجى تعبئة العنوان والملخص والمحتوى.";
   }
 
   return null;
@@ -460,7 +460,7 @@ export async function createPost(input) {
   if (error) {
     const message =
       error.code === "23505"
-        ? "ÙŠÙˆØ¬Ø¯ Ù…Ù‚Ø§Ù„ Ø¢Ø®Ø± Ø¨Ù†ÙØ³ Ø§Ù„Ø±Ø§Ø¨Ø· Ø§Ù„Ù…Ø®ØªØµØ±. ØºÙŠÙ‘Ø± Ø§Ù„Ø¹Ù†ÙˆØ§Ù† Ø£Ùˆ slug Ø«Ù… Ø£Ø¹Ø¯ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø©."
+        ? "يوجد مقال آخر بنفس الرابط المختصر. غيّر العنوان أو slug ثم أعد المحاولة."
         : error.message;
 
     return { ok: false, error: message };
@@ -476,7 +476,7 @@ export async function updatePost(input) {
 
   const id = String(input?.id || "").trim();
   if (!id) {
-    return { ok: false, error: "Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ù‚Ø§Ù„ Ù…Ø·Ù„ÙˆØ¨ Ù„Ù„ØªØ¹Ø¯ÙŠÙ„." };
+    return { ok: false, error: "معرّف المقال مطلوب للتعديل." };
   }
 
   const normalized = normalizePostInput(input);
@@ -531,7 +531,7 @@ export async function deletePost(id) {
 
   const postId = String(id || "").trim();
   if (!postId) {
-    return { ok: false, error: "Ù…Ø¹Ø±Ù‘Ù Ø§Ù„Ù…Ù‚Ø§Ù„ Ù…Ø·Ù„ÙˆØ¨ Ù„Ù„Ø­Ø°Ù." };
+    return { ok: false, error: "معرّف المقال مطلوب للحذف." };
   }
 
   const writer = await getWriteClient();
@@ -543,23 +543,23 @@ export async function deletePost(id) {
 
   if (error) {
     const details = [error.message, error.details, error.hint].filter(Boolean).join(" | ");
-    return { ok: false, error: details || "ØªØ¹Ø°Ø± Ø­Ø°Ù Ø§Ù„Ù…Ù‚Ø§Ù„." };
+    return { ok: false, error: details || "تعذر حذف المقال." };
   }
 
   // Verify deletion to avoid false-success states when RLS blocks row deletion silently.
   const verifier = await getAdminReadClient();
   if (!verifier) {
-    return { ok: false, error: "ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ù†ØªÙŠØ¬Ø© Ø§Ù„Ø­Ø°Ù: Supabase client ØºÙŠØ± Ù…ØªØ§Ø­." };
+    return { ok: false, error: "تعذر التحقق من نتيجة الحذف: Supabase client غير متاح." };
   }
 
   const { data: existingRow, error: verifyError } = await verifier.from("blog_posts").select("id").eq("id", postId).maybeSingle();
   if (verifyError) {
     const details = [verifyError.message, verifyError.details, verifyError.hint].filter(Boolean).join(" | ");
-    return { ok: false, error: `ØªÙ… ØªÙ†ÙÙŠØ° Ø·Ù„Ø¨ Ø§Ù„Ø­Ø°Ù Ù„ÙƒÙ† ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ù†ØªÙŠØ¬Ø©: ${details}` };
+    return { ok: false, error: `تم تنفيذ طلب الحذف لكن تعذر التحقق من النتيجة: ${details}` };
   }
 
   if (existingRow?.id) {
-    return { ok: false, error: "Ù„Ù… ÙŠØªÙ… Ø­Ø°Ù Ø§Ù„Ù…Ù‚Ø§Ù„ ÙØ¹Ù„ÙŠÙ‹Ø§. ØªØ­Ù‚Ù‚ Ù…Ù† Ø³ÙŠØ§Ø³Ø§Øª RLS Ø§Ù„Ø®Ø§ØµØ© Ø¨Ø¹Ù…Ù„ÙŠØ© delete Ø£Ùˆ Ø§Ø³ØªØ®Ø¯Ù… Service Role." };
+    return { ok: false, error: "لم يتم حذف المقال فعليًا. تحقق من سياسات RLS الخاصة بعملية delete أو استخدم Service Role." };
   }
 
   return { ok: true, id: postId };
@@ -572,7 +572,7 @@ export async function deletePosts(ids) {
 
   const normalizedIds = [...new Set((Array.isArray(ids) ? ids : []).map((id) => String(id || "").trim()).filter(Boolean))];
   if (!normalizedIds.length) {
-    return { ok: false, error: "Ù„Ø§ ØªÙˆØ¬Ø¯ Ù…Ù‚Ø§Ù„Ø§Øª Ù…Ø­Ø¯Ø¯Ø© Ù„Ù„Ø­Ø°Ù.", deletedIds: [] };
+    return { ok: false, error: "لا توجد مقالات محددة للحذف.", deletedIds: [] };
   }
 
   const writer = await getWriteClient();
@@ -583,31 +583,31 @@ export async function deletePosts(ids) {
   const { error } = await writer.from("blog_posts").delete().in("id", normalizedIds);
   if (error) {
     const details = [error.message, error.details, error.hint].filter(Boolean).join(" | ");
-    return { ok: false, error: details || "ØªØ¹Ø°Ø± Ø­Ø°Ù Ø§Ù„Ù…Ù‚Ø§Ù„Ø§Øª.", deletedIds: [] };
+    return { ok: false, error: details || "تعذر حذف المقالات.", deletedIds: [] };
   }
 
   const verifier = await getAdminReadClient();
   if (!verifier) {
-    return { ok: false, error: "ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ù†ØªÙŠØ¬Ø© Ø§Ù„Ø­Ø°Ù: Supabase client ØºÙŠØ± Ù…ØªØ§Ø­.", deletedIds: [] };
+    return { ok: false, error: "تعذر التحقق من نتيجة الحذف: Supabase client غير متاح.", deletedIds: [] };
   }
 
   const { data: remainingRows, error: verifyError } = await verifier.from("blog_posts").select("id").in("id", normalizedIds);
   if (verifyError) {
     const details = [verifyError.message, verifyError.details, verifyError.hint].filter(Boolean).join(" | ");
-    return { ok: false, error: `ØªÙ… ØªÙ†ÙÙŠØ° Ø·Ù„Ø¨ Ø§Ù„Ø­Ø°Ù Ù„ÙƒÙ† ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ù†ØªÙŠØ¬Ø©: ${details}`, deletedIds: [] };
+    return { ok: false, error: `تم تنفيذ طلب الحذف لكن تعذر التحقق من النتيجة: ${details}`, deletedIds: [] };
   }
 
   const remainingIds = new Set((remainingRows || []).map((row) => String(row.id || "")));
   const deletedIds = normalizedIds.filter((id) => !remainingIds.has(id));
 
   if (!deletedIds.length) {
-    return { ok: false, error: "Ù„Ù… ÙŠØªÙ… Ø­Ø°Ù Ø£ÙŠ Ù…Ù‚Ø§Ù„ ÙØ¹Ù„ÙŠÙ‹Ø§. ØªØ­Ù‚Ù‚ Ù…Ù† Ø³ÙŠØ§Ø³Ø§Øª RLS Ø§Ù„Ø®Ø§ØµØ© Ø¨Ø¹Ù…Ù„ÙŠØ© delete.", deletedIds: [] };
+    return { ok: false, error: "لم يتم حذف أي مقال فعليًا. تحقق من سياسات RLS الخاصة بعملية delete.", deletedIds: [] };
   }
 
   if (remainingIds.size > 0) {
     return {
       ok: false,
-      error: `ØªÙ… Ø­Ø°Ù ${deletedIds.length} Ù…Ù‚Ø§Ù„(Ø§Øª) ÙÙ‚Ø·. ØªØ¹Ø°Ø± Ø­Ø°Ù ${remainingIds.size} Ù…Ù‚Ø§Ù„(Ø§Øª) Ø¨Ø³Ø¨Ø¨ Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª Ø£Ùˆ Ø§Ù„Ù‚ÙŠÙˆØ¯.`,
+      error: `تم حذف ${deletedIds.length} مقال(ات) فقط. تعذر حذف ${remainingIds.size} مقال(ات) بسبب الصلاحيات أو القيود.`,
       deletedIds,
     };
   }

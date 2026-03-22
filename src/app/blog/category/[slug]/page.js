@@ -12,11 +12,11 @@ export async function generateMetadata({ params }) {
   const resolved = await params;
   const categories = await listCategorySummaries({ limit: 120 });
   const category = categories.find((item) => item.slug === resolved.slug);
-  const title = category ? `ØªØµÙ†ÙŠÙ: ${formatCategoryLabel(category.name)}` : "ØªØµÙ†ÙŠÙ ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯";
+  const title = category ? `تصنيف: ${formatCategoryLabel(category.name)}` : "تصنيف غير موجود";
 
   return {
     title,
-    description: `ØµÙØ­Ø© Ø§Ù„ØªØµÙ†ÙŠÙ ${formatCategoryLabel(category?.name || "")} ÙÙŠ Ø§Ù„Ù…Ø¯ÙˆÙ†Ø©`,
+    description: `صفحة التصنيف ${formatCategoryLabel(category?.name || "")} في المدونة`,
     alternates: { canonical: `/blog/category/${resolved.slug}` },
   };
 }
@@ -29,9 +29,9 @@ export default async function BlogCategoryPage({ params }) {
   if (!category) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-12 text-center">
-        <h1 className="text-2xl font-black text-slate-900">Ø§Ù„ØªØµÙ†ÙŠÙ ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯</h1>
+        <h1 className="text-2xl font-black text-slate-900">التصنيف غير موجود</h1>
         <Link href="/blog" className="mt-4 inline-flex rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700">
-          Ø§Ù„Ø¹ÙˆØ¯Ø© Ù„Ù„Ù…Ø¯ÙˆÙ†Ø©
+          العودة للمدونة
         </Link>
       </div>
     );
@@ -46,11 +46,11 @@ export default async function BlogCategoryPage({ params }) {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-4 text-sm text-slate-500">
             <Link href="/blog" className="font-semibold hover:text-orange-700">
-              Ø§Ù„Ù…Ø¯ÙˆÙ†Ø©
+              المدونة
             </Link>{" "}
             / <span>{formatCategoryLabel(category.name)}</span>
           </div>
-          <h1 className="mb-6 text-2xl font-black text-slate-950">ØªØµÙ†ÙŠÙ: {formatCategoryLabel(category.name)}</h1>
+          <h1 className="mb-6 text-2xl font-black text-slate-950">تصنيف: {formatCategoryLabel(category.name)}</h1>
           <BlogPostsPaginatedGrid posts={filtered} />
         </div>
       </section>

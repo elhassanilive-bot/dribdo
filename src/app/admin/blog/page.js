@@ -2,9 +2,22 @@
 import { redirect } from "next/navigation";
 import AdminOwnerGate from "@/components/admin/AdminOwnerGate";
 import AdminBlogDashboard from "@/components/blog/AdminBlogDashboard";
-import { createPost, deletePost, deletePosts, isBlogPublishingEnabled, listPostsForAdmin, updatePost } from "@/lib/blog/posts";
+import {
+  createPost,
+  deletePost,
+  deletePosts,
+  isBlogPublishingEnabled,
+  listPostsForAdmin,
+  updatePost,
+} from "@/lib/blog/posts";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
-import { clearAdminSessionCookie, hasValidAdminSession, requireAdminSession, setAdminSessionCookie, validateAdminAccessToken } from "@/lib/admin/access";
+import {
+  clearAdminSessionCookie,
+  hasValidAdminSession,
+  requireAdminSession,
+  setAdminSessionCookie,
+  validateAdminAccessToken,
+} from "@/lib/admin/access";
 
 export const metadata = {
   title: "لوحة المدونة",
@@ -29,14 +42,13 @@ function buildAdminErrorMessage(searchParams) {
   if (searchParams?.auth !== "denied") return null;
 
   const details = [];
-  if (searchParams?.reason === "email_mismatch") {
+  if (searchParams?.reason === "not_in_admin_table") {
     if (searchParams?.uid) details.push(`المعرف الحالي: ${searchParams.uid}`);
-    if (searchParams?.expected) details.push(`البريد المسموح: ${searchParams.expected}`);
     if (searchParams?.email) details.push(`البريد الحالي: ${searchParams.email}`);
   }
 
   return details.length
-    ? `هذا الحساب غير مخول للوصول إلى لوحة الإدارة. ${details.join(" | ")}`
+    ? `هذا الحساب غير موجود في جدول إدارة المدونة. ${details.join(" | ")}`
     : "هذا الحساب غير مخول للوصول إلى لوحة الإدارة.";
 }
 
@@ -49,11 +61,10 @@ export default async function AdminBlogPage({ searchParams }) {
 
     const result = await validateAdminAccessToken(formData.get("accessToken"));
     if (!result.ok) {
-      if (result.code === "email_mismatch") {
+      if (result.code === "not_in_admin_table") {
         const uid = encodeURIComponent(result.actualUserId || "");
-        const expected = encodeURIComponent(result.expectedEmail || "");
         const email = encodeURIComponent(result.actualEmail || "");
-        redirect(`/admin/blog?auth=denied&reason=email_mismatch&uid=${uid}&expected=${expected}&email=${email}`);
+        redirect(`/admin/blog?auth=denied&reason=not_in_admin_table&uid=${uid}&email=${email}`);
       }
 
       redirect("/admin/blog?auth=denied");
@@ -156,11 +167,11 @@ export default async function AdminBlogPage({ searchParams }) {
 
   if (!sessionValid) {
     return (
-      <div className="w-full bg-[linear-gradient(180deg,#fff7ed_0%,#fff 28%,#f8fafc_100%)]">
+      <div className="w-full bg-[linear-gradient(180deg,#fff7ed_0%,#fff_28%,#f8fafc_100%)]">
         <AdminOwnerGate
           authorizeAction={authorizeAction}
           title="دخول لوحة المقالات"
-          description={loginError || "يجب تسجيل الدخول بحساب المالك لفتح لوحة المقالات."}
+          description={loginError || "يجب تسجيل الدخول بحساب موجود في جدول إدارة المدونة لفتح لوحة المقالات."}
         />
       </div>
     );
@@ -169,7 +180,7 @@ export default async function AdminBlogPage({ searchParams }) {
   const { posts, error: adminListError } = supabaseReady ? await listPostsForAdmin({ limit: 100 }) : { posts: [], error: null };
 
   return (
-    <div className="w-full bg-[linear-gradient(180deg,#fff7ed_0%,#fff 28%,#f8fafc_100%)]">
+    <div className="w-full bg-[linear-gradient(180deg,#fff7ed_0%,#fff_28%,#f8fafc_100%)]">
       <section className="py-8 sm:py-12">
         <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
           <form action={logoutAction} className="self-end">
@@ -195,4 +206,3 @@ export default async function AdminBlogPage({ searchParams }) {
     </div>
   );
 }
-

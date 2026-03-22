@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import { getSupabaseClient } from "@/lib/supabase/client";
@@ -6,7 +6,7 @@ import { getSupabaseClient } from "@/lib/supabase/client";
 export default function AdminOwnerGate({ authorizeAction, title = "دخول لوحة الإدارة", description }) {
   const formRef = useRef(null);
   const [accessToken, setAccessToken] = useState("");
-  const [status, setStatus] = useState("جارٍ التحقق من الحساب...");
+  const [status, setStatus] = useState("جارٍ التحقق من الجلسة...");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function AdminOwnerGate({ authorizeAction, title = "دخول لو
 
       if (sessionError || !data?.session?.access_token) {
         setStatus("");
-        setError("يجب تسجيل الدخول أولًا بالحساب المالك.");
+        setError("يجب تسجيل الدخول أولاً بحساب موجود في قائمة إدارة المدونة.");
         return;
       }
 
@@ -50,7 +50,7 @@ export default function AdminOwnerGate({ authorizeAction, title = "دخول لو
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_20px_55px_-45px_rgba(15,23,42,0.5)] sm:p-8">
           <h1 className="text-2xl font-black text-slate-950">{title}</h1>
           <p className="mt-3 text-sm leading-7 text-slate-600">
-            {description || "هذه الصفحة لا تظهر إلا لصاحب الحساب المخول. يجب أن تكون مسجل الدخول بنفس الحساب."}
+            {description || "هذه الصفحة لا تظهر إلا للحسابات الموجودة في جدول إدارة المدونة."}
           </p>
           <form ref={formRef} action={authorizeAction} className="mt-6 space-y-4">
             <input type="hidden" name="accessToken" value={accessToken} />

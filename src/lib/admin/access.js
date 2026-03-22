@@ -2,14 +2,12 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 import { getSupabaseAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 
-export const ADMIN_OWNER_EMAIL =
-  process.env.BLOG_ADMIN_OWNER_EMAIL || "elhassanilive@gmail.com";
 export const ADMIN_SESSION_COOKIE = "dribdo_admin_owner_session";
 export const ADMIN_SESSION_MAX_AGE = 60 * 60 * 24 * 14;
 
-function createAdminSessionValue(email) {
+function createAdminSessionValue() {
   const seed = process.env.NEXT_PUBLIC_SUPABASE_URL || "dribdo-admin";
-  return createHash("sha256").update(`${seed}:${String(email || "").toLowerCase()}`).digest("hex");
+  return createHash("sha256").update(`${seed}:blog-admin-session`).digest("hex");
 }
 
 function secureEqual(a, b) {
@@ -23,12 +21,12 @@ export async function hasValidAdminSession() {
   const cookieStore = await cookies();
   const cookieValue = cookieStore.get(ADMIN_SESSION_COOKIE)?.value || "";
   if (!cookieValue) return false;
-  return secureEqual(cookieValue, createAdminSessionValue(ADMIN_OWNER_EMAIL));
+  return secureEqual(cookieValue, createAdminSessionValue());
 }
 
 export async function setAdminSessionCookie() {
   const cookieStore = await cookies();
-  cookieStore.set(ADMIN_SESSION_COOKIE, createAdminSessionValue(ADMIN_OWNER_EMAIL), {
+  cookieStore.set(ADMIN_SESSION_COOKIE, createAdminSessionValue(), {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
@@ -67,26 +65,45 @@ export async function validateAdminAccessToken(accessToken) {
   }
 
   const actualEmail = String(data.user.email || "").toLowerCase();
-  const expectedEmail = String(ADMIN_OWNER_EMAIL || "").toLowerCase();
+  const { data: adminUser, error: adminLookupError } = await supabaseAdmin
+    .from("blog_admin_users")
+    .select("id, email, role, is_active, auth_user_id")
+    .eq("email", actualEmail)
+    .eq("is_active", true)
+    .maybeSingle();
 
-  if (actualEmail !== expectedEmail) {
+  if (adminLookupError) {
     return {
       ok: false,
-      code: "email_mismatch",
-      error: "هذا الحساب غير مخول للوصول إلى لوحة الإدارة.",
-      actualUserId: data.user.id,
-      actualEmail,
-      expectedEmail,
+      code: "admin_lookup_failed",
+      error: "تعذر التحقق من صلاحيات الإدارة من قاعدة البيانات.",
     };
   }
 
-  return { ok: true, user: data.user };
+  if (!adminUser) {
+    return {
+      ok: false,
+      code: "not_in_admin_table",
+      error: "هذا الحساب غير مخول للوصول إلى لوحة الإدارة.",
+      actualUserId: data.user.id,
+      actualEmail,
+    };
+  }
+
+  if (!adminUser.auth_user_id) {
+    await supabaseAdmin
+      .from("blog_admin_users")
+      .update({ auth_user_id: data.user.id })
+      .eq("id", adminUser.id);
+  }
+
+  return { ok: true, user: data.user, adminUser };
 }
 
 export async function requireAdminSession() {
   const valid = await hasValidAdminSession();
   if (!valid) {
-    return { ok: false, error: "يجب تسجيل الدخول بالحساب المالك للوصول إلى الإدارة." };
+    return { ok: false, error: "يجب تسجيل الدخول بحساب موجود في قائمة إدارة المدونة." };
   }
   return { ok: true };
 }

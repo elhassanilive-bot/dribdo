@@ -2,9 +2,15 @@ import { getSupabaseClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { getSupabaseAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 import { createSlugCandidate } from "@/lib/blog/slug";
 
+<<<<<<< HEAD
 const POST_LIST_COLUMNS_BASE =
   "id,slug,title,excerpt,content,cover_image_url,category,tags,published_at,created_at,updated_at,status,permalink_style,permalink_template";
 const POST_LIST_COLUMNS_WITH_VIEWS = `${POST_LIST_COLUMNS_BASE},view_count`;
+=======
+const POST_LIST_COLUMNS =
+  "id,slug,title,excerpt,content,cover_image_url,category,tags,published_at,created_at,updated_at,status";
+const PUBLIC_STATUS = "published";
+>>>>>>> 300f687 (dribdo initial)
 
 export function isBlogEnabled() {
   return isSupabaseConfigured();
@@ -30,10 +36,35 @@ function normalizePost(row) {
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     status: row.status,
+<<<<<<< HEAD
     viewCount: row.view_count ?? 0,
     permalinkStyle: row.permalink_style || "",
     permalinkTemplate: row.permalink_template || "",
+=======
+    workflowStatus:
+      row.status === "published" && row.published_at && new Date(row.published_at).getTime() > Date.now()
+        ? "scheduled"
+        : row.status,
+>>>>>>> 300f687 (dribdo initial)
   };
+}
+
+function getNowIso() {
+  return new Date().toISOString();
+}
+
+function isPubliclyVisiblePost(post) {
+  if (!post) return false;
+  if (post.status !== PUBLIC_STATUS) return false;
+  if (!post.publishedAt) return true;
+  return new Date(post.publishedAt).getTime() <= Date.now();
+}
+
+function normalizeStatus(status) {
+  const value = String(status || "").trim().toLowerCase();
+  if (value === "draft" || value === "published" || value === "archived") return value;
+  if (value === "scheduled") return "published";
+  return "published";
 }
 
 function normalizeTags(tags) {
@@ -42,6 +73,7 @@ function normalizeTags(tags) {
   return [...new Set(tags.map((tag) => String(tag || "").trim()).filter(Boolean))];
 }
 
+<<<<<<< HEAD
 function buildSlugVariants(slug) {
   const base = String(slug || "").trim();
   if (!base) return [];
@@ -54,6 +86,12 @@ async function getWriteClient() {
   return isSupabaseAdminConfigured() ? getSupabaseAdminClient() : getSupabaseClient();
 }
 
+=======
+async function getWriteClient() {
+  return isSupabaseAdminConfigured() ? getSupabaseAdminClient() : getSupabaseClient();
+}
+
+>>>>>>> 300f687 (dribdo initial)
 async function getAdminReadClient() {
   return isSupabaseAdminConfigured() ? getSupabaseAdminClient() : getSupabaseClient();
 }
@@ -111,7 +149,12 @@ export async function listPosts({ limit = 20 } = {}) {
     return [];
   }
 
+<<<<<<< HEAD
   return (data || []).map(normalizePost);
+=======
+  if (error) return [];
+  return (data || []).map(normalizePost).filter(isPubliclyVisiblePost);
+>>>>>>> 300f687 (dribdo initial)
 }
 
 export async function listPostsDetailed({ limit = 20 } = {}) {
@@ -183,6 +226,125 @@ export async function listPostsForAdmin({ limit = 100 } = {}) {
     return { posts: [], error: error.message };
   }
 
+<<<<<<< HEAD
+=======
+  if (error) return { posts: [], error: error.message };
+  return { posts: (data || []).map(normalizePost).filter(isPubliclyVisiblePost), error: null };
+}
+
+export async function listPostsDetailedPaginated({
+  page = 1,
+  limit = 9,
+  query = "",
+  category = "",
+  tag = "",
+} = {}) {
+  if (!isSupabaseConfigured()) return { posts: [], total: 0, page: 1, limit, error: "Supabase غير مُعد" };
+
+  const supabase = await getSupabaseClient();
+  if (!supabase) return { posts: [], total: 0, page: 1, limit, error: "Supabase client غير متاح" };
+
+  const safeLimit = Math.max(1, Math.min(Number(limit) || 9, 36));
+  const safePage = Math.max(1, Number(page) || 1);
+  const from = (safePage - 1) * safeLimit;
+  const to = from + safeLimit - 1;
+
+  let countQuery = supabase
+    .from("blog_posts")
+    .select("id", { count: "exact", head: true })
+    .eq("status", PUBLIC_STATUS)
+    .lte("published_at", getNowIso());
+
+  let listQuery = supabase
+    .from("blog_posts")
+    .select(POST_LIST_COLUMNS)
+    .eq("status", PUBLIC_STATUS)
+    .lte("published_at", getNowIso())
+    .order("published_at", { ascending: false })
+    .range(from, to);
+
+  const trimmedQuery = String(query || "").trim();
+  if (trimmedQuery) {
+    const escaped = trimmedQuery.replace(/,/g, " ");
+    listQuery = listQuery.or(`title.ilike.%${escaped}%,excerpt.ilike.%${escaped}%,content.ilike.%${escaped}%`);
+    countQuery = countQuery.or(`title.ilike.%${escaped}%,excerpt.ilike.%${escaped}%,content.ilike.%${escaped}%`);
+  }
+
+  if (category) {
+    listQuery = listQuery.eq("category", category);
+    countQuery = countQuery.eq("category", category);
+  }
+
+  if (tag) {
+    listQuery = listQuery.contains("tags", [tag]);
+    countQuery = countQuery.contains("tags", [tag]);
+  }
+
+  const [countRes, listRes] = await Promise.all([countQuery, listQuery]);
+
+  if (countRes.error) {
+    return { posts: [], total: 0, page: safePage, limit: safeLimit, error: countRes.error.message };
+  }
+
+  if (listRes.error) {
+    return { posts: [], total: 0, page: safePage, limit: safeLimit, error: listRes.error.message };
+  }
+
+  return {
+    posts: (listRes.data || []).map(normalizePost).filter(isPubliclyVisiblePost),
+    total: countRes.count || 0,
+    page: safePage,
+    limit: safeLimit,
+    error: null,
+  };
+}
+
+export async function listCategorySummaries({ limit = 20 } = {}) {
+  const { posts } = await listPostsDetailed({ limit: Math.max(limit, 300) });
+  const map = new Map();
+  for (const post of posts) {
+    const key = String(post.category || "").trim();
+    if (!key) continue;
+    map.set(key, (map.get(key) || 0) + 1);
+  }
+
+  return [...map.entries()]
+    .map(([name, count]) => ({ name, count, slug: createSlugCandidate(name) }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "ar"));
+}
+
+export async function listTagSummaries({ limit = 40 } = {}) {
+  const { posts } = await listPostsDetailed({ limit: Math.max(limit, 300) });
+  const map = new Map();
+  for (const post of posts) {
+    for (const rawTag of post.tags || []) {
+      const tag = String(rawTag || "").trim();
+      if (!tag) continue;
+      map.set(tag, (map.get(tag) || 0) + 1);
+    }
+  }
+
+  return [...map.entries()]
+    .map(([name, count]) => ({ name, count, slug: createSlugCandidate(name) }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "ar"))
+    .slice(0, limit);
+}
+
+export async function listPostsForAdmin({ limit = 100 } = {}) {
+  if (!isSupabaseConfigured()) return { posts: [], error: "Supabase غير مُعد" };
+
+  const client = await getAdminReadClient();
+  if (!client) return { posts: [], error: "Supabase client غير متاح" };
+
+  const { data, error } = await client
+    .from("blog_posts")
+    .select(POST_LIST_COLUMNS)
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) return { posts: [], error: error.message };
+>>>>>>> 300f687 (dribdo initial)
   return { posts: (data || []).map(normalizePost), error: null };
 }
 
@@ -249,6 +411,7 @@ export async function getPostById(id) {
     .eq("status", "published")
     .maybeSingle();
 
+<<<<<<< HEAD
   if (error) {
     if (String(error.message || "").includes("view_count")) {
       const fallback = await supabase
@@ -264,6 +427,11 @@ export async function getPostById(id) {
   }
   if (!data) return null;
   return normalizePost(data);
+=======
+  if (error || !data) return null;
+  const post = normalizePost(data);
+  return isPubliclyVisiblePost(post) ? post : null;
+>>>>>>> 300f687 (dribdo initial)
 }
 
 export async function getPostBySlugDetailed(slug) {
@@ -282,6 +450,7 @@ export async function getPostBySlugDetailed(slug) {
       .eq("status", "published")
       .maybeSingle();
 
+<<<<<<< HEAD
   const { data, error } = await baseQuery("eq", normalizedSlug);
 
   if (error) {
@@ -375,6 +544,97 @@ export async function getPostByIdDetailed(id) {
     return { post: null, error: "تعذر العثور على المقال في هذا المشروع. تحقق من مفاتيح Supabase." };
   }
   return { post: normalizePost(data), error: null };
+=======
+  if (error) return { post: null, error: error.message };
+  if (!data) return { post: null, error: null };
+  const post = normalizePost(data);
+  if (!isPubliclyVisiblePost(post)) return { post: null, error: null };
+  return { post, error: null };
+}
+
+export async function listRelatedPosts(post, { limit = 3 } = {}) {
+  const { posts } = await listPostsDetailed({ limit: 120 });
+  const sourceTags = new Set((post?.tags || []).map((tag) => String(tag || "").trim()).filter(Boolean));
+  const sourceCategory = String(post?.category || "").trim();
+
+  const scored = posts
+    .filter((candidate) => candidate.slug !== post?.slug)
+    .map((candidate) => {
+      let score = 0;
+      if (sourceCategory && candidate.category === sourceCategory) score += 3;
+      for (const tag of candidate.tags || []) {
+        if (sourceTags.has(tag)) score += 2;
+      }
+      return { candidate, score };
+    })
+    .filter((row) => row.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  return scored.slice(0, limit).map((row) => row.candidate);
+}
+
+export async function trackPostView({ postId, viewerId }) {
+  if (!isSupabaseConfigured()) return { ok: false, error: "Supabase غير مُعد" };
+  const supabase = await getSupabaseClient();
+  if (!supabase) return { ok: false, error: "Supabase client غير متاح" };
+
+  const safePostId = String(postId || "").trim();
+  const safeViewerId = String(viewerId || "").trim();
+  if (!safePostId || !safeViewerId) return { ok: false, error: "بيانات التتبع ناقصة" };
+
+  const { error } = await supabase
+    .from("blog_post_views")
+    .upsert(
+      {
+        post_id: safePostId,
+        viewer_id: safeViewerId,
+        viewed_at: getNowIso(),
+      },
+      { onConflict: "post_id,viewer_id" }
+    );
+
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
+export async function getPostViewsCount(postId) {
+  if (!isSupabaseConfigured()) return 0;
+  const supabase = await getSupabaseClient();
+  if (!supabase) return 0;
+  const safePostId = String(postId || "").trim();
+  if (!safePostId) return 0;
+
+  const { count, error } = await supabase
+    .from("blog_post_views")
+    .select("id", { count: "exact", head: true })
+    .eq("post_id", safePostId);
+
+  if (error) return 0;
+  return count || 0;
+}
+
+export async function listTopPosts({ limit = 10 } = {}) {
+  const { posts } = await listPostsDetailed({ limit: 120 });
+  if (!posts.length) return [];
+
+  const supabase = await getSupabaseClient();
+  if (!supabase) return posts.slice(0, limit);
+
+  const ids = posts.map((post) => post.id);
+  const { data, error } = await supabase.from("blog_post_views").select("post_id").in("post_id", ids);
+  if (error) return posts.slice(0, limit);
+
+  const viewsMap = new Map();
+  for (const row of data || []) {
+    const postId = String(row.post_id || "");
+    viewsMap.set(postId, (viewsMap.get(postId) || 0) + 1);
+  }
+
+  return posts
+    .map((post) => ({ ...post, views: viewsMap.get(post.id) || 0 }))
+    .sort((a, b) => b.views - a.views)
+    .slice(0, limit);
+>>>>>>> 300f687 (dribdo initial)
 }
 
 function normalizePostInput(input) {
@@ -385,8 +645,21 @@ function normalizePostInput(input) {
   const category = String(input?.category || "").trim() || null;
   const tags = normalizeTags(input?.tags);
   const desiredSlug = String(input?.slug || "").trim();
+<<<<<<< HEAD
   const permalinkStyle = String(input?.permalinkStyle || "").trim() || null;
   const permalinkTemplate = String(input?.permalinkTemplate || "").trim() || null;
+=======
+  const status = normalizeStatus(input?.status);
+  const publishedAtInput = String(input?.publishedAt || "").trim();
+  const parsedPublishedAt = publishedAtInput ? new Date(publishedAtInput) : null;
+  const safePublishedAt = parsedPublishedAt && !Number.isNaN(parsedPublishedAt.getTime()) ? parsedPublishedAt.toISOString() : null;
+  const publishedAt =
+    status === "draft" || status === "archived"
+      ? null
+      : safePublishedAt
+        ? safePublishedAt
+        : getNowIso();
+>>>>>>> 300f687 (dribdo initial)
 
   return {
     title,
@@ -396,8 +669,13 @@ function normalizePostInput(input) {
     category,
     tags,
     desiredSlug,
+<<<<<<< HEAD
     permalinkStyle,
     permalinkTemplate,
+=======
+    status,
+    publishedAt,
+>>>>>>> 300f687 (dribdo initial)
   };
 }
 
@@ -450,10 +728,15 @@ export async function createPost(input) {
       cover_image_url: normalized.coverImageUrl,
       category: normalized.category,
       tags: normalized.tags,
+<<<<<<< HEAD
       permalink_style: normalized.permalinkStyle,
       permalink_template: normalized.permalinkTemplate,
       status: "published",
       published_at: new Date().toISOString(),
+=======
+      status: normalized.status,
+      published_at: normalized.publishedAt,
+>>>>>>> 300f687 (dribdo initial)
     })
     .select("id, slug")
     .maybeSingle();
@@ -511,10 +794,15 @@ export async function updatePost(input) {
       cover_image_url: normalized.coverImageUrl,
       category: normalized.category,
       tags: normalized.tags,
+<<<<<<< HEAD
       permalink_style: normalized.permalinkStyle,
       permalink_template: normalized.permalinkTemplate,
       status: "published",
       published_at: new Date().toISOString(),
+=======
+      status: normalized.status,
+      published_at: normalized.publishedAt,
+>>>>>>> 300f687 (dribdo initial)
     })
     .eq("id", id)
     .select("id, slug")
@@ -545,8 +833,82 @@ export async function deletePost(id) {
   const { error } = await writer.from("blog_posts").delete().eq("id", postId);
 
   if (error) {
+<<<<<<< HEAD
     return { ok: false, error: error.message };
   }
 
   return { ok: true };
+=======
+    const details = [error.message, error.details, error.hint].filter(Boolean).join(" | ");
+    return { ok: false, error: details || "تعذر حذف المقال." };
+  }
+
+  // Verify deletion to avoid false-success states when RLS blocks row deletion silently.
+  const verifier = await getAdminReadClient();
+  if (!verifier) {
+    return { ok: false, error: "تعذر التحقق من نتيجة الحذف: Supabase client غير متاح." };
+  }
+
+  const { data: existingRow, error: verifyError } = await verifier.from("blog_posts").select("id").eq("id", postId).maybeSingle();
+  if (verifyError) {
+    const details = [verifyError.message, verifyError.details, verifyError.hint].filter(Boolean).join(" | ");
+    return { ok: false, error: `تم تنفيذ طلب الحذف لكن تعذر التحقق من النتيجة: ${details}` };
+  }
+
+  if (existingRow?.id) {
+    return { ok: false, error: "لم يتم حذف المقال فعليًا. تحقق من سياسات RLS الخاصة بعملية delete أو استخدم Service Role." };
+  }
+
+  return { ok: true, id: postId };
+}
+
+export async function deletePosts(ids) {
+  if (!isSupabaseConfigured()) {
+    return { ok: false, error: "Supabase is not configured", deletedIds: [] };
+  }
+
+  const normalizedIds = [...new Set((Array.isArray(ids) ? ids : []).map((id) => String(id || "").trim()).filter(Boolean))];
+  if (!normalizedIds.length) {
+    return { ok: false, error: "لا توجد مقالات محددة للحذف.", deletedIds: [] };
+  }
+
+  const writer = await getWriteClient();
+  if (!writer) {
+    return { ok: false, error: "Supabase client is not available", deletedIds: [] };
+  }
+
+  const { error } = await writer.from("blog_posts").delete().in("id", normalizedIds);
+  if (error) {
+    const details = [error.message, error.details, error.hint].filter(Boolean).join(" | ");
+    return { ok: false, error: details || "تعذر حذف المقالات.", deletedIds: [] };
+  }
+
+  const verifier = await getAdminReadClient();
+  if (!verifier) {
+    return { ok: false, error: "تعذر التحقق من نتيجة الحذف: Supabase client غير متاح.", deletedIds: [] };
+  }
+
+  const { data: remainingRows, error: verifyError } = await verifier.from("blog_posts").select("id").in("id", normalizedIds);
+  if (verifyError) {
+    const details = [verifyError.message, verifyError.details, verifyError.hint].filter(Boolean).join(" | ");
+    return { ok: false, error: `تم تنفيذ طلب الحذف لكن تعذر التحقق من النتيجة: ${details}`, deletedIds: [] };
+  }
+
+  const remainingIds = new Set((remainingRows || []).map((row) => String(row.id || "")));
+  const deletedIds = normalizedIds.filter((id) => !remainingIds.has(id));
+
+  if (!deletedIds.length) {
+    return { ok: false, error: "لم يتم حذف أي مقال فعليًا. تحقق من سياسات RLS الخاصة بعملية delete.", deletedIds: [] };
+  }
+
+  if (remainingIds.size > 0) {
+    return {
+      ok: false,
+      error: `تم حذف ${deletedIds.length} مقال(ات) فقط. تعذر حذف ${remainingIds.size} مقال(ات) بسبب الصلاحيات أو القيود.`,
+      deletedIds,
+    };
+  }
+
+  return { ok: true, deletedIds };
+>>>>>>> 300f687 (dribdo initial)
 }

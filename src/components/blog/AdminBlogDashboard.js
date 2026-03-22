@@ -8,10 +8,18 @@ import BlogImage from "@/components/blog/BlogImage";
 import { createSlugCandidate } from "@/lib/blog/slug";
 import { prepareBlogContentForEditor } from "@/lib/blog/content";
 import { getSupabaseClient } from "@/lib/supabase/client";
+<<<<<<< HEAD
 import { buildPermalink, PERMALINK_OPTIONS, getPermalinkStyle } from "@/lib/blog/permalinks";
 
 const EMPTY_CONTENT = "<p></p>";
 const BLOG_MEDIA_BUCKET = process.env.NEXT_PUBLIC_SUPABASE_BLOG_BUCKET || "blog-media";
+=======
+
+const EMPTY_CONTENT = "<p></p>";
+const BLOG_MEDIA_BUCKET = process.env.NEXT_PUBLIC_SUPABASE_BLOG_BUCKET || "blog-media";
+const INITIAL_VISIBLE_POSTS = 3;
+const LOAD_MORE_STEP = 6;
+>>>>>>> 300f687 (dribdo initial)
 
 function createEmptyForm() {
   return {
@@ -22,9 +30,15 @@ function createEmptyForm() {
     coverImageUrl: "",
     category: "",
     tagsInput: "",
+<<<<<<< HEAD
     adminToken: "",
     permalinkStyle: "",
     permalinkTemplate: "",
+=======
+    status: "published",
+    publishedAt: "",
+    adminToken: "",
+>>>>>>> 300f687 (dribdo initial)
     content: EMPTY_CONTENT,
   };
 }
@@ -41,16 +55,74 @@ function SubmitButton({ pending, editing }) {
   );
 }
 
-function StatCard({ label, value, hint }) {
+function StatusBadge({ status }) {
+  const current = status || "published";
+  const tone =
+    current === "published"
+      ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+      : current === "draft"
+        ? "bg-amber-50 text-amber-700 border-amber-200"
+        : current === "scheduled"
+          ? "bg-blue-50 text-blue-700 border-blue-200"
+          : "bg-slate-100 text-slate-700 border-slate-200";
+
+  return <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${tone}`}>{current}</span>;
+}
+
+function DeletePostModal({ post, pending, errorMessage, onCancel, onConfirm }) {
+  if (!post) return null;
+
   return (
-    <div className="rounded-3xl border border-white/60 bg-white/70 p-5 backdrop-blur">
-      <div className="text-sm text-slate-500">{label}</div>
-      <div className="mt-2 text-2xl font-bold text-slate-900">{value}</div>
-      <div className="mt-1 text-xs text-slate-500">{hint}</div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4">
+      <div className="w-full max-w-xl rounded-[2rem] bg-white p-6 shadow-2xl">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h3 className="text-2xl font-black text-slate-950">تأكيد حذف المقال</h3>
+            <p className="mt-2 text-sm leading-7 text-slate-600">
+              سيتم حذف المقال <span className="font-semibold text-slate-900">{post.title}</span> من لوحة النشر. هذا الإجراء لا يمكن التراجع عنه.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-950"
+          >
+            إغلاق
+          </button>
+        </div>
+
+        <div className="mt-6 rounded-[1.5rem] border border-rose-200 bg-rose-50 px-5 py-4 text-sm text-rose-900">
+          الرابط المختصر الحالي: <span className="font-semibold">/{post.slug}</span>
+        </div>
+        {errorMessage ? (
+          <div className="mt-3 rounded-[1.1rem] border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">
+            سبب الفشل: {errorMessage}
+          </div>
+        ) : null}
+
+        <div className="mt-6 flex flex-wrap justify-end gap-3">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="inline-flex items-center justify-center rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-950"
+          >
+            إلغاء
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            disabled={pending}
+            className="inline-flex items-center justify-center rounded-2xl bg-rose-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-rose-700 disabled:cursor-not-allowed disabled:opacity-70"
+          >
+            {pending ? "جارٍ الحذف..." : "تأكيد الحذف"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
 
+<<<<<<< HEAD
 function PermalinkBox({ samplePost }) {
   const currentStyle = getPermalinkStyle();
   const currentTemplate = process.env.NEXT_PUBLIC_BLOG_PERMALINK_TEMPLATE || "/blog/%post_id%-%postname%";
@@ -107,15 +179,29 @@ function StatusBadge({ status }) {
 
 function DeletePostModal({ post, pending, onCancel, onConfirm }) {
   if (!post) return null;
+=======
+function BulkDeleteModal({ count, pending, errorMessage, onCancel, onConfirm }) {
+  if (!count) return null;
+>>>>>>> 300f687 (dribdo initial)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4">
       <div className="w-full max-w-xl rounded-[2rem] bg-white p-6 shadow-2xl">
         <div className="flex items-start justify-between gap-4">
           <div>
+<<<<<<< HEAD
             <h3 className="text-2xl font-black text-slate-950">تأكيد حذف المقال</h3>
             <p className="mt-2 text-sm leading-7 text-slate-600">
               سيتم حذف المقال <span className="font-semibold text-slate-900">{post.title}</span> من لوحة النشر. هذا الإجراء لا يمكن التراجع عنه.
+=======
+            <h3 className="text-2xl font-black text-slate-950">تأكيد حذف جماعي</h3>
+            <p className="mt-2 text-sm leading-7 text-slate-600">
+              سيتم حذف
+              {" "}
+              <span className="font-semibold text-slate-900">{count}</span>
+              {" "}
+              مقال(ات) دفعة واحدة. هذا الإجراء لا يمكن التراجع عنه.
+>>>>>>> 300f687 (dribdo initial)
             </p>
           </div>
           <button
@@ -127,9 +213,17 @@ function DeletePostModal({ post, pending, onCancel, onConfirm }) {
           </button>
         </div>
 
+<<<<<<< HEAD
         <div className="mt-6 rounded-[1.5rem] border border-rose-200 bg-rose-50 px-5 py-4 text-sm text-rose-900">
           الرابط المختصر الحالي: <span className="font-semibold">/{post.slug}</span>
         </div>
+=======
+        {errorMessage ? (
+          <div className="mt-4 rounded-[1.1rem] border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">
+            سبب الفشل: {errorMessage}
+          </div>
+        ) : null}
+>>>>>>> 300f687 (dribdo initial)
 
         <div className="mt-6 flex flex-wrap justify-end gap-3">
           <button
@@ -145,7 +239,11 @@ function DeletePostModal({ post, pending, onCancel, onConfirm }) {
             disabled={pending}
             className="inline-flex items-center justify-center rounded-2xl bg-rose-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-rose-700 disabled:cursor-not-allowed disabled:opacity-70"
           >
+<<<<<<< HEAD
             {pending ? "جارٍ الحذف..." : "تأكيد الحذف"}
+=======
+            {pending ? "جارٍ الحذف..." : "تأكيد حذف المحدد"}
+>>>>>>> 300f687 (dribdo initial)
           </button>
         </div>
       </div>
@@ -162,9 +260,15 @@ function mapPostToForm(post, adminToken) {
     coverImageUrl: post.coverImageUrl || "",
     category: post.category || "",
     tagsInput: Array.isArray(post.tags) ? post.tags.join(", ") : "",
+<<<<<<< HEAD
     adminToken: adminToken || "",
     permalinkStyle: post.permalinkStyle || "",
     permalinkTemplate: post.permalinkTemplate || "",
+=======
+    status: post.status || "published",
+    publishedAt: post.publishedAt ? new Date(post.publishedAt).toISOString().slice(0, 16) : "",
+    adminToken: adminToken || "",
+>>>>>>> 300f687 (dribdo initial)
     content: prepareBlogContentForEditor(post.content),
   };
 }
@@ -173,6 +277,10 @@ export default function AdminBlogDashboard({
   posts = [],
   saveAction,
   deleteAction,
+<<<<<<< HEAD
+=======
+  deleteManyAction,
+>>>>>>> 300f687 (dribdo initial)
   publishingEnabled,
   requiresToken,
   adminListError,
@@ -181,25 +289,53 @@ export default function AdminBlogDashboard({
   const coverInputRef = useRef(null);
   const [form, setForm] = useState(createEmptyForm);
   const [manualSlug, setManualSlug] = useState(false);
+<<<<<<< HEAD
   const [flash, setFlash] = useState({ type: "", message: "", slug: "", id: "" });
   const [query, setQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [coverUpload, setCoverUpload] = useState({ message: "", error: false });
   const [deleteTarget, setDeleteTarget] = useState(null);
+=======
+  const [flash, setFlash] = useState({ type: "", message: "", slug: "" });
+  const [query, setQuery] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [visiblePostsCount, setVisiblePostsCount] = useState(INITIAL_VISIBLE_POSTS);
+  const [lastExpandedCount, setLastExpandedCount] = useState(INITIAL_VISIBLE_POSTS);
+  const [coverUpload, setCoverUpload] = useState({ message: "", error: false });
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [deleteError, setDeleteError] = useState("");
+  const [bulkDeleteTargetIds, setBulkDeleteTargetIds] = useState([]);
+  const [bulkDeleteError, setBulkDeleteError] = useState("");
+  const [selectedIds, setSelectedIds] = useState(() => new Set());
+  const [hiddenDeletedIds, setHiddenDeletedIds] = useState(() => new Set());
+>>>>>>> 300f687 (dribdo initial)
   const [isSaving, startSaveTransition] = useTransition();
   const [isDeleting, startDeleteTransition] = useTransition();
   const editing = Boolean(form.id);
   const visibleSlug = manualSlug ? form.slug : createSlugCandidate(form.title);
+<<<<<<< HEAD
   const resolvedPermalinkStyle = form.permalinkStyle || getPermalinkStyle();
 
   const categories = useMemo(() => {
     return [...new Set(posts.map((post) => post.category).filter(Boolean))];
   }, [posts]);
+=======
+
+  const localPosts = useMemo(() => posts.filter((post) => !hiddenDeletedIds.has(post.id)), [hiddenDeletedIds, posts]);
+
+  const categories = useMemo(() => {
+    return [...new Set(localPosts.map((post) => post.category).filter(Boolean))];
+  }, [localPosts]);
+>>>>>>> 300f687 (dribdo initial)
 
   const filteredPosts = useMemo(() => {
     const term = query.trim().toLowerCase();
 
+<<<<<<< HEAD
     return posts.filter((post) => {
+=======
+    return localPosts.filter((post) => {
+>>>>>>> 300f687 (dribdo initial)
       const matchesCategory = categoryFilter === "all" ? true : post.category === categoryFilter;
       if (!matchesCategory) return false;
       if (!term) return true;
@@ -210,7 +346,87 @@ export default function AdminBlogDashboard({
 
       return haystack.includes(term);
     });
+<<<<<<< HEAD
   }, [categoryFilter, posts, query]);
+=======
+  }, [categoryFilter, localPosts, query]);
+
+  const effectiveVisiblePostsCount = useMemo(() => {
+    if (filteredPosts.length === 0) return 0;
+    if (visiblePostsCount <= INITIAL_VISIBLE_POSTS) return Math.min(INITIAL_VISIBLE_POSTS, filteredPosts.length);
+    return Math.min(visiblePostsCount, filteredPosts.length);
+  }, [filteredPosts.length, visiblePostsCount]);
+
+  const visiblePosts = useMemo(() => {
+    return filteredPosts.slice(0, effectiveVisiblePostsCount);
+  }, [effectiveVisiblePostsCount, filteredPosts]);
+
+  const visiblePostIds = useMemo(() => visiblePosts.map((post) => post.id), [visiblePosts]);
+  const filteredPostIds = useMemo(() => filteredPosts.map((post) => post.id), [filteredPosts]);
+  const selectedCount = selectedIds.size;
+  const selectedVisibleCount = useMemo(() => visiblePostIds.filter((id) => selectedIds.has(id)).length, [selectedIds, visiblePostIds]);
+  const selectedFilteredCount = useMemo(() => filteredPostIds.filter((id) => selectedIds.has(id)).length, [filteredPostIds, selectedIds]);
+
+  const canLoadMore = effectiveVisiblePostsCount < filteredPosts.length;
+  const canCollapse = effectiveVisiblePostsCount > INITIAL_VISIBLE_POSTS;
+  const canReopenFold =
+    effectiveVisiblePostsCount <= INITIAL_VISIBLE_POSTS && lastExpandedCount > INITIAL_VISIBLE_POSTS && filteredPosts.length > INITIAL_VISIBLE_POSTS;
+
+  function toggleSelectPost(id) {
+    setSelectedIds((current) => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function selectAllVisiblePosts() {
+    setSelectedIds((current) => {
+      const next = new Set(current);
+      for (const id of visiblePostIds) next.add(id);
+      return next;
+    });
+  }
+
+  function clearVisibleSelection() {
+    setSelectedIds((current) => {
+      const next = new Set(current);
+      for (const id of visiblePostIds) next.delete(id);
+      return next;
+    });
+  }
+
+  function selectAllFilteredPosts() {
+    setSelectedIds((current) => {
+      const next = new Set(current);
+      for (const id of filteredPostIds) next.add(id);
+      return next;
+    });
+  }
+
+  function clearAllSelection() {
+    setSelectedIds(new Set());
+  }
+
+  function showMorePosts() {
+    setVisiblePostsCount((current) => {
+      const base = Math.max(current, INITIAL_VISIBLE_POSTS);
+      const next = Math.min(base + LOAD_MORE_STEP, filteredPosts.length);
+      setLastExpandedCount(next);
+      return next;
+    });
+  }
+
+  function collapsePostsList() {
+    setLastExpandedCount((prev) => Math.max(prev, effectiveVisiblePostsCount));
+    setVisiblePostsCount(Math.min(INITIAL_VISIBLE_POSTS, filteredPosts.length));
+  }
+
+  function reopenFoldedPostsList() {
+    setVisiblePostsCount(Math.min(lastExpandedCount, filteredPosts.length));
+  }
+>>>>>>> 300f687 (dribdo initial)
 
   const tagsPreview = useMemo(
     () =>
@@ -223,6 +439,7 @@ export default function AdminBlogDashboard({
   );
 
   const titleWords = useMemo(() => form.title.trim().split(/\s+/).filter(Boolean).length, [form.title]);
+<<<<<<< HEAD
   const permalinkPreview = useMemo(
     () =>
       buildPermalink(
@@ -237,6 +454,241 @@ export default function AdminBlogDashboard({
       ),
     [form.id, visibleSlug, resolvedPermalinkStyle, form.permalinkTemplate]
   );
+=======
+
+  function updateField(key, value) {
+    setForm((current) => ({ ...current, [key]: value }));
+  }
+
+  async function uploadCoverFile(file) {
+    const supabase = await getSupabaseClient();
+    if (!supabase) {
+      throw new Error("Supabase غير مُعد. أضف المفاتيح أولًا.");
+    }
+
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+    const path = `covers/${Date.now()}-${safeName}`;
+    const { error } = await supabase.storage.from(BLOG_MEDIA_BUCKET).upload(path, file, {
+      cacheControl: "3600",
+      upsert: true,
+    });
+
+    if (error) {
+      throw new Error(
+        `تعذر رفع صورة الغلاف إلى bucket "${BLOG_MEDIA_BUCKET}". شغّل supabase/blog_storage.sql أو تأكد من اسم الـ bucket في .env.local.`
+      );
+    }
+
+    const { data } = supabase.storage.from(BLOG_MEDIA_BUCKET).getPublicUrl(path);
+    if (!data?.publicUrl) {
+      throw new Error("تم الرفع لكن تعذر إنشاء الرابط العام لصورة الغلاف.");
+    }
+
+    return data.publicUrl;
+  }
+
+  async function handleCoverSelection(event) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+
+    try {
+      setCoverUpload({ message: "جارٍ رفع صورة الغلاف...", error: false });
+      const publicUrl = await uploadCoverFile(file);
+      updateField("coverImageUrl", publicUrl);
+      setCoverUpload({ message: "تم رفع صورة الغلاف بنجاح.", error: false });
+    } catch (error) {
+      setCoverUpload({
+        message: error instanceof Error ? error.message : "تعذر رفع صورة الغلاف.",
+        error: true,
+      });
+    }
+  }
+
+  function resetForm(keepToken = true) {
+    setForm((current) => ({
+      ...createEmptyForm(),
+      adminToken: keepToken ? current.adminToken : "",
+    }));
+    setManualSlug(false);
+  }
+
+  function handleEdit(post) {
+    setForm((current) => mapPostToForm(post, current.adminToken));
+    setManualSlug(true);
+    setFlash({ type: "", message: "", slug: "" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.set("id", form.id);
+    formData.set("title", form.title);
+    formData.set("slug", visibleSlug);
+    formData.set("excerpt", form.excerpt);
+    formData.set("coverImageUrl", form.coverImageUrl);
+    formData.set("category", form.category);
+    formData.set("tags", form.tagsInput);
+    formData.set("status", form.status);
+    formData.set("publishedAt", form.publishedAt);
+    formData.set("content", form.content);
+    formData.set("adminToken", form.adminToken);
+
+    startSaveTransition(() => {
+      saveAction(formData).then((result) => {
+        if (!result?.ok) {
+          setFlash({
+            type: "error",
+            message: result?.error || "تعذر حفظ المقال.",
+            slug: "",
+          });
+          return;
+        }
+
+        setFlash({
+          type: "success",
+          message: editing ? "تم تحديث المقال بنجاح." : "تم نشر المقال بنجاح.",
+          slug: result.slug || "",
+        });
+        resetForm();
+        router.refresh();
+      });
+    });
+  }
+
+  function handleDelete(post) {
+    setDeleteError("");
+    setDeleteTarget(post);
+  }
+
+  function handleBulkDelete(ids) {
+    const normalizedIds = [...new Set((Array.isArray(ids) ? ids : []).map((id) => String(id || "").trim()).filter(Boolean))];
+    if (!normalizedIds.length) {
+      setFlash({
+        type: "error",
+        message: "حدد مقالًا واحدًا على الأقل قبل الحذف الجماعي.",
+        slug: "",
+      });
+      return;
+    }
+
+    setBulkDeleteError("");
+    setBulkDeleteTargetIds(normalizedIds);
+  }
+
+  function confirmDelete() {
+    if (!deleteTarget) return;
+    setDeleteError("");
+    startDeleteTransition(() => {
+      deleteAction({ id: deleteTarget.id, adminToken: form.adminToken })
+        .then((result) => {
+          if (!result?.ok) {
+            const reason = result?.error || "تعذر حذف المقال.";
+            setDeleteError(reason);
+            setFlash({
+              type: "error",
+              message: reason,
+              slug: "",
+            });
+            return;
+          }
+
+          if (form.id === deleteTarget.id) {
+            resetForm();
+          }
+
+          setHiddenDeletedIds((current) => {
+            const next = new Set(current);
+            next.add(deleteTarget.id);
+            return next;
+          });
+          setSelectedIds((current) => {
+            const next = new Set(current);
+            next.delete(deleteTarget.id);
+            return next;
+          });
+          setVisiblePostsCount((current) => Math.max(Math.min(current, filteredPosts.length - 1), 0));
+          setDeleteError("");
+          setFlash({
+            type: "success",
+            message: "تم حذف المقال بنجاح.",
+            slug: "",
+          });
+          setDeleteTarget(null);
+          router.refresh();
+        })
+        .catch((error) => {
+          const reason = error instanceof Error ? error.message : "حدث خطأ غير متوقع أثناء الحذف.";
+          setDeleteError(reason);
+          setFlash({
+            type: "error",
+            message: reason,
+            slug: "",
+          });
+        });
+    });
+  }
+
+  function confirmBulkDelete() {
+    if (!bulkDeleteTargetIds.length) return;
+    setBulkDeleteError("");
+    startDeleteTransition(() => {
+      deleteManyAction({ ids: bulkDeleteTargetIds, adminToken: form.adminToken })
+        .then((result) => {
+          const deletedIds = Array.isArray(result?.deletedIds)
+            ? [...new Set(result.deletedIds.map((id) => String(id || "").trim()).filter(Boolean))]
+            : [];
+
+          if (deletedIds.length) {
+            setHiddenDeletedIds((current) => {
+              const next = new Set(current);
+              for (const id of deletedIds) next.add(id);
+              return next;
+            });
+            setSelectedIds((current) => {
+              const next = new Set(current);
+              for (const id of deletedIds) next.delete(id);
+              return next;
+            });
+          }
+
+          if (!result?.ok) {
+            const reason = result?.error || "تعذر حذف المقالات المحددة.";
+            const unresolvedIds = bulkDeleteTargetIds.filter((id) => !deletedIds.includes(id));
+            setBulkDeleteError(reason);
+            setBulkDeleteTargetIds(unresolvedIds);
+            setFlash({
+              type: "error",
+              message: reason,
+              slug: "",
+            });
+            router.refresh();
+            return;
+          }
+
+          setBulkDeleteError("");
+          setBulkDeleteTargetIds([]);
+          setVisiblePostsCount((current) => Math.max(Math.min(current, filteredPosts.length - deletedIds.length), 0));
+          setFlash({
+            type: "success",
+            message: `تم حذف ${deletedIds.length} مقال(ات) بنجاح.`,
+            slug: "",
+          });
+          router.refresh();
+        })
+        .catch((error) => {
+          const reason = error instanceof Error ? error.message : "حدث خطأ غير متوقع أثناء الحذف الجماعي.";
+          setBulkDeleteError(reason);
+          setFlash({
+            type: "error",
+            message: reason,
+            slug: "",
+          });
+        });
+    });
+  }
+>>>>>>> 300f687 (dribdo initial)
 
   function updateField(key, value) {
     setForm((current) => ({ ...current, [key]: value }));
@@ -380,6 +832,7 @@ export default function AdminBlogDashboard({
       <DeletePostModal
         post={deleteTarget}
         pending={isDeleting}
+<<<<<<< HEAD
         onCancel={() => (isDeleting ? null : setDeleteTarget(null))}
         onConfirm={confirmDelete}
       />
@@ -416,6 +869,46 @@ export default function AdminBlogDashboard({
             <StatCard label="وضع النشر" value={publishingEnabled ? "جاهز" : "يحتاج RLS"} hint="الحفظ المباشر يحترم إعدادات Supabase الحالية" />
             <StatCard label="المقالات" value={posts.length} hint="قائمة الإدارة تعرض آخر المقالات القابلة للوصول" />
             <StatCard label="الرابط المختصر" value={visibleSlug || "سيُولد تلقائيًا"} hint="يُمنع التكرار بإضافة لاحقة رقمية عند الحاجة" />
+=======
+        errorMessage={deleteError}
+        onCancel={() => {
+          if (isDeleting) return;
+          setDeleteError("");
+          setDeleteTarget(null);
+        }}
+        onConfirm={confirmDelete}
+      />
+      <BulkDeleteModal
+        count={bulkDeleteTargetIds.length}
+        pending={isDeleting}
+        errorMessage={bulkDeleteError}
+        onCancel={() => {
+          if (isDeleting) return;
+          setBulkDeleteError("");
+          setBulkDeleteTargetIds([]);
+        }}
+        onConfirm={confirmBulkDelete}
+      />
+      <section className="rounded-[1.35rem] border border-orange-100 bg-[linear-gradient(135deg,#fff7ed_0%,#ffffff_52%,#f8fafc_100%)] px-4 py-3 shadow-[0_22px_60px_-48px_rgba(15,23,42,0.35)] sm:px-5 sm:py-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <Link
+              href="/blog"
+              className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
+            >
+              معاينة المدونة
+            </Link>
+            <Link
+              href="/admin"
+              className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-600 transition hover:border-slate-300 hover:text-slate-900"
+            >
+              لوحة الأدمن
+            </Link>
+          </div>
+          <div className="inline-flex items-center gap-1.5 rounded-xl border border-orange-200/80 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-700">
+            <span className="text-slate-500">عدد المقالات</span>
+            <span className="font-black text-slate-950">{localPosts.length}</span>
+>>>>>>> 300f687 (dribdo initial)
           </div>
         </div>
       </section>
@@ -442,10 +935,17 @@ export default function AdminBlogDashboard({
           ].join(" ")}
         >
           {flash.message}
+<<<<<<< HEAD
           {flash.slug && flash.id ? (
             <>
               {" "}
               <Link href={buildPermalink({ id: flash.id, slug: flash.slug })} className="font-semibold underline underline-offset-4">
+=======
+          {flash.slug ? (
+            <>
+              {" "}
+              <Link href={`/blog/${flash.slug}`} className="font-semibold underline underline-offset-4">
+>>>>>>> 300f687 (dribdo initial)
                 افتح المقال
               </Link>
             </>
@@ -602,6 +1102,19 @@ export default function AdminBlogDashboard({
                 placeholder="تقارير، أخبار، أدلة، منتج"
               />
             </label>
+
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold text-slate-900">حالة النشر</span>
+              <select
+                value={form.status}
+                onChange={(event) => updateField("status", event.target.value)}
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition focus:border-orange-300 focus:bg-white"
+              >
+                <option value="published">منشور</option>
+                <option value="draft">مسودة</option>
+                <option value="archived">مؤرشف</option>
+              </select>
+            </label>
           </div>
 
           <label className="mt-6 block">
@@ -611,6 +1124,16 @@ export default function AdminBlogDashboard({
               onChange={(event) => updateField("tagsInput", event.target.value)}
               className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-orange-300 focus:bg-white"
               placeholder="تحليلات، Dribdo، مجتمع، تحديثات"
+            />
+          </label>
+
+          <label className="mt-6 block">
+            <span className="mb-2 block text-sm font-semibold text-slate-900">تاريخ/وقت النشر</span>
+            <input
+              type="datetime-local"
+              value={form.publishedAt}
+              onChange={(event) => updateField("publishedAt", event.target.value)}
+              className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition focus:border-orange-300 focus:bg-white"
             />
           </label>
 
@@ -646,7 +1169,7 @@ export default function AdminBlogDashboard({
             <p className="text-sm text-slate-500">
               سيتم حفظ المقال بحالة
               {" "}
-              <span className="font-semibold text-slate-900">published</span>
+              <span className="font-semibold text-slate-900">{form.status || "published"}</span>
               {" "}
               مع
               {" "}
@@ -687,7 +1210,11 @@ export default function AdminBlogDashboard({
               ))}
             </div>
             <div className="mt-6 rounded-3xl bg-slate-950 px-5 py-4 text-sm text-slate-300" dir="ltr">
+<<<<<<< HEAD
               {permalinkPreview}
+=======
+              /blog/{visibleSlug || "your-story-slug"}
+>>>>>>> 300f687 (dribdo initial)
             </div>
           </div>
 
@@ -738,18 +1265,89 @@ export default function AdminBlogDashboard({
           </div>
         </div>
 
+<<<<<<< HEAD
+=======
+        {filteredPosts.length > 0 ? (
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5">
+            <div className="text-xs font-semibold text-slate-600">
+              المحدد الآن: {selectedCount} / {filteredPosts.length}
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={selectAllVisiblePosts}
+                className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
+              >
+                تحديد الظاهر ({visiblePosts.length})
+              </button>
+              {selectedVisibleCount > 0 ? (
+                <button
+                  type="button"
+                  onClick={clearVisibleSelection}
+                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
+                >
+                  إلغاء تحديد الظاهر
+                </button>
+              ) : null}
+              <button
+                type="button"
+                onClick={selectAllFilteredPosts}
+                className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
+              >
+                تحديد الكل ({filteredPosts.length})
+              </button>
+              {selectedFilteredCount > 0 ? (
+                <button
+                  type="button"
+                  onClick={clearAllSelection}
+                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
+                >
+                  إلغاء الكل
+                </button>
+              ) : null}
+              <button
+                type="button"
+                onClick={() => handleBulkDelete([...selectedIds])}
+                disabled={isDeleting || selectedCount === 0}
+                className="rounded-xl border border-rose-200 bg-white px-3 py-1.5 text-xs font-semibold text-rose-700 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                حذف المحدد
+              </button>
+            </div>
+          </div>
+        ) : null}
+
+>>>>>>> 300f687 (dribdo initial)
         {filteredPosts.length === 0 ? (
           <div className="mt-8 rounded-[1.75rem] border border-dashed border-slate-200 bg-slate-50 px-6 py-12 text-center text-slate-500">
             لا توجد مقالات مطابقة للفلاتر الحالية.
           </div>
         ) : (
           <div className="mt-8 grid gap-4">
+<<<<<<< HEAD
             {filteredPosts.map((post) => (
               <article key={post.id} className="rounded-[1.75rem] border border-slate-200 bg-slate-50 p-5">
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-3">
                       <StatusBadge status={post.status} />
+=======
+            {visiblePosts.map((post) => (
+              <article key={post.id} className="rounded-[1.75rem] border border-slate-200 bg-slate-50 p-5">
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <label className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-2 py-1 text-xs font-semibold text-slate-600">
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.has(post.id)}
+                      onChange={() => toggleSelectPost(post.id)}
+                      className="h-4 w-4 rounded border-slate-300 text-orange-600 focus:ring-orange-500"
+                    />
+                    تحديد
+                  </label>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <StatusBadge status={post.workflowStatus || post.status} />
+>>>>>>> 300f687 (dribdo initial)
                       <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{post.category || "General"}</span>
                     </div>
                     <h3 className="mt-3 text-xl font-black text-slate-950">{post.title}</h3>
@@ -762,13 +1360,21 @@ export default function AdminBlogDashboard({
                       ))}
                     </div>
                     <div className="mt-4 text-xs text-slate-400" dir="ltr">
+<<<<<<< HEAD
                       {buildPermalink(post)}
+=======
+                      /blog/{post.slug}
+>>>>>>> 300f687 (dribdo initial)
                     </div>
                   </div>
 
                   <div className="flex flex-wrap gap-3">
                     <Link
+<<<<<<< HEAD
                       href={buildPermalink(post)}
+=======
+                      href={`/blog/${post.slug}`}
+>>>>>>> 300f687 (dribdo initial)
                       className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
                     >
                       عرض
@@ -794,6 +1400,45 @@ export default function AdminBlogDashboard({
             ))}
           </div>
         )}
+<<<<<<< HEAD
+=======
+        {filteredPosts.length > 0 ? (
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+            <div className="text-xs font-semibold text-slate-500">
+              عرض {visiblePosts.length} من {filteredPosts.length} مقالة
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              {canReopenFold ? (
+                <button
+                  type="button"
+                  onClick={reopenFoldedPostsList}
+                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
+                >
+                  فتح الطي
+                </button>
+              ) : null}
+              {canLoadMore ? (
+                <button
+                  type="button"
+                  onClick={showMorePosts}
+                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
+                >
+                  عرض المزيد
+                </button>
+              ) : null}
+              {canCollapse ? (
+                <button
+                  type="button"
+                  onClick={collapsePostsList}
+                  className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-orange-200 hover:text-orange-700"
+                >
+                  طي القائمة
+                </button>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
+>>>>>>> 300f687 (dribdo initial)
       </section>
     </div>
   );

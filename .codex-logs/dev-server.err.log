@@ -1,0 +1,1816 @@
+Image with src "/screenshots/home-hero-optimized.jpg" is using quality "76" which is not configured in images.qualities [75]. Please update your config to [75, 76].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/home-gallery-1.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/home-gallery-2.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/home-gallery-3.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/home-gallery-4.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⨯ ./src/app/blog/page.js
+Error:   x Unexpected token `no substitution template literal`. Expected identifier, string literal, numeric literal or [ for the computed key
+    ,-[C:\D - Project-Web\Dribdo-Web\src\app\blog\page.js:12:1]
+  9 | export const metadata = {
+ 10 |   title: "المدونة",
+ 11 |   description: "آخر أخبار ومقالات دريبدو.",
+ 12 |   alternates: {`n    canonical: "/blog",`n    types: {`n      "application/rss+xml": [{ url: "/rss.xml", title: "Dribdo Blog RSS" }],`n    },`n  },
+    :                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 13 | };
+ 14 | 
+ 15 | function EmptyState({ title, description, ctaHref, ctaLabel }) {
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/blog/page.js
+⨯ ./src/app/blog/page.js
+Error:   x Unexpected token `no substitution template literal`. Expected identifier, string literal, numeric literal or [ for the computed key
+    ,-[C:\D - Project-Web\Dribdo-Web\src\app\blog\page.js:12:1]
+  9 | export const metadata = {
+ 10 |   title: "المدونة",
+ 11 |   description: "آخر أخبار ومقالات دريبدو.",
+ 12 |   alternates: {`n    canonical: "/blog",`n    types: {`n      "application/rss+xml": [{ url: "/rss.xml", title: "Dribdo Blog RSS" }],`n    },`n  },
+    :                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 13 | };
+ 14 | 
+ 15 | function EmptyState({ title, description, ctaHref, ctaLabel }) {
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/blog/page.js
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+Image with src "/screenshots/home-hero-optimized.jpg" is using quality "76" which is not configured in images.qualities [70, 75]. Please update your config to [70, 75, 76].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/home-gallery-1.jpg" is using quality "72" which is not configured in images.qualities [70, 75]. Please update your config to [70, 72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/home-gallery-2.jpg" is using quality "72" which is not configured in images.qualities [70, 75]. Please update your config to [70, 72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/home-gallery-3.jpg" is using quality "72" which is not configured in images.qualities [70, 75]. Please update your config to [70, 72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/home-gallery-4.jpg" is using quality "72" which is not configured in images.qualities [70, 75]. Please update your config to [70, 72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⨯ ./src/app/page.js
+Error:   x Expression expected
+     ,-[C:\D - Project-Web\Dribdo-Web\src\app\page.js:414:1]
+ 411 |             </div>
+ 412 |           </div>
+ 413 |         </div>
+ 414 |       </section>
+     :       ^
+ 415 |       ) : null}
+ 416 | 
+ 417 |       <section className="hidden mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+     `----
+  x Unterminated regexp literal
+     ,-[C:\D - Project-Web\Dribdo-Web\src\app\page.js:414:1]
+ 411 |             </div>
+ 412 |           </div>
+ 413 |         </div>
+ 414 |       </section>
+     :        ^^^^^^^^^
+ 415 |       ) : null}
+ 416 | 
+ 417 |       <section className="hidden mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/page.js
+⨯ ./src/app/page.js
+Error:   x Expression expected
+     ,-[C:\D - Project-Web\Dribdo-Web\src\app\page.js:414:1]
+ 411 |             </div>
+ 412 |           </div>
+ 413 |         </div>
+ 414 |       </section>
+     :       ^
+ 415 |       ) : null}
+ 416 | 
+ 417 |       <section className="hidden mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+     `----
+  x Unterminated regexp literal
+     ,-[C:\D - Project-Web\Dribdo-Web\src\app\page.js:414:1]
+ 411 |             </div>
+ 412 |           </div>
+ 413 |         </div>
+ 414 |       </section>
+     :        ^^^^^^^^^
+ 415 |       ) : null}
+ 416 | 
+ 417 |       <section className="hidden mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/page.js
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+Image with src "/screenshots/home-hero-optimized.jpg" is using quality "76" which is not configured in images.qualities [70, 75]. Please update your config to [70, 75, 76].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/home-gallery-1.jpg" is using quality "72" which is not configured in images.qualities [70, 75]. Please update your config to [70, 72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/home-gallery-2.jpg" is using quality "72" which is not configured in images.qualities [70, 75]. Please update your config to [70, 72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/home-gallery-3.jpg" is using quality "72" which is not configured in images.qualities [70, 75]. Please update your config to [70, 72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/home-gallery-4.jpg" is using quality "72" which is not configured in images.qualities [70, 75]. Please update your config to [70, 72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/admin'
+}
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js

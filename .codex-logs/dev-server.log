@@ -1,0 +1,259 @@
+
+> dribdoweb@0.1.0 dev
+> next dev --webpack
+
+▲ Next.js 16.1.6 (webpack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.217.130:3000
+- Environments: .env.local
+
+✓ Starting...
+✓ Ready in 4.4s
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+○ Compiling /admin ...
+Error: Route "/admin" used `cookies().get`. `cookies()` returns a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at createCookiesAccessError (..\..\src\server\request\cookies.ts:298:10)
+    at Promise.get (..\..\src\server\request\cookies.ts:257:7)
+    at hasValidAdminSession (src\app\admin\page.js:32:30)
+    at AdminHome (src\app\admin\page.js:91:24)
+  296 | ) {
+  297 |   const prefix = route ? `Route "${route}" ` : 'This route '
+> 298 |   return new Error(
+      |          ^
+  299 |     `${prefix}used ${expression}. ` +
+  300 |       `\`cookies()\` returns a Promise and must be unwrapped with \`await\` or \`React.use()\` before accessing its properties. ` +
+  301 |       `Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis`
+⨯ TypeError: (0 , next_headers__WEBPACK_IMPORTED_MODULE_3__.cookies)(...).get is not a function
+    at hasValidAdminSession (src\app\admin\page.js:32:33)
+    at AdminHome (src\app\admin\page.js:91:24)
+  30 |   if (!expectedToken) return true;
+  31 |
+> 32 |   const cookieValue = cookies().get(ADMIN_SESSION_COOKIE)?.value || "";
+     |                                 ^
+  33 |   if (!cookieValue) return false;
+  34 |   return secureEqual(cookieValue, createAdminSessionValue(expectedToken));
+  35 | } {
+  digest: '104653818'
+}
+ GET /admin 500 in 11.6s (compile: 10.5s, render: 1060ms)
+  Reload env: .env.local
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+Error: Route "/admin" used `cookies().get`. `cookies()` returns a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at createCookiesAccessError (..\..\src\server\request\cookies.ts:298:10)
+    at Promise.get (..\..\src\server\request\cookies.ts:257:7)
+    at hasValidAdminSession (src\app\admin\page.js:32:30)
+    at AdminHome (src\app\admin\page.js:91:24)
+  296 | ) {
+  297 |   const prefix = route ? `Route "${route}" ` : 'This route '
+> 298 |   return new Error(
+      |          ^
+  299 |     `${prefix}used ${expression}. ` +
+  300 |       `\`cookies()\` returns a Promise and must be unwrapped with \`await\` or \`React.use()\` before accessing its properties. ` +
+  301 |       `Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis`
+⨯ TypeError: (0 , next_headers__WEBPACK_IMPORTED_MODULE_3__.cookies)(...).get is not a function
+    at hasValidAdminSession (src\app\admin\page.js:32:33)
+    at AdminHome (src\app\admin\page.js:91:24)
+  30 |   if (!expectedToken) return true;
+  31 |
+> 32 |   const cookieValue = cookies().get(ADMIN_SESSION_COOKIE)?.value || "";
+     |                                 ^
+  33 |   if (!cookieValue) return false;
+  34 |   return secureEqual(cookieValue, createAdminSessionValue(expectedToken));
+  35 | } {
+  digest: '104653818'
+}
+ GET /admin 500 in 1744ms (compile: 1002ms, render: 742ms)
+Error: Route "/admin" used `cookies().get`. `cookies()` returns a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at createCookiesAccessError (..\..\src\server\request\cookies.ts:298:10)
+    at Promise.get (..\..\src\server\request\cookies.ts:257:7)
+    at hasValidAdminSession (src\app\admin\page.js:32:30)
+    at AdminHome (src\app\admin\page.js:91:24)
+  296 | ) {
+  297 |   const prefix = route ? `Route "${route}" ` : 'This route '
+> 298 |   return new Error(
+      |          ^
+  299 |     `${prefix}used ${expression}. ` +
+  300 |       `\`cookies()\` returns a Promise and must be unwrapped with \`await\` or \`React.use()\` before accessing its properties. ` +
+  301 |       `Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis`
+⨯ TypeError: (0 , next_headers__WEBPACK_IMPORTED_MODULE_3__.cookies)(...).get is not a function
+    at hasValidAdminSession (src\app\admin\page.js:32:33)
+    at AdminHome (src\app\admin\page.js:91:24)
+  30 |   if (!expectedToken) return true;
+  31 |
+> 32 |   const cookieValue = cookies().get(ADMIN_SESSION_COOKIE)?.value || "";
+     |                                 ^
+  33 |   if (!cookieValue) return false;
+  34 |   return secureEqual(cookieValue, createAdminSessionValue(expectedToken));
+  35 | } {
+  digest: '104653818'
+}
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /admin 500 in 613ms (compile: 73ms, render: 541ms)
+  Reload env: .env.local
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+Error: Route "/admin" used `cookies().get`. `cookies()` returns a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at createCookiesAccessError (..\..\src\server\request\cookies.ts:298:10)
+    at Promise.get (..\..\src\server\request\cookies.ts:257:7)
+    at hasValidAdminSession (src\app\admin\page.js:32:30)
+    at AdminHome (src\app\admin\page.js:91:24)
+  296 | ) {
+  297 |   const prefix = route ? `Route "${route}" ` : 'This route '
+> 298 |   return new Error(
+      |          ^
+  299 |     `${prefix}used ${expression}. ` +
+  300 |       `\`cookies()\` returns a Promise and must be unwrapped with \`await\` or \`React.use()\` before accessing its properties. ` +
+  301 |       `Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis`
+⨯ TypeError: (0 , next_headers__WEBPACK_IMPORTED_MODULE_3__.cookies)(...).get is not a function
+    at hasValidAdminSession (src\app\admin\page.js:32:33)
+    at AdminHome (src\app\admin\page.js:91:24)
+  30 |   if (!expectedToken) return true;
+  31 |
+> 32 |   const cookieValue = cookies().get(ADMIN_SESSION_COOKIE)?.value || "";
+     |                                 ^
+  33 |   if (!cookieValue) return false;
+  34 |   return secureEqual(cookieValue, createAdminSessionValue(expectedToken));
+  35 | } {
+  digest: '104653818'
+}
+ GET /admin 500 in 1521ms (compile: 947ms, render: 574ms)
+ GET /admin 200 in 615ms (compile: 212ms, render: 403ms)
+ GET /admin 200 in 141ms (compile: 20ms, render: 121ms)
+ GET /admin 200 in 108ms (compile: 8ms, render: 100ms)
+ POST /admin 303 in 187ms (compile: 9ms, render: 178ms)
+○ Compiling /admin/blog ...
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+ GET /admin/blog 200 in 8.7s (compile: 7.2s, render: 1522ms)
+ GET /admin 200 in 68ms (compile: 22ms, render: 46ms)
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+ GET /blog 200 in 2.4s (compile: 1289ms, render: 1097ms)
+ GET /admin 200 in 77ms (compile: 17ms, render: 61ms)
+ GET /admin/blog 200 in 550ms (compile: 51ms, render: 499ms)
+ POST /admin/blog 200 in 2.1s (compile: 76ms, render: 1992ms)
+ GET /admin/blog 200 in 639ms (compile: 9ms, render: 630ms)
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+ GET /blog/post-20260322164908 200 in 1190ms (compile: 21ms, render: 1169ms)
+ GET /blog/post-20260322164908 200 in 1040ms (compile: 21ms, render: 1019ms)
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+ GET /blog/post-20260322164908 200 in 5.3s (compile: 3.5s, render: 1825ms)
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+ GET /blog/post-20260322164908 200 in 421ms (compile: 127ms, render: 294ms)
+ POST /api/blog/views 200 in 2.4s (compile: 1307ms, render: 1127ms)
+ POST /api/blog/views 200 in 2.5s (compile: 1310ms, render: 1163ms)
+⚠ ./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+
+./src/components/blog/RichTextEditorField.js
+Attempted import error: '@tiptap/extension-text-style' does not contain a default export (imported as 'TextStyle').
+
+Import trace for requested module:
+./src/components/blog/RichTextEditorField.js
+./src/components/blog/AdminBlogDashboard.js
+ GET /blog/post-20260322164908 200 in 759ms (compile: 322ms, render: 437ms)
+ GET /blog 200 in 1062ms (compile: 46ms, render: 1015ms)
+ GET /blog?per=8 200 in 719ms (compile: 19ms, render: 700ms)
+ GET /blog?per=9 200 in 1125ms (compile: 16ms, render: 1108ms)
+ GET /blog?per=8 200 in 948ms (compile: 15ms, render: 933ms)

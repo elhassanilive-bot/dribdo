@@ -5,7 +5,11 @@ import { EditorContent, NodeViewWrapper, ReactNodeViewRenderer, useEditor } from
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
+<<<<<<< HEAD
 import { TextStyle } from "@tiptap/extension-text-style";
+=======
+import TextStyle from "@tiptap/extension-text-style";
+>>>>>>> 300f687 (dribdo initial)
 import Color from "@tiptap/extension-color";
 import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
@@ -373,6 +377,7 @@ function normalizeCropRect(rect) {
   };
 }
 
+<<<<<<< HEAD
 function replaceImageSource(editor, previousSrc, nextAttributes) {
   if (!editor || !previousSrc) return false;
   return editor.commands.command(({ tr, state }) => {
@@ -393,6 +398,8 @@ function replaceImageSource(editor, previousSrc, nextAttributes) {
   });
 }
 
+=======
+>>>>>>> 300f687 (dribdo initial)
 function CropImageModal({ cropState, setCropState, onClose, onConfirm }) {
   if (!cropState) return null;
 
@@ -878,13 +885,20 @@ const ResizableImage = Image.extend({
       "figure",
       {
         class: `blog-image-figure blog-align-${align}`,
+<<<<<<< HEAD
         style: `width:${widthPercent}%;`,
+=======
+>>>>>>> 300f687 (dribdo initial)
       },
       [
         "img",
         mergeAttributes(rest, {
           class: `blog-resizable-image blog-align-${align}`,
+<<<<<<< HEAD
           style: `width:100%;transform:rotate(${rotation}deg);`,
+=======
+          style: `width:${widthPercent}%;transform:rotate(${rotation}deg);`,
+>>>>>>> 300f687 (dribdo initial)
           "data-width": String(widthPercent),
           "data-align": align,
           "data-rotation": String(rotation),
@@ -908,8 +922,11 @@ export default function RichTextEditorField({
   const videoInputRef = useRef(null);
   const audioInputRef = useRef(null);
   const savedSelectionRef = useRef(null);
+<<<<<<< HEAD
   const lastNonEmptySelectionRef = useRef(null);
   const modalOpenRef = useRef(false);
+=======
+>>>>>>> 300f687 (dribdo initial)
   const [uploadState, setUploadState] = useState({ kind: "", message: "", error: false });
   const [cropState, setCropState] = useState(null);
   const [modalState, setModalState] = useState(null);
@@ -926,6 +943,7 @@ export default function RichTextEditorField({
       Highlight.configure({ multicolor: true }),
       TypographyStyle,
       Link.configure({
+<<<<<<< HEAD
         openOnClick: false,
         autolink: true,
         defaultProtocol: "https",
@@ -934,6 +952,11 @@ export default function RichTextEditorField({
           target: "_blank",
           rel: "noopener noreferrer",
         },
+=======
+        openOnClick: true,
+        autolink: true,
+        defaultProtocol: "https",
+>>>>>>> 300f687 (dribdo initial)
       }),
       ResizableImage.configure({ inline: false, allowBase64: false }),
       Youtube.configure({
@@ -961,6 +984,7 @@ export default function RichTextEditorField({
     onUpdate({ editor: currentEditor }) {
       onChange(currentEditor.getHTML());
     },
+<<<<<<< HEAD
     onSelectionUpdate({ editor: currentEditor }) {
       if (modalOpenRef.current) return;
       const { from, to } = currentEditor.state.selection;
@@ -969,6 +993,8 @@ export default function RichTextEditorField({
       savedSelectionRef.current = range;
       lastNonEmptySelectionRef.current = range;
     },
+=======
+>>>>>>> 300f687 (dribdo initial)
     editorProps: {
       attributes: {
         class: "blog-editor-surface",
@@ -984,10 +1010,13 @@ export default function RichTextEditorField({
     }
   }, [editor, value]);
 
+<<<<<<< HEAD
   useEffect(() => {
     modalOpenRef.current = Boolean(modalState?.open);
   }, [modalState]);
 
+=======
+>>>>>>> 300f687 (dribdo initial)
   if (!editor) {
     return (
       <div className="rounded-[1.5rem] border border-slate-200 bg-white px-5 py-10 text-center text-slate-500">
@@ -1090,10 +1119,14 @@ export default function RichTextEditorField({
 
   function openInputModal(action) {
     const { from, to } = editor.state.selection;
+<<<<<<< HEAD
     if (from !== to) {
       savedSelectionRef.current = { from, to };
       lastNonEmptySelectionRef.current = { from, to };
     }
+=======
+    savedSelectionRef.current = { from, to };
+>>>>>>> 300f687 (dribdo initial)
     const initialValues = {};
     action.fields.forEach((field) => {
       initialValues[field.key] = field.defaultValue || "";
@@ -1108,16 +1141,25 @@ export default function RichTextEditorField({
 
   function rememberSelection() {
     const { from, to } = editor.state.selection;
+<<<<<<< HEAD
     if (from === to) return;
     savedSelectionRef.current = { from, to };
     lastNonEmptySelectionRef.current = { from, to };
+=======
+    savedSelectionRef.current = { from, to };
+>>>>>>> 300f687 (dribdo initial)
   }
 
   function chainWithSelection() {
     const chain = editor.chain().focus();
+<<<<<<< HEAD
     const selection = savedSelectionRef.current || lastNonEmptySelectionRef.current;
     if (selection) {
       chain.setTextSelection(selection);
+=======
+    if (savedSelectionRef.current) {
+      chain.setTextSelection(savedSelectionRef.current);
+>>>>>>> 300f687 (dribdo initial)
     }
     return chain;
   }
@@ -1136,6 +1178,7 @@ export default function RichTextEditorField({
           if (!cropState) return;
 
           try {
+<<<<<<< HEAD
             const localPreviewSrc = cropState.dataUrl;
             const localAlt = cropState.file.name.replace(/\.[^.]+$/, "");
             editor
@@ -1156,6 +1199,21 @@ export default function RichTextEditorField({
             const publicUrl = await uploadMediaFileToSupabase(croppedFile);
             replaceImageSource(editor, localPreviewSrc, { src: publicUrl, alt: localAlt });
             setUploadState({ kind: "image", message: "تم رفع الصورة المقصوصة وإدراجها.", error: false });
+=======
+            setUploadState({ kind: "image", message: "جارٍ قص الصورة ورفعها...", error: false });
+            const croppedFile = await createCroppedImageFile(cropState);
+            const publicUrl = await uploadMediaFileToSupabase(croppedFile);
+            editor.chain().focus().setImage({
+              src: publicUrl,
+              alt: cropState.file.name.replace(/\.[^.]+$/, ""),
+              widthPercent: 100,
+              align: "center",
+              rotation: 0,
+              caption: "",
+            }).run();
+            setUploadState({ kind: "image", message: "تم رفع الصورة المقصوصة وإدراجها.", error: false });
+            setCropState(null);
+>>>>>>> 300f687 (dribdo initial)
           } catch (error) {
             setUploadState({
               kind: "image",
@@ -1278,11 +1336,14 @@ export default function RichTextEditorField({
                 if (!values.href?.trim()) {
                   return { ok: false, error: "الرابط مطلوب." };
                 }
+<<<<<<< HEAD
                 const selection =
                   savedSelectionRef.current || lastNonEmptySelectionRef.current || editor.state.selection;
                 if (!selection || selection.from === selection.to) {
                   return { ok: false, error: "حدّد النص أولًا ثم أضف الرابط إليه." };
                 }
+=======
+>>>>>>> 300f687 (dribdo initial)
                 chainWithSelection().extendMarkRange("link").setLink({ href: values.href.trim() }).run();
                 return { ok: true };
               },

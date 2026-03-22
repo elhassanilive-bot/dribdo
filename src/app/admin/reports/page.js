@@ -13,18 +13,10 @@ export const metadata = {
   alternates: { canonical: "/admin/reports" },
 };
 
-function buildAdminErrorMessage(searchParams) {
-  if (searchParams?.auth !== "denied") return null;
-
-  const details = [];
-  if (searchParams?.reason === "not_in_admin_table") {
-    if (searchParams?.uid) details.push(`المعرف الحالي: ${searchParams.uid}`);
-    if (searchParams?.email) details.push(`البريد الحالي: ${searchParams.email}`);
-  }
-
-  return details.length
-    ? `هذا الحساب غير موجود في جدول إدارة المدونة. ${details.join(" | ")}`
-    : "هذا الحساب غير مخول للوصول إلى لوحة الإدارة.";
+function buildLoginHref(nextPath = "/admin/reports", denied = false) {
+  const search = new URLSearchParams({ next: nextPath });
+  if (denied) search.set("admin", "denied");
+  return `/login?${search.toString()}`;
 }
 
 async function fetchReports() {
@@ -45,9 +37,7 @@ async function fetchReports() {
   return { reports: data || [], error: null };
 }
 
-export default async function AdminReportsPage({ searchParams }) {
-  const resolvedSearchParams = await searchParams;
-  const loginError = buildAdminErrorMessage(resolvedSearchParams);
+export default async function AdminReportsPage() {
   const sessionValid = await hasValidAdminSession();
 
   async function authorizeAction(formData) {
@@ -55,13 +45,7 @@ export default async function AdminReportsPage({ searchParams }) {
 
     const result = await validateAdminAccessToken(formData.get("accessToken"));
     if (!result.ok) {
-      if (result.code === "not_in_admin_table") {
-        const uid = encodeURIComponent(result.actualUserId || "");
-        const email = encodeURIComponent(result.actualEmail || "");
-        redirect(`/admin/reports?auth=denied&reason=not_in_admin_table&uid=${uid}&email=${email}`);
-      }
-
-      redirect("/admin/reports?auth=denied");
+      redirect(buildLoginHref("/admin/reports", true));
     }
 
     await setAdminSessionCookie();
@@ -74,7 +58,8 @@ export default async function AdminReportsPage({ searchParams }) {
         <AdminOwnerGate
           authorizeAction={authorizeAction}
           title="دخول صفحة البلاغات"
-          description={loginError || "يجب تسجيل الدخول بحساب موجود في جدول إدارة المدونة لفتح صفحة البلاغات."}
+          description="إذا لم تكن مسجل الدخول أو لم يكن حسابك مضافًا في جدول إدارة المدونة فسيتم تحويلك إلى صفحة تسجيل الدخول."
+          loginHref={buildLoginHref("/admin/reports")}
         />
       </div>
     );

@@ -26,6 +26,12 @@ export const metadata = {
   alternates: { canonical: "/admin/blog" },
 };
 
+function buildLoginHref(nextPath = "/admin/blog", denied = false) {
+  const search = new URLSearchParams({ next: nextPath });
+  if (denied) search.set("admin", "denied");
+  return `/login?${search.toString()}`;
+}
+
 function SetupBox() {
   return (
     <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_20px_55px_-45px_rgba(15,23,42,0.5)] sm:p-8">
@@ -38,36 +44,13 @@ function SetupBox() {
   );
 }
 
-function buildAdminErrorMessage(searchParams) {
-  if (searchParams?.auth !== "denied") return null;
-
-  const details = [];
-  if (searchParams?.reason === "not_in_admin_table") {
-    if (searchParams?.uid) details.push(`المعرف الحالي: ${searchParams.uid}`);
-    if (searchParams?.email) details.push(`البريد الحالي: ${searchParams.email}`);
-  }
-
-  return details.length
-    ? `هذا الحساب غير موجود في جدول إدارة المدونة. ${details.join(" | ")}`
-    : "هذا الحساب غير مخول للوصول إلى لوحة الإدارة.";
-}
-
-export default async function AdminBlogPage({ searchParams }) {
-  const resolvedSearchParams = await searchParams;
-  const loginError = buildAdminErrorMessage(resolvedSearchParams);
-
+export default async function AdminBlogPage() {
   async function authorizeAction(formData) {
     "use server";
 
     const result = await validateAdminAccessToken(formData.get("accessToken"));
     if (!result.ok) {
-      if (result.code === "not_in_admin_table") {
-        const uid = encodeURIComponent(result.actualUserId || "");
-        const email = encodeURIComponent(result.actualEmail || "");
-        redirect(`/admin/blog?auth=denied&reason=not_in_admin_table&uid=${uid}&email=${email}`);
-      }
-
-      redirect("/admin/blog?auth=denied");
+      redirect(buildLoginHref("/admin/blog", true));
     }
 
     await setAdminSessionCookie();
@@ -81,7 +64,7 @@ export default async function AdminBlogPage({ searchParams }) {
     await clearAdminSessionCookie();
     revalidatePath("/admin");
     revalidatePath("/admin/blog");
-    redirect("/admin/blog");
+    redirect(buildLoginHref("/admin/blog"));
   }
 
   async function savePostAction(formData) {
@@ -171,7 +154,8 @@ export default async function AdminBlogPage({ searchParams }) {
         <AdminOwnerGate
           authorizeAction={authorizeAction}
           title="دخول لوحة المقالات"
-          description={loginError || "يجب تسجيل الدخول بحساب موجود في جدول إدارة المدونة لفتح لوحة المقالات."}
+          description="إذا لم تكن مسجل الدخول أو لم يكن حسابك مضافًا في جدول إدارة المدونة فسيتم تحويلك إلى صفحة تسجيل الدخول."
+          loginHref={buildLoginHref("/admin/blog")}
         />
       </div>
     );

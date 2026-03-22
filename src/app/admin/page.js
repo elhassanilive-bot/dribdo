@@ -15,23 +15,17 @@ export const metadata = {
   alternates: { canonical: "/admin" },
 };
 
-function buildAdminErrorMessage(searchParams) {
-  if (searchParams?.auth !== "denied") return null;
-
-  const details = [];
-  if (searchParams?.reason === "not_in_admin_table") {
-    if (searchParams?.uid) details.push(`المعرف الحالي: ${searchParams.uid}`);
-    if (searchParams?.email) details.push(`البريد الحالي: ${searchParams.email}`);
-  }
-
-  return details.length
-    ? `هذا الحساب غير موجود في جدول إدارة المدونة. ${details.join(" | ")}`
-    : "هذا الحساب غير مخول للوصول إلى لوحة الإدارة.";
+function buildLoginHref(nextPath = "/admin", denied = false) {
+  const search = new URLSearchParams({ next: nextPath });
+  if (denied) search.set("admin", "denied");
+  return `/login?${search.toString()}`;
 }
 
 export default async function AdminHome({ searchParams }) {
   const resolvedSearchParams = await searchParams;
-  const loginError = buildAdminErrorMessage(resolvedSearchParams);
+  const nextPath = typeof resolvedSearchParams?.from === "string" && resolvedSearchParams.from.startsWith("/admin")
+    ? resolvedSearchParams.from
+    : "/admin";
   const sessionValid = await hasValidAdminSession();
 
   async function authorizeAction(formData) {
@@ -39,23 +33,17 @@ export default async function AdminHome({ searchParams }) {
 
     const result = await validateAdminAccessToken(formData.get("accessToken"));
     if (!result.ok) {
-      if (result.code === "not_in_admin_table") {
-        const uid = encodeURIComponent(result.actualUserId || "");
-        const email = encodeURIComponent(result.actualEmail || "");
-        redirect(`/admin?auth=denied&reason=not_in_admin_table&uid=${uid}&email=${email}`);
-      }
-
-      redirect("/admin?auth=denied");
+      redirect(buildLoginHref(nextPath, true));
     }
 
     await setAdminSessionCookie();
-    redirect("/admin");
+    redirect(nextPath);
   }
 
   async function logoutAction() {
     "use server";
     await clearAdminSessionCookie();
-    redirect("/admin");
+    redirect(buildLoginHref("/admin"));
   }
 
   if (!sessionValid) {
@@ -64,7 +52,8 @@ export default async function AdminHome({ searchParams }) {
         <AdminOwnerGate
           authorizeAction={authorizeAction}
           title="دخول لوحة الأدمن"
-          description={loginError || "هذه الصفحة تظهر فقط للحسابات المضافة في جدول إدارة المدونة."}
+          description="إذا لم تكن مسجل الدخول أو لم يكن حسابك مضافًا في جدول إدارة المدونة فسيتم تحويلك إلى صفحة تسجيل الدخول."
+          loginHref={buildLoginHref(nextPath)}
         />
       </div>
     );

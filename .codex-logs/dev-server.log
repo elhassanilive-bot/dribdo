@@ -1549,3 +1549,95 @@ Import trace for requested module:
  GET /blog/post-20260322174029 200 in 1504ms (compile: 196ms, render: 1308ms)
  GET /account 200 in 796ms (compile: 173ms, render: 623ms)
  GET /blog/post-20260322174029 200 in 1001ms (compile: 346ms, render: 655ms)
+ GET /account 200 in 979ms (compile: 40ms, render: 939ms)
+ GET /blog/post-20260322174029 200 in 1231ms (compile: 276ms, render: 955ms)
+ GET /account 200 in 492ms (compile: 44ms, render: 448ms)
+ GET /blog/post-20260322174029 200 in 502ms (compile: 183ms, render: 320ms)
+ GET /account 200 in 809ms (compile: 49ms, render: 759ms)
+ GET /blog/post-20260322174029 200 in 1100ms (compile: 189ms, render: 911ms)
+ GET /account 200 in 546ms (compile: 318ms, render: 228ms)
+ GET /blog/post-20260322174029 200 in 560ms (compile: 51ms, render: 509ms)
+ GET /account 200 in 490ms (compile: 38ms, render: 452ms)
+ GET /blog/post-20260322174029 200 in 493ms (compile: 236ms, render: 257ms)
+ GET /account 200 in 474ms (compile: 22ms, render: 453ms)
+ GET /blog/post-20260322174029 200 in 309ms (compile: 47ms, render: 262ms)
+ GET /account 200 in 436ms (compile: 48ms, render: 388ms)
+ GET /blog/post-20260322174029 200 in 452ms (compile: 147ms, render: 306ms)
+○ Compiling /admin ...
+ GET /admin 200 in 11.1s (compile: 10.5s, render: 634ms)
+ GET /blog/post-20260322174029 200 in 1806ms (compile: 298ms, render: 1509ms)
+ GET /admin 200 in 389ms (compile: 47ms, render: 342ms)
+ GET /admin 200 in 295ms (compile: 24ms, render: 271ms)
+ POST /admin 303 in 1408ms (compile: 64ms, render: 1344ms)
+ GET /admin 200 in 141ms (compile: 8ms, render: 133ms)
+ POST /admin 303 in 197ms (compile: 18ms, render: 179ms)
+ GET /admin 200 in 260ms (compile: 48ms, render: 212ms)
+ POST /admin 303 in 1204ms (compile: 11ms, render: 1193ms)
+ GET /admin 200 in 122ms (compile: 8ms, render: 115ms)
+ POST /admin 303 in 151ms (compile: 10ms, render: 140ms)
+ GET /admin 200 in 115ms (compile: 10ms, render: 106ms)
+ POST /admin 303 in 373ms (compile: 9ms, render: 364ms)
+ GET /admin 200 in 1262ms (compile: 382ms, render: 879ms)
+ GET /blog/post-20260322174029 200 in 1254ms (compile: 621ms, render: 633ms)
+ GET /admin 200 in 188ms (compile: 35ms, render: 154ms)
+ POST /admin 303 in 963ms (compile: 11ms, render: 952ms)
+ GET /admin 200 in 515ms (compile: 36ms, render: 478ms)
+ GET /blog/post-20260322174029 200 in 510ms (compile: 183ms, render: 327ms)
+⨯ ./src/app/admin/page.js
+Error:   x Expected ';', '}' or <eof>
+    ,-[c:\D - Project-Web\Dribdo-Web\src\app\admin\page.js:18:1]
+ 15 | 
+ 16 |   const details = [];
+ 17 |   if (searchParams?.reason === "email_mismatch") {
+ 18 |     if (searchParams?.uid) details.push(`المعرف الحالي: ${searchParams.uid}`);`r`n    if (searchParams?.expected) details.push(`البريد المسموح: ${searchParams.expected}`);`r`n    if (searchParams?.email) details.push(`البريد الحالي: ${searchParams.email}`);
+    :                                                                               ^|^^
+    :                                                                                `-- This is the expression part of an expression statement
+ 19 |   }
+ 20 | 
+ 21 |   return details.length
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/admin/page.js
+ GET /admin 500 in 147ms (compile: 31ms, render: 116ms)
+ GET /blog/post-20260322174029 500 in 131ms (compile: 27ms, render: 103ms)
+ GET /admin 500 in 148ms (compile: 88ms, render: 60ms)
+ GET /blog/post-20260322174029 500 in 161ms (compile: 93ms, render: 69ms)
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /admin 200 in 3.9s (compile: 938ms, render: 3.0s)
+ GET /blog/post-20260322174029 200 in 5.6s (compile: 1379ms, render: 4.2s)
+ GET /admin 200 in 72ms (compile: 12ms, render: 59ms)
+ GET /account 200 in 93ms (compile: 33ms, render: 60ms)
+ GET /admin 200 in 174ms (compile: 36ms, render: 138ms)
+○ Compiling /admin/blog ...
+ GET /blog/post-20260322174029 200 in 784ms (compile: 64ms, render: 721ms)
+ GET /admin/blog 200 in 10.6s (compile: 8.9s, render: 1716ms)
+ GET /admin/blog 200 in 973ms (compile: 33ms, render: 940ms)
+ GET /admin 200 in 100ms (compile: 24ms, render: 76ms)
+ GET /account 200 in 80ms (compile: 26ms, render: 54ms)
+ GET /admin 200 in 66ms (compile: 8ms, render: 57ms)
+ GET /account 200 in 65ms (compile: 10ms, render: 55ms)
+ GET /account 200 in 450ms (compile: 17ms, render: 433ms)
+ GET /blog/post-20260322174029 200 in 2.2s (compile: 40ms, render: 2.1s)
+ GET /admin 200 in 103ms (compile: 13ms, render: 90ms)
+ GET /admin 200 in 380ms (compile: 18ms, render: 361ms)
+ GET /admin 200 in 1096ms (compile: 79ms, render: 1017ms)
+ GET /blog/post-20260322174029 200 in 1567ms (compile: 293ms, render: 1274ms)
+ GET /admin 200 in 535ms (compile: 44ms, render: 491ms)
+ GET /blog/post-20260322174029 200 in 517ms (compile: 235ms, render: 282ms)
+ GET /admin 200 in 864ms (compile: 224ms, render: 640ms)
+ GET /blog/post-20260322174029 200 in 866ms (compile: 437ms, render: 428ms)
+ GET /admin 200 in 541ms (compile: 43ms, render: 498ms)
+ GET /blog/post-20260322174029 200 in 536ms (compile: 167ms, render: 369ms)
+ GET /admin 200 in 637ms (compile: 117ms, render: 520ms)
+ GET /blog/post-20260322174029 200 in 713ms (compile: 279ms, render: 434ms)
+ GET /admin 200 in 683ms (compile: 134ms, render: 549ms)
+ GET /blog/post-20260322174029 200 in 673ms (compile: 297ms, render: 377ms)
+ GET /admin 200 in 1112ms (compile: 252ms, render: 860ms)
+ GET /blog/post-20260322174029 200 in 1119ms (compile: 513ms, render: 607ms)

@@ -3,7 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { getSupabaseClient } from "@/lib/supabase/client";
 
-export default function AdminOwnerGate({ authorizeAction, title = "دخول لوحة الإدارة", description }) {
+export default function AdminOwnerGate({
+  authorizeAction,
+  title = "دخول لوحة الإدارة",
+  description,
+  loginHref = "/login?next=%2Fadmin",
+}) {
   const formRef = useRef(null);
   const [accessToken, setAccessToken] = useState("");
   const [status, setStatus] = useState("جارٍ التحقق من الجلسة...");
@@ -16,8 +21,8 @@ export default function AdminOwnerGate({ authorizeAction, title = "دخول لو
       const supabase = await getSupabaseClient();
       if (!supabase) {
         if (!active) return;
-        setStatus("");
-        setError("Supabase غير مهيأ على الواجهة.");
+        setStatus("جارٍ التحويل إلى تسجيل الدخول...");
+        window.location.replace(loginHref);
         return;
       }
 
@@ -25,8 +30,8 @@ export default function AdminOwnerGate({ authorizeAction, title = "دخول لو
       if (!active) return;
 
       if (sessionError || !data?.session?.access_token) {
-        setStatus("");
-        setError("يجب تسجيل الدخول أولاً بحساب موجود في قائمة إدارة المدونة.");
+        setStatus("جارٍ التحويل إلى تسجيل الدخول...");
+        window.location.replace(loginHref);
         return;
       }
 
@@ -42,7 +47,7 @@ export default function AdminOwnerGate({ authorizeAction, title = "دخول لو
     return () => {
       active = false;
     };
-  }, []);
+  }, [loginHref]);
 
   return (
     <section className="py-16 sm:py-24">

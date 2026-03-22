@@ -7,27 +7,12 @@ export const metadata = {
 import Link from 'next/link';
 import Image from 'next/image';
 import { homeContent } from '@/content/home';
+import BlogImage from '@/components/blog/BlogImage';
+import { formatArabicDate } from '@/lib/blog/render';
+import { listPostsDetailed } from '@/lib/blog/posts';
 
 const heroScreenshots = homeContent.heroScreenshots;
 const galleryScreenshots = homeContent.galleryScreenshots;
-
-const signalCards = [
-  {
-    eyebrow: 'التواصل',
-    title: '    تواصل ودردش وانشر بحريتك',
-    text: '    أنشر منشورات صورية ونصية وفيديو والمستنذات, ودردش مع زملائك وأقربائك ومع من تحب.',
-  },
-  {
-    eyebrow: 'الخدمات',
-    title: ' نوفر لك ميزات متنوعة للبيع والشراء وتقديم الخدمات  ',
-    text: 'ابدأ البيع والشراء في منتجاتك وعقاراتك وتقديم الخدمات والبحث عن عمل أو تقديم انجازاتك وخبراتك في أهم أبرز الميزات لدينا من أجلك..',
-  },
-  {
-    eyebrow: 'الأدوات',
-    title: 'لدينا العديد من الأدوات اللتي ستنال اعجابك   ',
-    text: 'أدواتنا جاهزة لكم, اكتشف وشاهد  التلفاز أو جرب أهم الأدوات الأخرى اللتي تحتاجها..',
-  },
-];
 
 const productUseCases = [
   {
@@ -296,75 +281,137 @@ function ScreenshotCard({ item, compact = false }) {
   );
 }
 
-export default function Home() {
+function HorizontalScroll({ minWidthClass = 'min-w-[920px]', children }) {
+  return (
+    <div className="overflow-x-auto touch-pan-x overscroll-x-contain [scrollbar-width:thin]">
+      <div className={minWidthClass}>{children}</div>
+    </div>
+  );
+}
+
+function HomeBlogPostCard({ post, compactClass = '' }) {
+  return (
+    <article
+      className={`group overflow-hidden rounded-[24px] border border-black/10 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${compactClass}`}
+    >
+      <Link href={`/blog/${post.slug}`} className="block">
+        <div className="relative aspect-[16/10] overflow-hidden bg-[#f4f6fa]">
+          <BlogImage
+            src={post.coverImageUrl}
+            alt={post.title}
+            fill
+            sizes="(max-width: 1024px) 50vw, 33vw"
+            className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+          />
+        </div>
+        <div className="space-y-2 p-4 text-right">
+          <div className="text-[11px] font-semibold text-black/45">
+            {formatArabicDate(post.publishedAt || post.createdAt)}
+          </div>
+          <h3 className="line-clamp-2 text-[16px] font-black leading-6 text-black">{post.title}</h3>
+          <p className="line-clamp-2 text-[13px] leading-6 text-black/65">{post.excerpt}</p>
+        </div>
+      </Link>
+    </article>
+  );
+}
+
+export default async function Home() {
+  const { posts: recentBlogPosts } = await listPostsDetailed({ limit: 6 });
+
   return (
     <div className="w-full bg-[#fbf7f4]">
       <section className="relative overflow-hidden border-b border-black/8">
         <div className="absolute inset-x-0 top-0 h-[28rem] bg-[radial-gradient(circle_at_top,#f4b9b9_0,#fbf7f4_58%)]" />
-        <div className="relative mx-auto grid max-w-7xl gap-14 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
-          <div className="space-y-8 text-right">
-            <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-white/80 px-4 py-2 text-sm font-semibold text-black/70">
-              <span className="text-xs uppercase tracking-[0.45em] text-black/40">Dribdo</span>
-              <span>{homeContent.hero.badgeName}</span>
-            </div>
+        <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+          <HorizontalScroll minWidthClass="min-w-[980px]">
+            <div className="grid gap-14 lg:grid-cols-[1.05fr_0.95fr]">
+              <div className="space-y-8 text-right">
+                <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-white/80 px-4 py-2 text-sm font-semibold text-black/70">
+                  <span className="text-xs uppercase tracking-[0.45em] text-black/40">Dribdo</span>
+                  <span>{homeContent.hero.badgeName}</span>
+                </div>
 
-            <div className="space-y-5">
-              <h1 className="max-w-3xl text-5xl font-black leading-[1.15] text-black sm:text-6xl">
-                {homeContent.hero.title.prefix}{' '}
-                <span className="text-red-700">{homeContent.hero.title.highlight}</span>{' '}
-                {homeContent.hero.title.suffix}
-              </h1>
-              <p className="max-w-2xl text-lg leading-8 text-black/70">{homeContent.hero.description}</p>
-            </div>
+                <div className="space-y-5">
+                  <h1 className="max-w-3xl text-5xl font-black leading-[1.15] text-black sm:text-6xl">
+                    {homeContent.hero.title.prefix}{' '}
+                    <span className="text-red-700">{homeContent.hero.title.highlight}</span>{' '}
+                    {homeContent.hero.title.suffix}
+                  </h1>
+                  <p className="max-w-2xl text-lg leading-8 text-black/70">{homeContent.hero.description}</p>
+                </div>
 
-            <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Link
-                href="/download"
-                className="inline-flex items-center justify-center rounded-full bg-red-700 px-8 py-3.5 text-base font-semibold text-white transition-colors hover:bg-red-800"
-              >
-                {homeContent.hero.ctaPrimary}
-              </Link>
-              <Link
-                href="/features"
-                className="inline-flex items-center justify-center rounded-full border border-black/10 bg-white px-8 py-3.5 text-base font-semibold text-black transition hover:bg-black/5"
-              >
-                {homeContent.hero.ctaSecondary}
-              </Link>
-            </div>
+                <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+                  <Link
+                    href="/download"
+                    className="inline-flex items-center justify-center rounded-full bg-red-700 px-8 py-3.5 text-base font-semibold text-white transition-colors hover:bg-red-800"
+                  >
+                    {homeContent.hero.ctaPrimary}
+                  </Link>
+                  <Link
+                    href="/features"
+                    className="inline-flex items-center justify-center rounded-full border border-black/10 bg-white px-8 py-3.5 text-base font-semibold text-black transition hover:bg-black/5"
+                  >
+                    {homeContent.hero.ctaSecondary}
+                  </Link>
+                </div>
+              </div>
 
-            <div className="grid gap-4 sm:grid-cols-3">
-              {signalCards.map((card) => (
-                <article key={card.title} className="rounded-[26px] border border-black/10 bg-white/90 p-5 text-right shadow-sm">
-                  <p className="text-xs font-semibold uppercase tracking-[0.35em] text-black/35">{card.eyebrow}</p>
-                  <h2 className="mt-3 text-lg font-bold text-black">{card.title}</h2>
-                  <p className="mt-2 text-sm leading-7 text-black/65">{card.text}</p>
+              <div className="lg:pr-4">
+                <article className="overflow-hidden rounded-[34px] border border-black/10 bg-white shadow-sm">
+                  <div className="relative bg-[#f6f6f6] p-4">
+                    <Image
+                      src={heroScreenshots[0].src}
+                      alt={`لقطة شاشة: ${heroScreenshots[0].title}`}
+                      width={1200}
+                      height={820}
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      quality={76}
+                      className="h-[440px] w-full rounded-[26px] object-cover object-top sm:h-[520px] lg:h-[620px]"
+                      priority
+                    />
+                  </div>
+                  <div className="space-y-2 p-6 text-right">
+                    <h2 className="text-2xl font-black text-black">{heroScreenshots[0].title}</h2>
+                    <p className="text-base leading-8 text-black/65">{heroScreenshots[0].subtitle}</p>
+                  </div>
                 </article>
-              ))}
+              </div>
             </div>
-          </div>
-
-          <div className="lg:pr-4">
-            <article className="overflow-hidden rounded-[34px] border border-black/10 bg-white shadow-sm">
-              <div className="relative bg-[#f6f6f6] p-4">
-                <Image
-                  src={heroScreenshots[0].src}
-                  alt={`لقطة شاشة: ${heroScreenshots[0].title}`}
-                  width={1200}
-                  height={820}
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  quality={76}
-                  className="h-[440px] w-full rounded-[26px] object-cover object-top sm:h-[520px] lg:h-[620px]"
-                  priority
-                />
-              </div>
-              <div className="space-y-2 p-6 text-right">
-                <h2 className="text-2xl font-black text-black">{heroScreenshots[0].title}</h2>
-                <p className="text-base leading-8 text-black/65">{heroScreenshots[0].subtitle}</p>
-              </div>
-            </article>
-          </div>
+          </HorizontalScroll>
+          <div className="mt-3 text-right text-xs font-semibold text-black/45 sm:hidden">اسحب يمينًا ويسارًا لمشاهدة كامل القسم</div>
         </div>
       </section>
+
+      {recentBlogPosts.length ? (
+        <section className="mx-auto max-w-7xl px-4 pb-16 pt-12 sm:px-6 lg:px-8">
+          <div className="rounded-[30px] border border-black/10 bg-white p-6 sm:p-8">
+            <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+              <div className="text-right">
+                <p className="text-xs font-semibold uppercase tracking-[0.35em] text-black/35">Blog</p>
+                <h2 className="mt-2 text-3xl font-black text-black sm:text-4xl">أحدث المقالات المنشورة</h2>
+              </div>
+            </div>
+
+            <HorizontalScroll minWidthClass="min-w-[940px]">
+              <div className="grid grid-cols-3 gap-4">
+                {recentBlogPosts.map((post) => (
+                  <HomeBlogPostCard key={post.id || post.slug} post={post} />
+                ))}
+              </div>
+            </HorizontalScroll>
+
+            <div className="mt-7 flex justify-center">
+              <Link
+                href="/blog"
+                className="inline-flex items-center justify-center rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition hover:bg-black/85"
+              >
+                عرض المزيد
+              </Link>
+            </div>
+          </div>
+      </section>
+      ) : null}
 
       <section className="hidden mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
@@ -416,121 +463,134 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
-          {sectionPillars.map((item) => (
-            <article key={item.title} className="rounded-[30px] border border-black/10 bg-white p-7 text-right shadow-sm">
-              <div className="mb-5 text-black">{item.icon}</div>
-              <h3 className="text-2xl font-bold text-black">{item.title}</h3>
-              <p className="mt-3 text-base leading-8 text-black/65">{item.desc}</p>
-            </article>
-          ))}
-        </div>
+        <HorizontalScroll minWidthClass="min-w-[980px]">
+          <div className="grid gap-6 lg:grid-cols-3">
+            {sectionPillars.map((item) => (
+              <article key={item.title} className="rounded-[30px] border border-black/10 bg-white p-7 text-right shadow-sm">
+                <div className="mb-5 text-black">{item.icon}</div>
+                <h3 className="text-2xl font-bold text-black">{item.title}</h3>
+                <p className="mt-3 text-base leading-8 text-black/65">{item.desc}</p>
+              </article>
+            ))}
+          </div>
+        </HorizontalScroll>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
         <div className="rounded-[34px] border border-black/10 bg-white p-8 sm:p-10">
-          <div className="mb-10 grid gap-6 border-b border-black/10 pb-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-            <div className="text-right">
-              <p className="text-sm font-semibold uppercase tracking-[0.45em] text-black/35">مقارنة مباشرة</p>
-              <h2 className="mt-4 text-4xl font-black text-black sm:text-5xl">
-                لماذا  <span className="text-red-700">دريبدو</span>   يختاره المستخدمين أكثر من التطبيقات الأخرى؟
-              </h2>
-              <p className="mt-4 max-w-3xl text-lg leading-8 text-black/65">
-                تعرف لمذا دريبدو يختاره أغلب الأشخاص ويفضلونه أكثر من التطبيقات الأخرى, ليس بهذف النشر والتواصل والدردشة فقط, ولاكن هناك هذف معين يجعله مميز من بين التطبيقات الأخرى.
-              </p>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-              {executiveSignals.map((item) => (
-                <div key={item.value} className="rounded-[24px] bg-[#faf6f3] p-5 text-right">
-                  <p className="text-lg font-bold text-black">{item.value}</p>
-                  <p className="mt-2 text-sm leading-7 text-black/60">{item.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="overflow-hidden rounded-[28px] border border-black/10">
-            <div className="grid grid-cols-3 bg-[#f7f3f1] text-right">
-              <div className="border-l border-black/10 p-5 text-lg font-bold text-black">السمات</div>
-              <div className="border-l border-black/10 p-5 text-lg font-bold text-black">
-                <span className="inline-flex items-center gap-2">
-                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-red-700 text-sm font-bold text-white">D</span>
-                  دريبدو
-                </span>
+          <HorizontalScroll minWidthClass="min-w-[980px]">
+            <div className="mb-10 grid gap-6 border-b border-black/10 pb-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+              <div className="text-right">
+                <p className="text-sm font-semibold uppercase tracking-[0.45em] text-black/35">مقارنة مباشرة</p>
+                <h2 className="mt-4 text-4xl font-black text-black sm:text-5xl">
+                  لماذا  <span className="text-red-700">دريبدو</span>   يختاره المستخدمين أكثر من التطبيقات الأخرى؟
+                </h2>
+                <p className="mt-4 max-w-3xl text-lg leading-8 text-black/65">
+                  تعرف لمذا دريبدو يختاره أغلب الأشخاص ويفضلونه أكثر من التطبيقات الأخرى, ليس بهذف النشر والتواصل والدردشة فقط, ولاكن هناك هذف معين يجعله مميز من بين التطبيقات الأخرى.
+                </p>
               </div>
-              <div className="p-5 text-lg font-bold text-black">المنصات الأخرى</div>
-            </div>
 
-            {comparisonRows.map((row, index) => (
-              <div
-                key={row.feature}
-                className={`grid grid-cols-1 border-t border-black/10 md:grid-cols-3 ${index % 2 === 0 ? 'bg-white' : 'bg-[#fcfaf8]'}`}
-              >
-                <div className="border-l border-black/10 p-5 text-right font-semibold text-black md:text-lg">
-                  {row.feature}
-                </div>
-                <div className="border-l border-black/10 p-5 text-right text-black/80">
-                  <span className="inline-flex items-start gap-3">
-                    <svg viewBox="0 0 24 24" className="mt-1 h-5 w-5 shrink-0 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m5 13 4 4L19 7" />
-                    </svg>
-                    <span className="leading-8">{row.dribdo}</span>
-                  </span>
-                </div>
-                <div className="p-5 text-right text-black/70">
-                  <span className="inline-flex items-start gap-3">
-                    <svg viewBox="0 0 24 24" className="mt-1 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6 6 18" />
-                    </svg>
-                    <span className="leading-8">{row.others}</span>
-                  </span>
-                </div>
+              <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+                {executiveSignals.map((item) => (
+                  <div key={item.value} className="rounded-[24px] bg-[#faf6f3] p-5 text-right">
+                    <p className="text-lg font-bold text-black">{item.value}</p>
+                    <p className="mt-2 text-sm leading-7 text-black/60">{item.label}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+          </HorizontalScroll>
+
+          <div className="overflow-hidden rounded-[28px] border border-black/10 bg-white">
+            <div className="border-b border-black/10 bg-[#f8f5f3] px-4 py-2 text-xs font-semibold text-black/55 sm:hidden">
+              اسحب يمينًا ويسارًا لعرض كامل جدول المقارنة
+            </div>
+            <div className="overflow-x-auto touch-pan-x overscroll-x-contain [scrollbar-width:thin]">
+              <div className="min-w-[920px]">
+                <div className="grid grid-cols-[220px_minmax(340px,1fr)_minmax(340px,1fr)] bg-[#f7f3f1] text-right">
+                  <div className="border-l border-black/10 p-5 text-lg font-bold text-black">السمات</div>
+                  <div className="border-l border-black/10 p-5 text-lg font-bold text-black">
+                    <span className="inline-flex items-center gap-2">
+                      <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-red-700 text-sm font-bold text-white">D</span>
+                      دريبدو
+                    </span>
+                  </div>
+                  <div className="p-5 text-lg font-bold text-black">المنصات الأخرى</div>
+                </div>
+
+                {comparisonRows.map((row, index) => (
+                  <div
+                    key={row.feature}
+                    className={`grid grid-cols-[220px_minmax(340px,1fr)_minmax(340px,1fr)] border-t border-black/10 ${index % 2 === 0 ? 'bg-white' : 'bg-[#fcfaf8]'}`}
+                  >
+                    <div className="border-l border-black/10 p-5 text-right text-lg font-semibold text-black">
+                      {row.feature}
+                    </div>
+                    <div className="border-l border-black/10 p-5 text-right text-black/80">
+                      <span className="inline-flex items-start gap-3">
+                        <svg viewBox="0 0 24 24" className="mt-1 h-5 w-5 shrink-0 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="m5 13 4 4L19 7" />
+                        </svg>
+                        <span className="leading-8">{row.dribdo}</span>
+                      </span>
+                    </div>
+                    <div className="p-5 text-right text-black/70">
+                      <span className="inline-flex items-start gap-3">
+                        <svg viewBox="0 0 24 24" className="mt-1 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6 6 18" />
+                        </svg>
+                        <span className="leading-8">{row.others}</span>
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr]">
-          <div className="rounded-[34px] border border-black/10 bg-white p-8 text-right">
-            <p className="text-sm font-semibold uppercase tracking-[0.45em] text-black/35">لماذا يختارنا المستخدمون</p>
-            <h2 className="mt-4 text-4xl font-black text-black">أسباب واضحة تجعل القرار أسهل</h2>
-            <p className="mt-4 text-base leading-8 text-black/65">
-              عندما تكون المنصة مرتبة وواضحة وتخدم أكثر من سيناريو استخدام، يصبح تبنيها أسهل للمستخدمين والفرق والعلامات.
-            </p>
+        <HorizontalScroll minWidthClass="min-w-[980px]">
+          <div className="flex gap-6">
+            <div className="w-[510px] shrink-0 rounded-[34px] border border-black/10 bg-white p-8 text-right">
+              <p className="text-sm font-semibold uppercase tracking-[0.45em] text-black/35">لماذا يختارنا المستخدمون</p>
+              <h2 className="mt-4 text-4xl font-black text-black">أسباب واضحة تجعل القرار أسهل</h2>
+              <p className="mt-4 text-base leading-8 text-black/65">
+                عندما تكون المنصة مرتبة وواضحة وتخدم أكثر من سيناريو استخدام، يصبح تبنيها أسهل للمستخدمين والفرق والعلامات.
+              </p>
 
-            <div className="mt-8 grid gap-4">
-              {customerReasons.map((item) => (
-                <article key={item.title} className="rounded-[24px] bg-[#faf6f3] p-5">
-                  <h3 className="text-lg font-bold text-black">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-7 text-black/60">{item.desc}</p>
-                </article>
-              ))}
+              <div className="mt-8 grid gap-4">
+                {customerReasons.map((item) => (
+                  <article key={item.title} className="rounded-[24px] bg-[#faf6f3] p-5">
+                    <h3 className="text-lg font-bold text-black">{item.title}</h3>
+                    <p className="mt-2 text-sm leading-7 text-black/60">{item.desc}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div className="w-[470px] shrink-0 rounded-[34px] border border-black/10 bg-white p-8 text-right">
+              <p className="text-sm font-semibold uppercase tracking-[0.45em] text-black/35">مسارات سريعة</p>
+              <h2 className="mt-4 text-4xl font-black text-black">التفاصيل الكاملة في صفحات أخف</h2>
+              <p className="mt-4 text-base leading-8 text-black/65">
+                نقلنا التفاصيل الطويلة إلى الصفحات المتخصصة حتى تبقى الصفحة الرئيسية أسرع وأوضح، مع الوصول السريع إلى كل ما تحتاجه.
+              </p>
+
+              <div className="mt-8 grid gap-4">
+                {supportShortcuts.map((item) => (
+                  <Link key={item.title} href={item.href} className="rounded-[24px] border border-black/10 p-5 transition hover:border-black/20 hover:bg-[#faf8f6]">
+                    <h3 className="text-lg font-bold text-black">{item.title}</h3>
+                    <p className="mt-3 text-sm leading-7 text-black/60">{item.desc}</p>
+                    <span className="mt-4 inline-flex rounded-full bg-black px-4 py-2 text-sm font-semibold text-white">
+                      {item.cta}
+                    </span>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
-
-          <div className="rounded-[34px] border border-black/10 bg-white p-8 text-right">
-            <p className="text-sm font-semibold uppercase tracking-[0.45em] text-black/35">مسارات سريعة</p>
-            <h2 className="mt-4 text-4xl font-black text-black">التفاصيل الكاملة في صفحات أخف</h2>
-            <p className="mt-4 text-base leading-8 text-black/65">
-              نقلنا التفاصيل الطويلة إلى الصفحات المتخصصة حتى تبقى الصفحة الرئيسية أسرع وأوضح، مع الوصول السريع إلى كل ما تحتاجه.
-            </p>
-
-            <div className="mt-8 grid gap-4">
-              {supportShortcuts.map((item) => (
-                <Link key={item.title} href={item.href} className="rounded-[24px] border border-black/10 p-5 transition hover:border-black/20 hover:bg-[#faf8f6]">
-                  <h3 className="text-lg font-bold text-black">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-black/60">{item.desc}</p>
-                  <span className="mt-4 inline-flex rounded-full bg-black px-4 py-2 text-sm font-semibold text-white">
-                    {item.cta}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
+        </HorizontalScroll>
       </section>
 
       <section className="border-y border-black/8 bg-white">
@@ -545,11 +605,15 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {galleryScreenshots.map((item) => (
-              <ScreenshotCard key={item.title} item={item} compact />
-            ))}
-          </div>
+          <HorizontalScroll minWidthClass="min-w-[1140px]">
+            <div className="flex gap-6">
+              {galleryScreenshots.map((item) => (
+                <div key={item.title} className="w-[260px] shrink-0">
+                  <ScreenshotCard item={item} compact />
+                </div>
+              ))}
+            </div>
+          </HorizontalScroll>
 
           <div className="mt-8 flex justify-center">
             <Link href="/features" className="rounded-full border border-black/10 bg-[#faf8f6] px-6 py-3 text-sm font-semibold text-black transition hover:bg-white">
@@ -560,43 +624,45 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr]">
-          <div className="rounded-[34px] bg-[#111111] p-8 text-white">
-            <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/45">جاهز للتجربة</p>
-            <h2 className="mt-4 text-4xl font-black leading-tight">{homeContent.download.heading}</h2>
-            <p className="mt-4 text-base leading-8 text-white/70">{homeContent.download.sub}</p>
+        <HorizontalScroll minWidthClass="min-w-[980px]">
+          <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr]">
+            <div className="rounded-[34px] bg-[#111111] p-8 text-white">
+              <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/45">جاهز للتجربة</p>
+              <h2 className="mt-4 text-4xl font-black leading-tight">{homeContent.download.heading}</h2>
+              <p className="mt-4 text-base leading-8 text-white/70">{homeContent.download.sub}</p>
 
-            <div className="mt-8 grid gap-4">
-              {downloadOptions.map((option) => (
-                <Link
-                  key={option.label}
-                  href={option.href}
-                  className={`flex min-h-[7rem] flex-col items-center justify-center rounded-[24px] border px-8 py-5 text-center transition ${
-                    option.primary
-                      ? 'border-red-700 bg-red-700 text-white hover:bg-red-800'
-                      : 'border-white/10 bg-white text-black hover:bg-white/90'
-                  }`}
-                >
-                  <div className={`mb-3 ${option.primary ? 'text-white' : 'text-black'}`}>{option.icon}</div>
-                  <div className="mx-auto flex max-w-full flex-col items-center justify-center text-center">
-                    <p className={`text-base font-semibold ${option.primary ? 'text-white' : 'text-black'}`}>{option.label}</p>
-                    <p className={`text-sm ${option.primary ? 'text-white/70' : 'text-black/55'}`}>{option.helper}</p>
-                  </div>
-                </Link>
+              <div className="mt-8 grid gap-4">
+                {downloadOptions.map((option) => (
+                  <Link
+                    key={option.label}
+                    href={option.href}
+                    className={`flex min-h-[7rem] flex-col items-center justify-center rounded-[24px] border px-8 py-5 text-center transition ${
+                      option.primary
+                        ? 'border-red-700 bg-red-700 text-white hover:bg-red-800'
+                        : 'border-white/10 bg-white text-black hover:bg-white/90'
+                    }`}
+                  >
+                    <div className={`mb-3 ${option.primary ? 'text-white' : 'text-black'}`}>{option.icon}</div>
+                    <div className="mx-auto flex max-w-full flex-col items-center justify-center text-center">
+                      <p className={`text-base font-semibold ${option.primary ? 'text-white' : 'text-black'}`}>{option.label}</p>
+                      <p className={`text-sm ${option.primary ? 'text-white/70' : 'text-black/55'}`}>{option.helper}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              {homeContent.why.items.map((item) => (
+                <article key={item.title} className="rounded-[30px] border border-black/10 bg-white p-7 text-right shadow-sm">
+                  <p className="text-sm font-semibold uppercase tracking-[0.35em] text-black/30">ميزة</p>
+                  <h3 className="mt-4 text-2xl font-bold text-black">{item.title}</h3>
+                  <p className="mt-3 text-base leading-8 text-black/65">{item.desc}</p>
+                </article>
               ))}
             </div>
           </div>
-
-          <div className="grid gap-6 md:grid-cols-2">
-            {homeContent.why.items.map((item) => (
-              <article key={item.title} className="rounded-[30px] border border-black/10 bg-white p-7 text-right shadow-sm">
-                <p className="text-sm font-semibold uppercase tracking-[0.35em] text-black/30">ميزة</p>
-                <h3 className="mt-4 text-2xl font-bold text-black">{item.title}</h3>
-                <p className="mt-3 text-base leading-8 text-black/65">{item.desc}</p>
-              </article>
-            ))}
-          </div>
-        </div>
+        </HorizontalScroll>
       </section>
     </div>
   );

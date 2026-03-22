@@ -1,10 +1,7 @@
 ﻿import Link from "next/link";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { getSupabaseAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 import { getSupabaseClient } from "@/lib/supabase/client";
-import AdminOwnerGate from "@/components/admin/AdminOwnerGate";
-import { hasValidAdminSession, requireAdminSession, setAdminSessionCookie, validateAdminAccessToken } from "@/lib/admin/access";
 import { SECRET_ADMIN_BASE_PATH, SECRET_ADMIN_REPORTS_PATH } from "@/lib/admin/paths";
 
 export const metadata = {
@@ -13,12 +10,6 @@ export const metadata = {
   robots: { index: false, follow: false },
   alternates: { canonical: SECRET_ADMIN_REPORTS_PATH },
 };
-
-function buildLoginHref(nextPath = SECRET_ADMIN_REPORTS_PATH, denied = false) {
-  const search = new URLSearchParams({ next: nextPath });
-  if (denied) search.set("admin", "denied");
-  return `/login?${search.toString()}`;
-}
 
 async function fetchReports() {
   const adminReady = isSupabaseAdminConfigured();
@@ -39,33 +30,6 @@ async function fetchReports() {
 }
 
 export default async function AdminReportsPage() {
-  const sessionValid = await hasValidAdminSession();
-
-  async function authorizeAction(formData) {
-    "use server";
-
-    const result = await validateAdminAccessToken(formData.get("accessToken"));
-    if (!result.ok) {
-      redirect(buildLoginHref(SECRET_ADMIN_REPORTS_PATH, true));
-    }
-
-    await setAdminSessionCookie();
-    redirect(SECRET_ADMIN_REPORTS_PATH);
-  }
-
-  if (!sessionValid) {
-    return (
-      <div className="w-full bg-[linear-gradient(180deg,#fff7ed_0%,#fff_28%,#f8fafc_100%)]">
-        <AdminOwnerGate
-          authorizeAction={authorizeAction}
-          title="دخول صفحة البلاغات"
-          description="هذا المسار الإداري خاص. إذا لم تكن مسجل الدخول أو لم يكن حسابك مضافًا في جدول إدارة المدونة فسيتم تحويلك إلى صفحة تسجيل الدخول."
-          loginHref={buildLoginHref(SECRET_ADMIN_REPORTS_PATH)}
-        />
-      </div>
-    );
-  }
-
   const { reports, error } = await fetchReports();
 
   const reportCounts = reports.reduce((acc, report) => {
@@ -77,8 +41,6 @@ export default async function AdminReportsPage() {
 
   async function hideCommentAction(formData) {
     "use server";
-    const access = await requireAdminSession();
-    if (!access.ok) return;
     const commentId = String(formData.get("commentId") || "");
     if (!commentId) return;
 
@@ -91,8 +53,6 @@ export default async function AdminReportsPage() {
 
   async function unhideCommentAction(formData) {
     "use server";
-    const access = await requireAdminSession();
-    if (!access.ok) return;
     const commentId = String(formData.get("commentId") || "");
     if (!commentId) return;
 
@@ -105,8 +65,6 @@ export default async function AdminReportsPage() {
 
   async function deleteCommentAction(formData) {
     "use server";
-    const access = await requireAdminSession();
-    if (!access.ok) return;
     const commentId = String(formData.get("commentId") || "");
     if (!commentId) return;
 

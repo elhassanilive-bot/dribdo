@@ -1749,3 +1749,7 @@ Import trace for requested module:
  GET /blog/post-20260322174029 200 in 8.0s (compile: 3.3s, render: 4.7s)
  GET /admin 200 in 750ms (compile: 68ms, render: 682ms)
  GET /blog/post-20260322174029 200 in 723ms (compile: 263ms, render: 460ms)
+ GET /admin 200 in 654ms (compile: 111ms, render: 543ms)
+ GET /blog/post-20260322174029 200 in 640ms (compile: 353ms, render: 286ms)
+ GET /admin 200 in 412ms (compile: 40ms, render: 372ms)
+ GET /blog/post-20260322174029 200 in 407ms (compile: 172ms, render: 235ms)

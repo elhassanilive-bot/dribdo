@@ -1,12 +1,12 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 
 const ADMIN_SESSION_COOKIE = "dribdo_admin_owner_session";
-const ADMIN_OWNER_USER_ID =
-  process.env.BLOG_ADMIN_OWNER_USER_ID || "15b8d491-6d29-41b9-a0eb-21184f5936a4";
+const ADMIN_OWNER_EMAIL =
+  process.env.BLOG_ADMIN_OWNER_EMAIL || "elhassanilive@gmail.com";
 
-async function createAdminSessionValue(userId) {
+async function createAdminSessionValue(email) {
   const seed = process.env.NEXT_PUBLIC_SUPABASE_URL || "dribdo-admin";
-  const input = new TextEncoder().encode(`${seed}:${userId}`);
+  const input = new TextEncoder().encode(`${seed}:${String(email || "").toLowerCase()}`);
   const digest = await crypto.subtle.digest("SHA-256", input);
   return Array.from(new Uint8Array(digest))
     .map((byte) => byte.toString(16).padStart(2, "0"))
@@ -25,7 +25,7 @@ export async function middleware(request) {
   }
 
   const cookieValue = request.cookies.get(ADMIN_SESSION_COOKIE)?.value || "";
-  const expectedValue = await createAdminSessionValue(ADMIN_OWNER_USER_ID);
+  const expectedValue = await createAdminSessionValue(ADMIN_OWNER_EMAIL);
 
   if (cookieValue && cookieValue === expectedValue) {
     return NextResponse.next();

@@ -29,9 +29,9 @@ function buildAdminErrorMessage(searchParams) {
   if (searchParams?.auth !== "denied") return null;
 
   const details = [];
-  if (searchParams?.reason === "user_mismatch") {
+  if (searchParams?.reason === "email_mismatch") {
     if (searchParams?.uid) details.push(`المعرف الحالي: ${searchParams.uid}`);
-    if (searchParams?.expected) details.push(`المعرف المسموح: ${searchParams.expected}`);
+    if (searchParams?.expected) details.push(`البريد المسموح: ${searchParams.expected}`);
     if (searchParams?.email) details.push(`البريد الحالي: ${searchParams.email}`);
   }
 
@@ -49,11 +49,11 @@ export default async function AdminBlogPage({ searchParams }) {
 
     const result = await validateAdminAccessToken(formData.get("accessToken"));
     if (!result.ok) {
-      if (result.code === "user_mismatch") {
+      if (result.code === "email_mismatch") {
         const uid = encodeURIComponent(result.actualUserId || "");
-        const expected = encodeURIComponent(result.expectedUserId || "");
+        const expected = encodeURIComponent(result.expectedEmail || "");
         const email = encodeURIComponent(result.actualEmail || "");
-        redirect(`/admin/blog?auth=denied&reason=user_mismatch&uid=${uid}&expected=${expected}&email=${email}`);
+        redirect(`/admin/blog?auth=denied&reason=email_mismatch&uid=${uid}&expected=${expected}&email=${email}`);
       }
 
       redirect("/admin/blog?auth=denied");
@@ -195,3 +195,4 @@ export default async function AdminBlogPage({ searchParams }) {
     </div>
   );
 }
+

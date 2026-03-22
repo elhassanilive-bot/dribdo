@@ -2,14 +2,14 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 import { getSupabaseAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 
-export const ADMIN_OWNER_USER_ID =
-  process.env.BLOG_ADMIN_OWNER_USER_ID || "15b8d491-6d29-41b9-a0eb-21184f5936a4";
+export const ADMIN_OWNER_EMAIL =
+  process.env.BLOG_ADMIN_OWNER_EMAIL || "elhassanilive@gmail.com";
 export const ADMIN_SESSION_COOKIE = "dribdo_admin_owner_session";
 export const ADMIN_SESSION_MAX_AGE = 60 * 60 * 24 * 14;
 
-function createAdminSessionValue(userId) {
+function createAdminSessionValue(email) {
   const seed = process.env.NEXT_PUBLIC_SUPABASE_URL || "dribdo-admin";
-  return createHash("sha256").update(`${seed}:${userId}`).digest("hex");
+  return createHash("sha256").update(`${seed}:${String(email || "").toLowerCase()}`).digest("hex");
 }
 
 function secureEqual(a, b) {
@@ -23,12 +23,12 @@ export async function hasValidAdminSession() {
   const cookieStore = await cookies();
   const cookieValue = cookieStore.get(ADMIN_SESSION_COOKIE)?.value || "";
   if (!cookieValue) return false;
-  return secureEqual(cookieValue, createAdminSessionValue(ADMIN_OWNER_USER_ID));
+  return secureEqual(cookieValue, createAdminSessionValue(ADMIN_OWNER_EMAIL));
 }
 
 export async function setAdminSessionCookie() {
   const cookieStore = await cookies();
-  cookieStore.set(ADMIN_SESSION_COOKIE, createAdminSessionValue(ADMIN_OWNER_USER_ID), {
+  cookieStore.set(ADMIN_SESSION_COOKIE, createAdminSessionValue(ADMIN_OWNER_EMAIL), {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
@@ -66,14 +66,17 @@ export async function validateAdminAccessToken(accessToken) {
     return { ok: false, code: "session_verify_failed", error: "تعذر التحقق من جلسة المستخدم." };
   }
 
-  if (data.user.id !== ADMIN_OWNER_USER_ID) {
+  const actualEmail = String(data.user.email || "").toLowerCase();
+  const expectedEmail = String(ADMIN_OWNER_EMAIL || "").toLowerCase();
+
+  if (actualEmail !== expectedEmail) {
     return {
       ok: false,
-      code: "user_mismatch",
+      code: "email_mismatch",
       error: "هذا الحساب غير مخول للوصول إلى لوحة الإدارة.",
       actualUserId: data.user.id,
-      actualEmail: data.user.email || "",
-      expectedUserId: ADMIN_OWNER_USER_ID,
+      actualEmail,
+      expectedEmail,
     };
   }
 

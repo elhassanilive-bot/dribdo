@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getSupabaseClient, isSupabaseConfigured } from "@/lib/supabase/client";
 
 const AUTH_LINKS = [
@@ -33,9 +33,19 @@ function StatusMessage({ status }) {
   );
 }
 
+function normalizeNextPath(value, fallback = "/account") {
+  const nextPath = String(value || "").trim();
+  if (!nextPath.startsWith("/")) return fallback;
+  if (nextPath.startsWith("//")) return fallback;
+  return nextPath;
+}
+
 export default function AccountShell({ mode = "account" }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const ready = useMemo(() => isSupabaseConfigured(), []);
+  const requestedNextPath = normalizeNextPath(searchParams?.get("next"), "/account");
+  const adminDenied = searchParams?.get("admin") === "denied";
 
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
@@ -107,10 +117,16 @@ export default function AccountShell({ mode = "account" }) {
   }, [user]);
 
   useEffect(() => {
-    if (!loading && user && mode !== "account") {
-      router.replace("/account");
-    }
-  }, [loading, user, mode, router]);
+    if (mode === "account") return;
+    if (loading || !user) return;
+    router.replace(requestedNextPath);
+  }, [loading, user, mode, requestedNextPath, router]);
+
+  useEffect(() => {
+    if (mode !== "login") return;
+    if (!adminDenied) return;
+    setAuthStatus({ type: "error", message: "هذا الحساب غير مخول للوصول إلى لوحة إدارة المدونة." });
+  }, [mode, adminDenied]);
 
   async function handleAuthSubmit(event) {
     event.preventDefault();
@@ -171,7 +187,7 @@ export default function AccountShell({ mode = "account" }) {
 
       setAuthStatus({ type: "success", message: "تم تسجيل الدخول بنجاح." });
       setAuthPassword("");
-      if (mode !== "account") router.replace("/account");
+      router.replace(mode === "account" ? "/account" : requestedNextPath);
     } catch (error) {
       setAuthStatus({ type: "error", message: error?.message || "تعذرت العملية. حاول مرة أخرى." });
     } finally {

@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { redirect } from "next/navigation";
 import AdminOwnerGate from "@/components/admin/AdminOwnerGate";
 import { clearAdminSessionCookie, hasValidAdminSession, setAdminSessionCookie, validateAdminAccessToken } from "@/lib/admin/access";
@@ -10,9 +10,24 @@ export const metadata = {
   alternates: { canonical: "/admin" },
 };
 
+function buildAdminErrorMessage(searchParams) {
+  if (searchParams?.auth !== "denied") return null;
+
+  const details = [];
+  if (searchParams?.reason === "user_mismatch") {
+    if (searchParams?.uid) details.push(`المعرف الحالي: ${searchParams.uid}`);
+    if (searchParams?.expected) details.push(`المعرف المسموح: ${searchParams.expected}`);
+    if (searchParams?.email) details.push(`البريد الحالي: ${searchParams.email}`);
+  }
+
+  return details.length
+    ? `هذا الحساب غير مخول للوصول إلى لوحة الإدارة. ${details.join(" | ")}`
+    : "هذا الحساب غير مخول للوصول إلى لوحة الإدارة.";
+}
+
 export default async function AdminHome({ searchParams }) {
   const resolvedSearchParams = await searchParams;
-  const loginError = resolvedSearchParams?.auth === "denied" ? "هذا الحساب غير مخول للوصول إلى لوحة الإدارة." : null;
+  const loginError = buildAdminErrorMessage(resolvedSearchParams);
   const sessionValid = await hasValidAdminSession();
 
   async function authorizeAction(formData) {
@@ -20,6 +35,13 @@ export default async function AdminHome({ searchParams }) {
 
     const result = await validateAdminAccessToken(formData.get("accessToken"));
     if (!result.ok) {
+      if (result.code === "user_mismatch") {
+        const uid = encodeURIComponent(result.actualUserId || "");
+        const expected = encodeURIComponent(result.expectedUserId || "");
+        const email = encodeURIComponent(result.actualEmail || "");
+        redirect(`/admin?auth=denied&reason=user_mismatch&uid=${uid}&expected=${expected}&email=${email}`);
+      }
+
       redirect("/admin?auth=denied");
     }
 

@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+﻿import { cookies } from "next/headers";
 import { createHash, timingSafeEqual } from "node:crypto";
 import { getSupabaseAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 
@@ -44,26 +44,37 @@ export async function clearAdminSessionCookie() {
 
 export async function validateAdminAccessToken(accessToken) {
   if (!isSupabaseAdminConfigured()) {
-    return { ok: false, error: "SUPABASE_SERVICE_ROLE_KEY غير موجود. لا يمكن تفعيل حماية الأدمن." };
+    return {
+      ok: false,
+      code: "missing_service_role",
+      error: "SUPABASE_SERVICE_ROLE_KEY غير موجود. لا يمكن تفعيل حماية الأدمن.",
+    };
   }
 
   const token = String(accessToken || "").trim();
   if (!token) {
-    return { ok: false, error: "جلسة الدخول غير متوفرة." };
+    return { ok: false, code: "missing_token", error: "جلسة الدخول غير متوفرة." };
   }
 
   const supabaseAdmin = await getSupabaseAdminClient();
   if (!supabaseAdmin) {
-    return { ok: false, error: "تعذر تهيئة عميل Supabase الإداري." };
+    return { ok: false, code: "admin_client_error", error: "تعذر تهيئة عميل Supabase الإداري." };
   }
 
   const { data, error } = await supabaseAdmin.auth.getUser(token);
   if (error || !data?.user) {
-    return { ok: false, error: "تعذر التحقق من جلسة المستخدم." };
+    return { ok: false, code: "session_verify_failed", error: "تعذر التحقق من جلسة المستخدم." };
   }
 
   if (data.user.id !== ADMIN_OWNER_USER_ID) {
-    return { ok: false, error: "هذا الحساب غير مخول للوصول إلى لوحة الإدارة." };
+    return {
+      ok: false,
+      code: "user_mismatch",
+      error: "هذا الحساب غير مخول للوصول إلى لوحة الإدارة.",
+      actualUserId: data.user.id,
+      actualEmail: data.user.email || "",
+      expectedUserId: ADMIN_OWNER_USER_ID,
+    };
   }
 
   return { ok: true, user: data.user };

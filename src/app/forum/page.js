@@ -3,6 +3,7 @@ import ForumPostCardActions from "@/components/forum/ForumPostCardActions";
 import { listPostsDetailed } from "@/lib/blog/posts";
 import { estimateReadingTime } from "@/lib/blog/render";
 import Link from "next/link";
+import { absoluteUrl, site } from "@/config/site";
 
 export const metadata = {
   title: "منتدى دريبدو",
@@ -13,13 +14,13 @@ export const metadata = {
     title: "منتدى دريبدو",
     description: "شارك رأيك وأسئلتك وتجاربك مع مجتمع دريبدو في منتدى عربي منظم للنقاش وتبادل الخبرات.",
     url: "/forum",
-    images: [{ url: "/screenshots/ads.png", width: 1200, height: 630, alt: "منتدى دريبدو" }],
+    images: [{ url: "/icon.png", width: 512, height: 512, alt: "منتدى دريبدو" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "منتدى دريبدو",
     description: "شارك رأيك وأسئلتك وتجاربك مع مجتمع دريبدو في منتدى عربي منظم للنقاش وتبادل الخبرات.",
-    images: ["/screenshots/ads.png"],
+    images: ["/icon.png"],
   },
 };
 
@@ -36,9 +37,36 @@ function extractAuthor(excerpt) {
 export default async function ForumPage() {
   const { posts, error } = await listPostsDetailed({ limit: 200 });
   const forumPosts = (posts || []).filter((post) => post.category === "forum");
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "الرئيسية", item: site.url },
+      { "@type": "ListItem", position: 2, name: "منتدى دريبدو", item: `${site.url}/forum` },
+    ],
+  };
+  const forumCollectionJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "منتدى دريبدو",
+    description: metadata.description,
+    url: `${site.url}/forum`,
+    inLanguage: "ar",
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: forumPosts.slice(0, 12).map((post, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: absoluteUrl(`/blog/${post.slug}`),
+        name: post.title,
+      })),
+    },
+  };
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 pb-20 pt-28 sm:px-6 lg:px-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(forumCollectionJsonLd) }} />
       <header className="rounded-[2.5rem] border border-orange-100 bg-[radial-gradient(circle_at_top_left,_rgba(249,115,22,0.18),_transparent_35%),linear-gradient(135deg,#fff7ed_0%,#ffffff_55%,#f8fafc_100%)] px-6 py-10 text-center shadow-[0_30px_80px_-60px_rgba(15,23,42,0.35)]">
         <p className="text-xs font-semibold uppercase tracking-[0.45em] text-orange-400">Dribdo Forum</p>
         <h1 className="mt-4 text-3xl font-black text-slate-950 sm:text-4xl">منتدى مجتمعي للنقاش وتبادل الخبرات</h1>

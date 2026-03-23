@@ -5,7 +5,7 @@
     'دريبدو منصة اجتماعية عربية متكاملة تجمع النشر والتفاعل والدردشة والفيديو والمجتمعات والمساحات، مع خدمات إضافية مثل السوق والعقارات والوظائف والمذكرات داخل تجربة واحدة واضحة ومنظمة.',
   url: 'https://dribdo.com',
   supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@dribdo.com',
-  defaultOgImage: '/screenshots/ads.png',
+  defaultOgImage: '/icon.png',
   locale: 'ar_MA',
   language: 'ar',
   keywords: [

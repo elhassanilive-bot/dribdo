@@ -2,6 +2,7 @@
 import { isBlogEnabled, listCategorySummaries, listPostsDetailedPaginated, listTagSummaries, listTopPosts } from "@/lib/blog/posts";
 import BlogPostsPaginatedGrid from "@/components/blog/BlogPostsPaginatedGrid";
 import { formatCategoryLabel } from "@/lib/blog/render";
+import { absoluteUrl, site } from "@/config/site";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -21,13 +22,13 @@ export const metadata = {
     title: "مدونة دريبدو",
     description: "تصفح أحدث مقالات دريبدو وتحديثات المنصة والمحتوى العربي المنظم داخل صفحة مدونة سريعة وواضحة.",
     url: "/blog",
-    images: [{ url: "/screenshots/ads.png", width: 1200, height: 630, alt: "مدونة دريبدو" }],
+    images: [{ url: "/icon.png", width: 512, height: 512, alt: "مدونة دريبدو" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "مدونة دريبدو",
     description: "تصفح أحدث مقالات دريبدو وتحديثات المنصة والمحتوى العربي المنظم داخل صفحة مدونة سريعة وواضحة.",
-    images: ["/screenshots/ads.png"],
+    images: ["/icon.png"],
   },
 };
 
@@ -67,9 +68,36 @@ export default async function BlogIndex({ searchParams }) {
     listTagSummaries({ limit: 18 }),
   ]);
   const { posts, error, total } = paginated;
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "الرئيسية", item: site.url },
+      { "@type": "ListItem", position: 2, name: "المدونة", item: `${site.url}/blog` },
+    ],
+  };
+  const blogCollectionJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "مدونة دريبدو",
+    description: metadata.description,
+    url: `${site.url}/blog`,
+    inLanguage: "ar",
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: (posts || []).slice(0, 12).map((post, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: absoluteUrl(`/blog/${post.slug}`),
+        name: post.title,
+      })),
+    },
+  };
 
   return (
     <div className="blog-pages-compact w-full bg-[linear-gradient(180deg,#fff7ed_0%,#fff 35%,#f8fafc_100%)]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogCollectionJsonLd) }} />
       <section className="py-8 sm:py-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {!enabled ? (

@@ -16,14 +16,14 @@
     description:
       'اكتشف دريبدو، منصة تواصل اجتماعي عربية تجمع النشر والتفاعل والدردشة والمجتمعات والمساحات والخدمات في تجربة واحدة واضحة وسريعة.',
     url: '/',
-    images: [{ url: '/screenshots/ads.png', width: 1200, height: 630, alt: 'دريبدو' }],
+    images: [{ url: '/icon.png', width: 512, height: 512, alt: 'دريبدو' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'دريبدو | منصة تواصل اجتماعي عربية متكاملة',
     description:
       'اكتشف دريبدو، منصة تواصل اجتماعي عربية تجمع النشر والتفاعل والدردشة والمجتمعات والمساحات والخدمات في تجربة واحدة واضحة وسريعة.',
-    images: ['/screenshots/ads.png'],
+    images: ['/icon.png'],
   },
 };
 
@@ -349,7 +349,7 @@ export default async function Home() {
     description: metadata.description,
     url: site.url,
     inLanguage: 'ar',
-    primaryImageOfPage: absoluteUrl('/screenshots/ads.png'),
+    primaryImageOfPage: absoluteUrl('/icon.png'),
   };
 
   return (

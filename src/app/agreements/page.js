@@ -6,6 +6,8 @@ export const metadata = {
   alternates: { canonical: '/agreements' },
 };
 
+const lastUpdated = new Intl.DateTimeFormat('ar-MA', { dateStyle: 'long' }).format(new Date());
+
 function Icon({ name, className = 'h-5 w-5' }) {
   const commonProps = {
     viewBox: '0 0 24 24',

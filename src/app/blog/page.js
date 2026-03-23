@@ -8,13 +8,26 @@ export const revalidate = 0;
 export const fetchCache = "force-no-store";
 
 export const metadata = {
-  title: "Blog",
-  description: "Latest Dribdo blog posts and updates.",
+  title: "المدونة",
+  description: "تصفح أحدث مقالات دريبدو وتحديثات المنصة والمحتوى العربي المنظم داخل صفحة مدونة سريعة وواضحة.",
+  keywords: ["مدونة دريبدو", "مقالات دريبدو", "أخبار المنصة", "محتوى عربي", "مدونة عربية"],
   alternates: {
     canonical: "/blog",
     types: {
       "application/rss+xml": [{ url: "/rss.xml", title: "Dribdo Blog RSS" }],
     },
+  },
+  openGraph: {
+    title: "مدونة دريبدو",
+    description: "تصفح أحدث مقالات دريبدو وتحديثات المنصة والمحتوى العربي المنظم داخل صفحة مدونة سريعة وواضحة.",
+    url: "/blog",
+    images: [{ url: "/screenshots/ads.png", width: 1200, height: 630, alt: "مدونة دريبدو" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "مدونة دريبدو",
+    description: "تصفح أحدث مقالات دريبدو وتحديثات المنصة والمحتوى العربي المنظم داخل صفحة مدونة سريعة وواضحة.",
+    images: ["/screenshots/ads.png"],
   },
 };
 
@@ -192,5 +205,6 @@ export default async function BlogIndex({ searchParams }) {
     </div>
   );
 }
+
 
 

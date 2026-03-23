@@ -1,7 +1,30 @@
 ﻿export const metadata = {
-  title: 'دريبدو - Dribdo منصة تواصل اجتماعي عربية',
-  description: 'اكتشف دريبدو بتصميم مختلف يركّز على الوضوح، المجتمع، وسرعة الوصول إلى المحتوى.',
+  title: 'دريبدو | منصة تواصل اجتماعي عربية متكاملة',
+  description:
+    'اكتشف دريبدو، منصة تواصل اجتماعي عربية تجمع النشر والتفاعل والدردشة والمجتمعات والمساحات والخدمات في تجربة واحدة واضحة وسريعة.',
+  keywords: [
+    'دريبدو',
+    'منصة تواصل اجتماعي عربية',
+    'تطبيق اجتماعي عربي',
+    'مجتمعات عربية',
+    'مدونة عربية',
+    'منتدى عربي',
+  ],
   alternates: { canonical: '/' },
+  openGraph: {
+    title: 'دريبدو | منصة تواصل اجتماعي عربية متكاملة',
+    description:
+      'اكتشف دريبدو، منصة تواصل اجتماعي عربية تجمع النشر والتفاعل والدردشة والمجتمعات والمساحات والخدمات في تجربة واحدة واضحة وسريعة.',
+    url: '/',
+    images: [{ url: '/screenshots/ads.png', width: 1200, height: 630, alt: 'دريبدو' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'دريبدو | منصة تواصل اجتماعي عربية متكاملة',
+    description:
+      'اكتشف دريبدو، منصة تواصل اجتماعي عربية تجمع النشر والتفاعل والدردشة والمجتمعات والمساحات والخدمات في تجربة واحدة واضحة وسريعة.',
+    images: ['/screenshots/ads.png'],
+  },
 };
 
 import Link from 'next/link';
@@ -10,6 +33,7 @@ import { homeContent } from '@/content/home';
 import BlogImage from '@/components/blog/BlogImage';
 import { formatArabicDate } from '@/lib/blog/render';
 import { listPostsDetailed } from '@/lib/blog/posts';
+import { absoluteUrl, site } from '@/config/site';
 
 const heroScreenshots = homeContent.heroScreenshots;
 const galleryScreenshots = homeContent.galleryScreenshots;
@@ -318,9 +342,19 @@ function HomeBlogPostCard({ post, compactClass = '' }) {
 
 export default async function Home() {
   const { posts: recentBlogPosts } = await listPostsDetailed({ limit: 6 });
+  const homeJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'دريبدو | منصة تواصل اجتماعي عربية متكاملة',
+    description: metadata.description,
+    url: site.url,
+    inLanguage: 'ar',
+    primaryImageOfPage: absoluteUrl('/screenshots/ads.png'),
+  };
 
   return (
     <div className="w-full overflow-x-clip bg-[#fbf7f4]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd) }} />
       <section className="border-b border-black/8">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
           <div className="relative overflow-hidden rounded-[40px] border border-red-100 bg-[linear-gradient(135deg,#fff3f1_0%,#ffd9d2_18%,#f7b4b4_42%,#fbe9e5_72%,#fff7f4_100%)] px-5 py-8 shadow-[0_30px_80px_-50px_rgba(127,29,29,0.42)] sm:px-8 sm:py-10 lg:px-10 lg:py-12">
@@ -652,3 +686,4 @@ export default async function Home() {
     </div>
   );
 }
+

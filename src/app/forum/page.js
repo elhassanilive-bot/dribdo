@@ -1,4 +1,4 @@
-import ForumComposer from "@/components/forum/ForumComposer";
+﻿import ForumComposer from "@/components/forum/ForumComposer";
 import ForumPostCardActions from "@/components/forum/ForumPostCardActions";
 import { listPostsDetailed } from "@/lib/blog/posts";
 import { estimateReadingTime } from "@/lib/blog/render";
@@ -6,7 +6,21 @@ import Link from "next/link";
 
 export const metadata = {
   title: "منتدى دريبدو",
-  description: "شارك رأيك وأسئلتك وتجاربك مع مجتمع دريبدو في مساحة نقاش مفتوحة.",
+  description: "شارك رأيك وأسئلتك وتجاربك مع مجتمع دريبدو في منتدى عربي منظم للنقاش وتبادل الخبرات.",
+  keywords: ["منتدى دريبدو", "منتدى عربي", "نقاشات عربية", "مجتمع دريبدو", "مشاركات المنتدى"],
+  alternates: { canonical: "/forum" },
+  openGraph: {
+    title: "منتدى دريبدو",
+    description: "شارك رأيك وأسئلتك وتجاربك مع مجتمع دريبدو في منتدى عربي منظم للنقاش وتبادل الخبرات.",
+    url: "/forum",
+    images: [{ url: "/screenshots/ads.png", width: 1200, height: 630, alt: "منتدى دريبدو" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "منتدى دريبدو",
+    description: "شارك رأيك وأسئلتك وتجاربك مع مجتمع دريبدو في منتدى عربي منظم للنقاش وتبادل الخبرات.",
+    images: ["/screenshots/ads.png"],
+  },
 };
 
 function extractAuthor(excerpt) {
@@ -52,7 +66,7 @@ export default async function ForumPage() {
             لا توجد مشاركات بعد. كن أول من ينشر موضوعًا جديدًا.
           </div>
         ) : (
-          <div className="grid gap-4 grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
             {forumPosts.map((post) => {
               const { author, summary } = extractAuthor(post.excerpt);
               const postSlug = String(post.slug || "").trim();
@@ -77,11 +91,10 @@ export default async function ForumPage() {
                   <h3 className="mt-2 text-sm font-black text-slate-950">{post.title}</h3>
                   <p className="mt-1.5 text-[11px] leading-5 text-slate-600">{summary || post.excerpt}</p>
 
-                  <div className="mt-2.5 flex flex-wrap items-center gap-3">
+                  <div className="mt-2.5">
                     <Link href={postLink} className="text-[11px] font-semibold text-orange-600 hover:text-orange-700">
                       قراءة المشاركة
                     </Link>
-                    <span className="text-[9px] text-slate-400">الرابط: {postLink}</span>
                   </div>
 
                   <ForumPostCardActions
@@ -98,3 +111,4 @@ export default async function ForumPage() {
     </div>
   );
 }
+

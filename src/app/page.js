@@ -1,5 +1,5 @@
 ﻿export const metadata = {
-  title: 'دريبدو | منصة تواصل اجتماعي عربية متكاملة',
+  title: 'دريبدو',
   description:
     'اكتشف دريبدو، منصة تواصل اجتماعي عربية تجمع النشر والتفاعل والدردشة والمجتمعات والمساحات والخدمات في تجربة واحدة واضحة وسريعة.',
   keywords: [
@@ -12,7 +12,7 @@
   ],
   alternates: { canonical: '/' },
   openGraph: {
-    title: 'دريبدو | منصة تواصل اجتماعي عربية متكاملة',
+    title: 'دريبدو',
     description:
       'اكتشف دريبدو، منصة تواصل اجتماعي عربية تجمع النشر والتفاعل والدردشة والمجتمعات والمساحات والخدمات في تجربة واحدة واضحة وسريعة.',
     url: '/',
@@ -20,7 +20,7 @@
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'دريبدو | منصة تواصل اجتماعي عربية متكاملة',
+    title: 'دريبدو',
     description:
       'اكتشف دريبدو، منصة تواصل اجتماعي عربية تجمع النشر والتفاعل والدردشة والمجتمعات والمساحات والخدمات في تجربة واحدة واضحة وسريعة.',
     images: ['/icon.png'],
@@ -345,7 +345,7 @@ export default async function Home() {
   const homeJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    name: 'دريبدو | منصة تواصل اجتماعي عربية متكاملة',
+    name: 'دريبدو',
     description: metadata.description,
     url: site.url,
     inLanguage: 'ar',
@@ -686,4 +686,5 @@ export default async function Home() {
     </div>
   );
 }
+
 

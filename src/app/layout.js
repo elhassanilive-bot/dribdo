@@ -7,7 +7,7 @@ export const metadata = {
   metadataBase: new URL(site.url),
   applicationName: site.nameEn,
   title: {
-    default: `${site.name} | ${site.nameEn}`,
+    default: site.name,
     template: `%s | ${site.name}`,
   },
   description: site.description,
@@ -32,7 +32,7 @@ export const metadata = {
     type: "website",
     locale: site.locale,
     siteName: site.nameEn,
-    title: `${site.name} | ${site.nameEn}`,
+    title: site.name,
     description: site.description,
     url: site.url,
     images: [
@@ -46,7 +46,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} | ${site.nameEn}`,
+    title: site.name,
     description: site.description,
     images: [absoluteUrl(site.defaultOgImage)],
   },

@@ -1,4 +1,4 @@
-export const metadata = {
+﻿export const metadata = {
   title: 'دريبدو - Dribdo منصة تواصل اجتماعي عربية',
   description: 'اكتشف دريبدو بتصميم مختلف يركّز على الوضوح، المجتمع، وسرعة الوصول إلى المحتوى.',
   alternates: { canonical: '/' },
@@ -283,8 +283,8 @@ function ScreenshotCard({ item, compact = false }) {
 
 function HorizontalScroll({ minWidthClass = 'min-w-[920px]', children }) {
   return (
-    <div className="overflow-x-auto touch-pan-x overscroll-x-contain [scrollbar-width:thin]">
-      <div className={minWidthClass}>{children}</div>
+    <div className="w-full max-w-full overflow-x-auto touch-pan-x overscroll-x-contain [scrollbar-width:thin]">
+      <div className={`w-max max-w-none ${minWidthClass}`}>{children}</div>
     </div>
   );
 }
@@ -320,20 +320,21 @@ export default async function Home() {
   const { posts: recentBlogPosts } = await listPostsDetailed({ limit: 6 });
 
   return (
-    <div className="w-full bg-[#fbf7f4]">
-      <section className="relative overflow-hidden border-b border-black/8">
-        <div className="absolute inset-x-0 top-0 h-[28rem] bg-[radial-gradient(circle_at_top,#f4b9b9_0,#fbf7f4_58%)]" />
-        <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-          <HorizontalScroll minWidthClass="min-w-[980px]">
-            <div className="grid gap-14 lg:grid-cols-[1.05fr_0.95fr]">
+    <div className="w-full overflow-x-clip bg-[#fbf7f4]">
+      <section className="border-b border-black/8">
+        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
+          <div className="relative overflow-hidden rounded-[40px] border border-red-100 bg-[linear-gradient(135deg,#fff3f1_0%,#ffd9d2_18%,#f7b4b4_42%,#fbe9e5_72%,#fff7f4_100%)] px-5 py-8 shadow-[0_30px_80px_-50px_rgba(127,29,29,0.42)] sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+            <div className="pointer-events-none absolute -right-12 top-0 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(190,24,24,0.22),rgba(190,24,24,0)_72%)]" />
+            <div className="pointer-events-none absolute -left-10 bottom-0 h-52 w-52 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.45),rgba(255,255,255,0)_72%)]" />
+            <div className="relative grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
               <div className="space-y-8 text-right">
-                <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-white/80 px-4 py-2 text-sm font-semibold text-black/70">
+                <div className="inline-flex items-center gap-3 rounded-full border border-white/65 bg-white/75 px-4 py-2 text-sm font-semibold text-black/75 backdrop-blur">
                   <span className="text-xs uppercase tracking-[0.45em] text-black/40">Dribdo</span>
                   <span>{homeContent.hero.badgeName}</span>
                 </div>
 
                 <div className="space-y-5">
-                  <h1 className="max-w-3xl text-5xl font-black leading-[1.15] text-black sm:text-6xl">
+                  <h1 className="max-w-3xl text-4xl font-black leading-[1.12] text-black sm:text-5xl lg:text-6xl">
                     {homeContent.hero.title.prefix}{' '}
                     <span className="text-red-700">{homeContent.hero.title.highlight}</span>{' '}
                     {homeContent.hero.title.suffix}
@@ -357,17 +358,17 @@ export default async function Home() {
                 </div>
               </div>
 
-              <div className="lg:pr-4">
-                <article className="overflow-hidden rounded-[34px] border border-black/10 bg-white shadow-sm">
-                  <div className="relative bg-[#f6f6f6] p-4">
+              <div className="lg:pr-2">
+                <article className="overflow-hidden rounded-[34px] border border-white/55 bg-white/35 shadow-[0_24px_70px_-45px_rgba(127,29,29,0.45)] backdrop-blur-sm">
+                  <div className="relative bg-[linear-gradient(180deg,rgba(255,255,255,0.18),rgba(255,255,255,0.04))] p-4 sm:p-5">
                     <Image
-                      src={heroScreenshots[0].src}
+                      src="/screenshots/ads.png"
                       alt={`لقطة شاشة: ${heroScreenshots[0].title}`}
                       width={1200}
                       height={820}
                       sizes="(max-width: 1024px) 100vw, 50vw"
                       quality={76}
-                      className="h-[440px] w-full rounded-[26px] object-cover object-top sm:h-[520px] lg:h-[620px]"
+                      className="h-[360px] w-full rounded-[26px] object-contain object-center sm:h-[460px] lg:h-[560px]"
                       priority
                     />
                   </div>
@@ -378,8 +379,7 @@ export default async function Home() {
                 </article>
               </div>
             </div>
-          </HorizontalScroll>
-          <div className="mt-3 text-right text-xs font-semibold text-black/45 sm:hidden">اسحب يمينًا ويسارًا لمشاهدة كامل القسم</div>
+          </div>
         </div>
       </section>
 
@@ -393,13 +393,11 @@ export default async function Home() {
               </div>
             </div>
 
-            <HorizontalScroll minWidthClass="min-w-[940px]">
-              <div className="grid grid-cols-3 gap-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {recentBlogPosts.map((post) => (
                   <HomeBlogPostCard key={post.id || post.slug} post={post} />
                 ))}
               </div>
-            </HorizontalScroll>
 
             <div className="mt-7 flex justify-center">
               <Link
@@ -463,8 +461,7 @@ export default async function Home() {
           </p>
         </div>
 
-        <HorizontalScroll minWidthClass="min-w-[980px]">
-          <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 lg:grid-cols-3">
             {sectionPillars.map((item) => (
               <article key={item.title} className="rounded-[30px] border border-black/10 bg-white p-7 text-right shadow-sm">
                 <div className="mb-5 text-black">{item.icon}</div>
@@ -473,13 +470,11 @@ export default async function Home() {
               </article>
             ))}
           </div>
-        </HorizontalScroll>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
         <div className="rounded-[34px] border border-black/10 bg-white p-8 sm:p-10">
-          <HorizontalScroll minWidthClass="min-w-[980px]">
-            <div className="mb-10 grid gap-6 border-b border-black/10 pb-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+          <div className="mb-10 grid gap-6 border-b border-black/10 pb-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
               <div className="text-right">
                 <p className="text-sm font-semibold uppercase tracking-[0.45em] text-black/35">مقارنة مباشرة</p>
                 <h2 className="mt-4 text-4xl font-black text-black sm:text-5xl">
@@ -499,7 +494,6 @@ export default async function Home() {
                 ))}
               </div>
             </div>
-          </HorizontalScroll>
 
           <div className="overflow-hidden rounded-[28px] border border-black/10 bg-white">
             <div className="border-b border-black/10 bg-[#f8f5f3] px-4 py-2 text-xs font-semibold text-black/55 sm:hidden">
@@ -551,9 +545,8 @@ export default async function Home() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
-        <HorizontalScroll minWidthClass="min-w-[980px]">
-          <div className="flex gap-6">
-            <div className="w-[510px] shrink-0 rounded-[34px] border border-black/10 bg-white p-8 text-right">
+        <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="rounded-[34px] border border-black/10 bg-white p-8 text-right">
               <p className="text-sm font-semibold uppercase tracking-[0.45em] text-black/35">لماذا يختارنا المستخدمون</p>
               <h2 className="mt-4 text-4xl font-black text-black">أسباب واضحة تجعل القرار أسهل</h2>
               <p className="mt-4 text-base leading-8 text-black/65">
@@ -570,7 +563,7 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="w-[470px] shrink-0 rounded-[34px] border border-black/10 bg-white p-8 text-right">
+          <div className="rounded-[34px] border border-black/10 bg-white p-8 text-right">
               <p className="text-sm font-semibold uppercase tracking-[0.45em] text-black/35">مسارات سريعة</p>
               <h2 className="mt-4 text-4xl font-black text-black">التفاصيل الكاملة في صفحات أخف</h2>
               <p className="mt-4 text-base leading-8 text-black/65">
@@ -588,9 +581,8 @@ export default async function Home() {
                   </Link>
                 ))}
               </div>
-            </div>
           </div>
-        </HorizontalScroll>
+        </div>
       </section>
 
       <section className="border-y border-black/8 bg-white">
@@ -601,7 +593,7 @@ export default async function Home() {
               لقطات شاشة من داخل <span className="text-red-700"> دريبدو</span>
             </h2>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-black/65">
-              عرضنا هنا أربع لقطات أساسية فقط للحفاظ على الصفحة خفيفة، ويمكنك استعراض الباقي من صفحة المميزات.
+              عرضنا هنا خمس لقطات أساسية للحفاظ على الصفحة واضحة، ويمكنك استعراض المزيد من صفحة المميزات.
             </p>
           </div>
 
@@ -615,17 +607,11 @@ export default async function Home() {
             </div>
           </HorizontalScroll>
 
-          <div className="mt-8 flex justify-center">
-            <Link href="/features" className="rounded-full border border-black/10 bg-[#faf8f6] px-6 py-3 text-sm font-semibold text-black transition hover:bg-white">
-              شاهد بقية المميزات واللقطات
-            </Link>
-          </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <HorizontalScroll minWidthClass="min-w-[980px]">
-          <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr]">
             <div className="rounded-[34px] bg-[#111111] p-8 text-white">
               <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/45">جاهز للتجربة</p>
               <h2 className="mt-4 text-4xl font-black leading-tight">{homeContent.download.heading}</h2>
@@ -662,7 +648,6 @@ export default async function Home() {
               ))}
             </div>
           </div>
-        </HorizontalScroll>
       </section>
     </div>
   );

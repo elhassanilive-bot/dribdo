@@ -20,9 +20,12 @@ export const metadata = {
     canonical: "/",
   },
   icons: {
-    icon: "/icon.png",
-    shortcut: "/icon.png",
-    apple: "/apple-icon.png",
+    icon: [
+      { url: "/icon.png?v=2", type: "image/png", sizes: "512x512" },
+      { url: "/icon.png?v=2", type: "image/png", sizes: "192x192" },
+    ],
+    shortcut: [{ url: "/icon.png?v=2", type: "image/png" }],
+    apple: [{ url: "/apple-icon.png?v=2", sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
     type: "website",

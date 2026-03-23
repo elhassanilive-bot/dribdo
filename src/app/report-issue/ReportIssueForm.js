@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 
@@ -143,9 +143,7 @@ export default function ReportIssueForm() {
 
       const payload = await response.json();
       if (!response.ok) {
-        if (payload.errors) {
-          setErrors(payload.errors);
-        }
+        if (payload.errors) setErrors(payload.errors);
         setStatus({ type: 'error', message: payload.message || 'تعذر إرسال البلاغ.' });
         return;
       }
@@ -153,7 +151,7 @@ export default function ReportIssueForm() {
       setStatus({ type: 'success', message: 'تم إرسال البلاغ الفني بنجاح وسيتم مراجعته.' });
       setForm(initialForm);
       setAttachment(null);
-    } catch (error) {
+    } catch {
       setStatus({ type: 'error', message: 'حدث خطأ أثناء إرسال البلاغ. حاول مرة أخرى لاحقًا.' });
     } finally {
       setIsSubmitting(false);
@@ -234,7 +232,7 @@ export default function ReportIssueForm() {
         </Field>
 
         <button type="submit" disabled={isSubmitting} className="flex w-full items-center justify-center rounded-2xl bg-black px-6 py-3 text-sm font-semibold text-white transition hover:bg-black/90 disabled:opacity-60">
-          {isSubmitting ? 'جاري الإرسال...' : 'إرسال بلاغ المشكلة'}
+          {isSubmitting ? 'جارٍ الإرسال...' : 'إرسال بلاغ المشكلة'}
         </button>
       </form>
 
@@ -256,7 +254,7 @@ export default function ReportIssueForm() {
 
         <div className="space-y-3">
           <InfoCard icon="mail" title="البريد الداعم" value="support@dribdo.com" href="mailto:support@dribdo.com" />
-          <InfoCard icon="monitor" title="نوع البلاغات" value="أزرار لا تعمل، صفحات متوقفة، أخطاء النشر، مشاكل الوسائط" />
+          <InfoCard icon="monitor" title="نوع البلاغات" value="أزرار لا تعمل، صفحات متوقفة، أخطاء النشر، مشكلات الوسائط" />
         </div>
       </aside>
     </section>

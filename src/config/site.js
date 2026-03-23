@@ -3,7 +3,7 @@
   nameEn: 'Dribdo',
   description:
     'دريبدو منصة اجتماعية عربية متكاملة تجمع النشر والتفاعل والدردشة والفيديو والمجتمعات والمساحات، مع خدمات إضافية مثل السوق والعقارات والوظائف والمذكرات داخل تجربة واحدة واضحة ومنظمة.',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://dribdo.com',
+  url: 'https://dribdo.com',
   supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@dribdo.com',
   defaultOgImage: '/screenshots/ads.png',
   locale: 'ar_MA',

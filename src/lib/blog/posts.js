@@ -126,7 +126,9 @@ export async function listPostsDetailed({ limit = 20 } = {}) {
     .from("blog_posts")
     .select(POST_LIST_COLUMNS)
     .eq("status", "published")
-    .order("published_at", { ascending: false })
+    .lte("published_at", getNowIso())
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false })
     .limit(limit);
 
   if (error) return { posts: [], error: error.message };

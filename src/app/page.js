@@ -1,4 +1,8 @@
-﻿export const metadata = {
+﻿export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const fetchCache = 'force-no-store';
+
+export const metadata = {
   title: 'دريبدو',
   description:
     'اكتشف دريبدو، منصة تواصل اجتماعي عربية تجمع النشر والتفاعل والدردشة والمجتمعات والمساحات والخدمات في تجربة واحدة واضحة وسريعة.',
@@ -686,5 +690,6 @@ export default async function Home() {
     </div>
   );
 }
+
 
 

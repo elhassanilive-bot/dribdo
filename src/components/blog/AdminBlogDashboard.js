@@ -602,7 +602,7 @@ export default function AdminBlogDashboard({
 
       {!publishingEnabled ? (
         <div className="rounded-[2rem] border border-amber-200 bg-amber-50 px-6 py-5 text-amber-950">
-          النشر المباشر يحتاج سياسات `insert` ويفضّل أيضًا سياسات `update/delete` أو Service Role إذا كنت تريد إدارة كاملة من هذه اللوحة.
+          النشر من هذه اللوحة يحتاج `SUPABASE_SERVICE_ROLE_KEY` في بيئة التشغيل. بدون هذا المفتاح ستفشل عمليات إنشاء المقالات وتعديلها وحذفها بسبب سياسات RLS.
         </div>
       ) : null}
 

@@ -235,7 +235,12 @@ export async function listPostsForAdmin({ limit = 100 } = {}) {
   if (!isSupabaseConfigured()) return { posts: [], error: "Supabase غير مُعد" };
 
   const client = await getAdminReadClient();
-  if (!client) return { posts: [], error: "Supabase client غير متاح" };
+  if (!client) {
+    return {
+      posts: [],
+      error: "تعذر تحميل المقالات لأن SUPABASE_SERVICE_ROLE_KEY غير مفعّل في بيئة التشغيل.",
+    };
+  }
 
   const { data, error } = await client
     .from("blog_posts")

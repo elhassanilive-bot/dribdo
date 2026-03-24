@@ -40,14 +40,16 @@ function EmptyState({ title, description, ctaHref, ctaLabel }) {
     <div className="rounded-[2rem] border border-slate-200 bg-white px-6 py-12 text-center shadow-[0_20px_60px_-45px_rgba(15,23,42,0.45)]">
       <h2 className="text-xl font-black text-slate-950">{title}</h2>
       <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-slate-600">{description}</p>
-      <div className="mt-7">
-        <Link
-          href={ctaHref}
-          className="inline-flex items-center justify-center rounded-2xl bg-[var(--blog-accent)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[var(--blog-accent-strong)]"
-        >
-          {ctaLabel}
-        </Link>
-      </div>
+      {ctaHref && ctaLabel ? (
+        <div className="mt-7">
+          <Link
+            href={ctaHref}
+            className="inline-flex items-center justify-center rounded-2xl bg-[var(--blog-accent)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[var(--blog-accent-strong)]"
+          >
+            {ctaLabel}
+          </Link>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -118,8 +120,6 @@ export default async function BlogIndex({ searchParams }) {
             <EmptyState
               title="لا توجد مقالات منشورة بعد"
               description="استخدم لوحة الإدارة لإضافة أول مقال، وسيظهر هنا تلقائيًا بمجرد نشره."
-              ctaHref="/login"
-              ctaLabel="نشر أول مقال"
             />
           ) : (
             <div className="space-y-6">

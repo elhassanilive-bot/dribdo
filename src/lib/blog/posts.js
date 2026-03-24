@@ -11,7 +11,7 @@ export function isBlogEnabled() {
 }
 
 export function isBlogPublishingEnabled() {
-  return isSupabaseConfigured();
+  return isSupabaseConfigured() && isSupabaseAdminConfigured();
 }
 
 function normalizePost(row) {
@@ -64,11 +64,11 @@ function normalizeTags(tags) {
 }
 
 async function getWriteClient() {
-  return isSupabaseAdminConfigured() ? getSupabaseAdminClient() : getSupabaseClient();
+  return isSupabaseAdminConfigured() ? getSupabaseAdminClient() : null;
 }
 
 async function getAdminReadClient() {
-  return isSupabaseAdminConfigured() ? getSupabaseAdminClient() : getSupabaseClient();
+  return isSupabaseAdminConfigured() ? getSupabaseAdminClient() : null;
 }
 
 async function ensureUniqueSlug(client, baseSlug, excludeId = null) {
@@ -429,7 +429,7 @@ export async function createPost(input) {
 
   const writer = await getWriteClient();
   if (!writer) {
-    return { ok: false, error: "Supabase client is not available" };
+    return { ok: false, error: "النشر متوقف لأن SUPABASE_SERVICE_ROLE_KEY غير مفعّل في بيئة التشغيل. أضفه في Vercel أو فعّل سياسة نشر مناسبة في Supabase." };
   }
 
   const { slug, error: slugError } = await ensureUniqueSlug(
@@ -487,7 +487,7 @@ export async function updatePost(input) {
 
   const writer = await getWriteClient();
   if (!writer) {
-    return { ok: false, error: "Supabase client is not available" };
+    return { ok: false, error: "تعديل المقالات متوقف لأن SUPABASE_SERVICE_ROLE_KEY غير مفعّل في بيئة التشغيل. أضفه في Vercel أو فعّل سياسة تعديل مناسبة في Supabase." };
   }
 
   const { slug, error: slugError } = await ensureUniqueSlug(
@@ -536,7 +536,7 @@ export async function deletePost(id) {
 
   const writer = await getWriteClient();
   if (!writer) {
-    return { ok: false, error: "Supabase client is not available" };
+    return { ok: false, error: "حذف المقالات متوقف لأن SUPABASE_SERVICE_ROLE_KEY غير مفعّل في بيئة التشغيل. أضفه في Vercel أو فعّل سياسة حذف مناسبة في Supabase." };
   }
 
   const { error } = await writer.from("blog_posts").delete().eq("id", postId);
@@ -577,7 +577,7 @@ export async function deletePosts(ids) {
 
   const writer = await getWriteClient();
   if (!writer) {
-    return { ok: false, error: "Supabase client is not available", deletedIds: [] };
+    return { ok: false, error: "الحذف الجماعي متوقف لأن SUPABASE_SERVICE_ROLE_KEY غير مفعّل في بيئة التشغيل. أضفه في Vercel أو فعّل سياسة حذف مناسبة في Supabase.", deletedIds: [] };
   }
 
   const { error } = await writer.from("blog_posts").delete().in("id", normalizedIds);
@@ -614,3 +614,4 @@ export async function deletePosts(ids) {
 
   return { ok: true, deletedIds };
 }
+

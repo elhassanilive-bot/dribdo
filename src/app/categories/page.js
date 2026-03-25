@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
 import { listCategorySummaries } from "@/lib/blog/posts";
 import { formatCategoryLabel } from "@/lib/blog/render";

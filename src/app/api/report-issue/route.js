@@ -118,8 +118,8 @@ export async function POST(request) {
   try {
     const currentTransporter = getTransporter();
     await currentTransporter.sendMail({
-      from: process.env.EMAIL_FROM ?? 'Arzapress <no-reply@arzapress.com>',
-      to: process.env.CONTACT_RECIPIENT ?? 'support@arzapress.com',
+      from: process.env.EMAIL_FROM ?? 'Dribdo <no-reply@dribdo.com>',
+      to: process.env.CONTACT_RECIPIENT ?? 'support@dribdo.com',
       replyTo: payload.email,
       subject: `بلاغ تقني جديد - ${payload.issueArea}`,
       text: buildMessage(payload),

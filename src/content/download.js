@@ -1,12 +1,36 @@
-export const downloadContent = {
+﻿export const downloadContent = {
   hero: {
-    title: "أرزابريس على الهاتف",
+    title: 'حمّل تطبيق دريبدو الآن',
     subtitle:
-      "أرزابريس حاليا جريدة إلكترونية تعمل عبر المتصفح. نعمل على توفير تجربة هاتف محسنة وربما تطبيق لاحقا. إلى ذلك الحين يمكنك حفظ الموقع على شاشة هاتفك للوصول السريع.",
+      'منصة عربية حديثة تجمع النشر والرسائل والمجتمعات في تجربة واحدة واضحة وسريعة. اختر جهازك وابدأ التحميل عبر القناة المناسبة لك.',
+    image: '/screenshots/dridoud-home.jpg',
   },
   links: {
-    android: "",
-    ios: "",
-    apk: "",
+    android: 'https://play.google.com/store/apps/details?id=com.dribdo.app',
+    ios: 'https://apps.apple.com/app/dribdo/id0000000000',
+    apk: 'https://download.dribdo.com/releases/dribdo-latest.apk',
   },
+  versions: [],
+  highlights: [
+    {
+      key: 'responsive',
+      title: 'واجهة عربية واضحة ومتجاوبة',
+      detail: 'تجربة متوازنة على الهاتف والويب مع وضوح في العناصر وسهولة في التنقل.',
+    },
+    {
+      key: 'privacy',
+      title: 'خصوصية أوضح وتحكم أفضل',
+      detail: 'إعدادات تساعد المستخدم على إدارة حسابه والوصول السريع إلى الخيارات المهمة.',
+    },
+    {
+      key: 'media',
+      title: 'دعم قوي للمحتوى المتنوع',
+      detail: 'عرض أنظف للصور والفيديو والمحتوى التفاعلي مع تركيز على سهولة التصفح.',
+    },
+    {
+      key: 'security',
+      title: 'استقرار وتنبيهات وحماية',
+      detail: 'بنية أوضح للمستخدم مع اهتمام بالسلامة وسرعة الوصول إلى الأدوات الأساسية.',
+    },
+  ],
 };

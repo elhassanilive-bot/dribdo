@@ -9,8 +9,8 @@ export default function HelpCenterPageView() {
           <p className="text-xs font-semibold uppercase tracking-[0.45em] text-black/45">الدعم الذاتي</p>
           <h1 className="mt-4 text-4xl font-black text-black sm:text-5xl">مركز المساعدة</h1>
           <p className="mx-auto mt-4 max-w-3xl text-lg leading-8 text-black/65">
-            ستجد هنا إجابات عملية حول الحساب، التعليقات، الإعجاب، الحفظ للقراءة لاحقا، نشر المقالات كمساهم،
-            والبلاغات والمشاكل التقنية داخل أرزابريس.
+            ستجد هنا إجابات عملية حول الحساب، المنشورات، الفيديوهات، الدردشة، المساحات، المجتمعات، السوق،
+            الوظائف، بيت الحلال، الصدقات، الإعدادات، والأعطال التقنية.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             {helpCenterHighlights.map((item) => (

@@ -1,24 +1,23 @@
-export const site = {
-  name: 'أرزابريس',
-  nameEn: 'Arzapress',
+﻿export const site = {
+  name: 'دريبدو',
+  nameEn: 'Dribdo',
   description:
-    'جريدة إلكترونية عربية متعددة المجالات تقدم أخباراً وتقارير وتحليلات ومقالات رأي، مع تفاعل منظم عبر الحفظ والإعجاب والتعليقات، ولوحة للمساهمين لإرسال المقالات للمراجعة.',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://arzapress.com',
-  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@arzapress.com',
+    'دريبدو منصة اجتماعية عربية متكاملة تجمع النشر والتفاعل والدردشة والفيديو والمجتمعات والمساحات، مع خدمات إضافية مثل السوق والعقارات والوظائف والمذكرات داخل تجربة واحدة واضحة ومنظمة.',
+  url: 'https://dribdo.com',
+  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@dribdo.com',
   defaultOgImage: '/icon.png',
   locale: 'ar_MA',
   language: 'ar',
   keywords: [
-    'أرزابريس',
-    'Arzapress',
-    'جريدة إلكترونية',
-    'موقع أخبار عربي',
-    'أخبار',
-    'تقارير',
-    'تحليلات',
+    'دريبدو',
+    'Dribdo',
+    'منصة تواصل اجتماعي عربية',
+    'منتدى عربي',
     'مدونة عربية',
-    'مقالات عربية',
-    'مساهمون',
+    'مجتمعات عربية',
+    'دردشة عربية',
+    'منصة محتوى عربي',
+    'تطبيق اجتماعي',
   ],
   socials: {
     x: process.env.NEXT_PUBLIC_SOCIAL_X_URL || '',
@@ -31,4 +30,3 @@ export function absoluteUrl(path = '/') {
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
   return new URL(normalizedPath, site.url).toString();
 }
-

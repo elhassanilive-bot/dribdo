@@ -29,10 +29,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
-.next-dev.log
-.next-dev.err.log
-devserver.runtime.out
-devserver.runtime.err
 
 # env files (can opt-in for committing if needed)
 .env*
@@ -44,5 +40,3 @@ devserver.runtime.err
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-.vercel

@@ -1,34 +1,32 @@
-export const dynamic = 'force-dynamic';
+﻿export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const fetchCache = 'force-no-store';
 
 export const metadata = {
-  title: 'أرزابريس',
+  title: 'دريبدو',
   description:
-    'أرزابريس جريدة إلكترونية عربية متعددة المجالات تقدم أخبارا وتقارير وتحليلات ومقالات رأي، مع تفاعل منظم عبر الحفظ والإعجاب والتعليقات ولوحة للمساهمين.',
+    'اكتشف دريبدو، منصة تواصل اجتماعي عربية تجمع النشر والتفاعل والدردشة والمجتمعات والمساحات والخدمات في تجربة واحدة واضحة وسريعة.',
   keywords: [
-    'أرزابريس',
-    'جريدة إلكترونية',
-    'موقع أخبار عربي',
-    'أخبار',
-    'تقارير',
-    'تحليلات',
-    'مقالات رأي',
+    'دريبدو',
+    'منصة تواصل اجتماعي عربية',
+    'تطبيق اجتماعي عربي',
+    'مجتمعات عربية',
     'مدونة عربية',
+    'منتدى عربي',
   ],
   alternates: { canonical: '/' },
   openGraph: {
-    title: 'أرزابريس',
+    title: 'دريبدو',
     description:
-      'أرزابريس جريدة إلكترونية عربية متعددة المجالات تقدم أخبارا وتقارير وتحليلات ومقالات رأي، مع تفاعل منظم عبر الحفظ والإعجاب والتعليقات ولوحة للمساهمين.',
+      'اكتشف دريبدو، منصة تواصل اجتماعي عربية تجمع النشر والتفاعل والدردشة والمجتمعات والمساحات والخدمات في تجربة واحدة واضحة وسريعة.',
     url: '/',
-    images: [{ url: '/icon.png', width: 512, height: 512, alt: 'أرزابريس' }],
+    images: [{ url: '/icon.png', width: 512, height: 512, alt: 'دريبدو' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'أرزابريس',
+    title: 'دريبدو',
     description:
-      'أرزابريس جريدة إلكترونية عربية متعددة المجالات تقدم أخبارا وتقارير وتحليلات ومقالات رأي، مع تفاعل منظم عبر الحفظ والإعجاب والتعليقات ولوحة للمساهمين.',
+      'اكتشف دريبدو، منصة تواصل اجتماعي عربية تجمع النشر والتفاعل والدردشة والمجتمعات والمساحات والخدمات في تجربة واحدة واضحة وسريعة.',
     images: ['/icon.png'],
   },
 };
@@ -59,7 +57,7 @@ const productUseCases = [
   },
   {
     title: 'للاستخدام اليومي',
-    desc: 'أنشر القصص ودردش مع من تحب, شاهد قنواتك المفضلة في التلفاز, وتألق أكثر مع أرزابريس.',
+    desc: 'أنشر القصص ودردش مع من تحب, شاهد قنواتك المفضلة في التلفاز, وتألق أكثر مع دريبدو.',
   },
 ];
 
@@ -67,7 +65,7 @@ const quickStats = [
   {
     value: '01',
     title: 'اليوم الأول ',
-    text: 'التخطيط لما سيحدث. نعلم أن الجميع يحتاجون الى امبراطورية تجمع الكل في واحد, وكم هو مؤسف أن يكون في هاتفك عدة تطبيقات  وبعضها لا تسير كما ترغب. لهذا وفرنا لك أرزابريس اللدي يحتوي على تطبيقات كثيرة في تطبيق واحد.',
+    text: 'التخطيط لما سيحدث. نعلم أن الجميع يحتاجون الى امبراطورية تجمع الكل في واحد, وكم هو مؤسف أن يكون في هاتفك عدة تطبيقات  وبعضها لا تسير كما ترغب. لهذا وفرنا لك دريبدو اللدي يحتوي على تطبيقات كثيرة في تطبيق واحد.',
   },
   {
     value: '24/7',
@@ -89,7 +87,7 @@ const quickStats = [
 const sectionPillars = [
   {
     title: 'النشر والتفاعل',
-    desc: 'شارك وانشر وتفاعل, أنشر منشورات نصية صورية فيديو مستنداث منشورات صوتية أو حتى البث المباشر, حريتك مع أرزابريس لا تنتهي.',
+    desc: 'شارك وانشر وتفاعل, أنشر منشورات نصية صورية فيديو مستنداث منشورات صوتية أو حتى البث المباشر, حريتك مع دريبدو لا تنتهي.',
     icon: (
       <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="1.8">
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 19h16M6 16V8m6 8V5m6 11v-6" />
@@ -108,7 +106,7 @@ const sectionPillars = [
   },
   {
     title: 'ابنِ مجتمعك',
-    desc: 'أنشئ مساحتك الخاصة لعلامتك التجارية, لابراز تواجدك في أرزابريس. أو يمكنك انشاء مجموعتك وتشجيع الأشخاص للانضمام من أجل النشر والتفاعل وتبادل الآراء والنقاشات.',
+    desc: 'أنشئ مساحتك الخاصة لعلامتك التجارية, لابراز تواجدك في دريبدو. أو يمكنك انشاء مجموعتك وتشجيع الأشخاص للانضمام من أجل النشر والتفاعل وتبادل الآراء والنقاشات.',
     icon: (
       <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="1.8">
         <path strokeLinecap="round" strokeLinejoin="round" d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm8 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
@@ -121,11 +119,11 @@ const sectionPillars = [
 const executiveSignals = [
   {
     value: 'بدون قيود وحرية ثامة',
-    label: 'أنشر وتفاعل وعبر عن رأيك أكثر في أرزابريس بحريتك بدون قيود ولا حظر للمحتوى ولا خوارزميات مزعجة ولا بيع للبيانات.',
+    label: 'أنشر وتفاعل وعبر عن رأيك أكثر في دريبدو بحريتك بدون قيود ولا حظر للمحتوى ولا خوارزميات مزعجة ولا بيع للبيانات.',
   },
   {
     value: 'خدمات متعددة',
-    label: 'وفرنا في أرزابريس العديد من الخدمات مثل التجارة للبيع والشراء , بيع العقارات, البحث عن الزواج, تقديم الزكاة, المذكرات, وغيرها من الخدمات.',
+    label: 'وفرنا في دريبدو العديد من الخدمات مثل التجارة للبيع والشراء , بيع العقارات, البحث عن الزواج, تقديم الزكاة, المذكرات, وغيرها من الخدمات.',
   },
   {
     value: 'هوية مستقلة',
@@ -161,7 +159,7 @@ const comparisonRows = [
   },
   {
     feature: 'تعدد الأقسام',
-    dribdo: 'في أرزابريس موجود قسم العقارات والوظائف والسوق والصدقات والبحث عن الزواج والمذكرات والجداول وغيرها.',
+    dribdo: 'في دريبدو موجود قسم العقارات والوظائف والسوق والصدقات والبحث عن الزواج والمذكرات والجداول وغيرها.',
     others: 'أقسام محدودة وفي بعض التطبيقات أقسام غير مفيدة على الأساس.',
   },
   {
@@ -197,7 +195,7 @@ const customerReasons = [
 
 const customerQuestions = [
   {
-    question: 'هل أرزابريس مناسب فقط للمحتوى الشخصي؟',
+    question: 'هل دريبدو مناسب فقط للمحتوى الشخصي؟',
     answer: 'لا، تم تصميمه ليخدم الاستخدام الشخصي والمجتمعات والعلامات التجارية وصنّاع المحتوى في نفس الوقت.',
   },
   {
@@ -351,7 +349,7 @@ export default async function Home() {
   const homeJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    name: 'أرزابريس',
+    name: 'دريبدو',
     description: metadata.description,
     url: site.url,
     inLanguage: 'ar',
@@ -369,7 +367,7 @@ export default async function Home() {
             <div className="relative grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
               <div className="space-y-8 text-right">
                 <div className="inline-flex items-center gap-3 rounded-full border border-white/65 bg-white/75 px-4 py-2 text-sm font-semibold text-black/75 backdrop-blur">
-                  <span className="text-xs uppercase tracking-[0.45em] text-black/40">Arzapress</span>
+                  <span className="text-xs uppercase tracking-[0.45em] text-black/40">Dribdo</span>
                   <span>{homeContent.hero.badgeName}</span>
                 </div>
 
@@ -384,13 +382,13 @@ export default async function Home() {
 
                 <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                   <Link
-                    href="/blog"
+                    href="/download"
                     className="inline-flex items-center justify-center rounded-full bg-red-700 px-8 py-3.5 text-base font-semibold text-white transition-colors hover:bg-red-800"
                   >
                     {homeContent.hero.ctaPrimary}
                   </Link>
                   <Link
-                    href="/contributors"
+                    href="/features"
                     className="inline-flex items-center justify-center rounded-full border border-black/10 bg-white px-8 py-3.5 text-base font-semibold text-black transition hover:bg-black/5"
                   >
                     {homeContent.hero.ctaSecondary}
@@ -454,10 +452,10 @@ export default async function Home() {
       <section className="hidden mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="rounded-[34px] border border-black/10 bg-white p-8 text-right">
-            <p className="text-sm font-semibold uppercase tracking-[0.45em] text-black/35">تواصل بلا حدود مع عالم أرزابريس </p>
+            <p className="text-sm font-semibold uppercase tracking-[0.45em] text-black/35">تواصل بلا حدود مع عالم دريبدو </p>
             <h2 className="mt-4 text-4xl font-black text-black">مصمم بأحدث التقنيات اللتي ستناسب العصر الجديد للجيل الجديد</h2>
             <p className="mt-4 text-base leading-8 text-black/65">
-              أرزابريس يأخدك الى استكشاف عالم مليئ بالاثارة وفرص العمل والتواصل الجماعي, لقد وفرنا فيه كل ما سيحتاجه المستخدم من التواصل وتقديم الخدمات..
+              دريبدو يأخدك الى استكشاف عالم مليئ بالاثارة وفرص العمل والتواصل الجماعي, لقد وفرنا فيه كل ما سيحتاجه المستخدم من التواصل وتقديم الخدمات..
             </p>
 
             <div className="mt-8 grid gap-4">
@@ -471,10 +469,10 @@ export default async function Home() {
           </div>
 
           <div className="rounded-[34px] bg-[#111111] p-8 text-white">
-            <p className="text-sm font-semibold uppercase tracking-[0.45em] text-white/40"> كيف يجري العمل عند أرزابريس</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.45em] text-white/40"> كيف يجري العمل عند دريبدو</p>
             <h2 className="mt-4 text-4xl font-black"> انطلاقتنا لم تكن مصادفة لأن كل ما توصلنا به كان بفضل الله سبحانه وتعالى</h2>
             <p className="mt-4 max-w-3xl text-base leading-8 text-white/70">
-              تعرف كيف يجري العمل وكيف تسير جهودنا مند انطلاق أرزابريس من اليوم الأول قبل النشر للعالم. لم يكن الأمر سهلا, سهرنا الليالي, وقاومنا المرض, والأزمات من أجل صنع أرزابريس, ليكون كما تراه اليوم..
+              تعرف كيف يجري العمل وكيف تسير جهودنا مند انطلاق دريبدو من اليوم الأول قبل النشر للعالم. لم يكن الأمر سهلا, سهرنا الليالي, وقاومنا المرض, والأزمات من أجل صنع دريبدو, ليكون كما تراه اليوم..
             </p>
 
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
@@ -494,10 +492,10 @@ export default async function Home() {
         <div className="mb-10 flex flex-col gap-6 text-right lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl space-y-4">
             <p className="text-sm font-semibold uppercase tracking-[0.45em] text-black/35">ومدا بعد؟</p>
-            <h2 className="text-4xl font-black text-black sm:text-5xl">لمدا يجب عليك تنزيل أرزابريس على جهازك؟</h2>
+            <h2 className="text-4xl font-black text-black sm:text-5xl">لمدا يجب عليك تنزيل دريبدو على جهازك؟</h2>
           </div>
           <p className="max-w-2xl text-base leading-8 text-black/65">
-            بعد توضيح الاستخدامات والمؤشرات الأساسية، يأتي هذا القسم ليشرح البنية التي تجعل أرزابريس مناسبًا للنشر والتواصل وبناء المجتمع.
+            بعد توضيح الاستخدامات والمؤشرات الأساسية، يأتي هذا القسم ليشرح البنية التي تجعل دريبدو مناسبًا للنشر والتواصل وبناء المجتمع.
           </p>
         </div>
 
@@ -518,10 +516,10 @@ export default async function Home() {
               <div className="text-right">
                 <p className="text-sm font-semibold uppercase tracking-[0.45em] text-black/35">مقارنة مباشرة</p>
                 <h2 className="mt-4 text-4xl font-black text-black sm:text-5xl">
-                  لماذا  <span className="text-red-700">أرزابريس</span>   يختاره المستخدمين أكثر من التطبيقات الأخرى؟
+                  لماذا  <span className="text-red-700">دريبدو</span>   يختاره المستخدمين أكثر من التطبيقات الأخرى؟
                 </h2>
                 <p className="mt-4 max-w-3xl text-lg leading-8 text-black/65">
-                  تعرف لمذا أرزابريس يختاره أغلب الأشخاص ويفضلونه أكثر من التطبيقات الأخرى, ليس بهذف النشر والتواصل والدردشة فقط, ولاكن هناك هذف معين يجعله مميز من بين التطبيقات الأخرى.
+                  تعرف لمذا دريبدو يختاره أغلب الأشخاص ويفضلونه أكثر من التطبيقات الأخرى, ليس بهذف النشر والتواصل والدردشة فقط, ولاكن هناك هذف معين يجعله مميز من بين التطبيقات الأخرى.
                 </p>
               </div>
 
@@ -546,7 +544,7 @@ export default async function Home() {
                   <div className="border-l border-black/10 p-5 text-lg font-bold text-black">
                     <span className="inline-flex items-center gap-2">
                       <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-red-700 text-sm font-bold text-white">D</span>
-                      أرزابريس
+                      دريبدو
                     </span>
                   </div>
                   <div className="p-5 text-lg font-bold text-black">المنصات الأخرى</div>
@@ -630,7 +628,7 @@ export default async function Home() {
           <div className="mb-12 text-right">
             <p className="text-sm font-semibold uppercase tracking-[0.45em] text-black/35">لقطات من الواجهة</p>
             <h2 className="mt-4 text-4xl font-black text-black sm:text-5xl">
-              لقطات شاشة من داخل <span className="text-red-700"> أرزابريس</span>
+              لقطات شاشة من داخل <span className="text-red-700"> دريبدو</span>
             </h2>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-black/65">
               عرضنا هنا خمس لقطات أساسية للحفاظ على الصفحة واضحة، ويمكنك استعراض المزيد من صفحة المميزات.

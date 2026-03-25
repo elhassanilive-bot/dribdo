@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Image from "next/image";
@@ -23,12 +23,13 @@ export default function BlogImage({
   const [failed, setFailed] = useState(false);
   const rawSource = !failed && String(src || "").trim() ? String(src).trim() : "";
   const source = isLegacyPlaceholder(rawSource) ? "" : rawSource;
+  const altText = String(alt || "").trim() || "صورة توضيحية للمحتوى";
 
   if (!source) {
     return (
       <div
         role="img"
-        aria-label={alt || "صورة افتراضية للمقال"}
+        aria-label={altText}
         className={[
           "flex items-center justify-center bg-[linear-gradient(140deg,#f8fafc_0%,#f1f5f9_55%,#e2e8f0_100%)]",
           className,
@@ -57,7 +58,7 @@ export default function BlogImage({
     return (
       <Image
         src={source}
-        alt={alt}
+        alt={altText}
         fill={fill}
         sizes={sizes}
         priority={priority}
@@ -70,8 +71,9 @@ export default function BlogImage({
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src={source}
-      alt={alt}
+      alt={altText}
       loading={priority ? "eager" : "lazy"}
+      decoding="async"
       className={className}
       onError={() => setFailed(true)}
     />

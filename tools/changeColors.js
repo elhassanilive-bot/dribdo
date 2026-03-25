@@ -46,4 +46,4 @@ function iterate(dir) {
   }
 }
 
-iterate(path.resolve("c:/D - Project-Web/Arzapress/src"));
+iterate(path.resolve("c:/dribdoweb/src"));

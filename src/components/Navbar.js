@@ -8,7 +8,7 @@ const links = [
   { href: "/features", label: "المميزات" },
   { href: "/forum", label: "المنتدى" },
   { href: "/blog", label: "المدونة" },
-  { href: "/download", label: "على الهاتف" },
+  { href: "/download", label: "التحميل" },
   { href: "/account", label: "الحساب" },
 ];
 
@@ -19,8 +19,8 @@ export default function Navbar() {
     <nav className="fixed inset-x-0 top-0 z-50 border-b border-black/10 bg-white/95">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-3 text-right">
-          <span className="text-xs font-semibold uppercase tracking-[0.45em] text-black/45">Arzapress</span>
-          <span className="text-2xl font-black text-black">أرزابريس</span>
+          <span className="text-xs font-semibold uppercase tracking-[0.45em] text-black/45">Dribdo</span>
+          <span className="text-2xl font-black text-black">دريبدو</span>
         </Link>
 
         <div className="hidden items-center gap-2 rounded-full border border-black/10 bg-black/[0.03] px-2 py-2 md:flex">
@@ -33,10 +33,10 @@ export default function Navbar() {
 
         <div className="flex items-center gap-3">
           <Link
-            href="/signup"
+            href="/download"
             className="hidden rounded-full bg-red-700 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-red-800 md:inline-flex"
           >
-            إنشاء حساب
+            حمّل التطبيق
           </Link>
 
           <button
@@ -66,11 +66,11 @@ export default function Navbar() {
               </NavLinkMobile>
             ))}
             <Link
-              href="/signup"
+              href="/download"
               onClick={() => setIsOpen(false)}
               className="mt-2 inline-flex items-center justify-center rounded-2xl bg-red-700 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-red-800"
             >
-              إنشاء حساب
+              حمّل التطبيق
             </Link>
           </div>
         </div>

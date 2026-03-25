@@ -1,8 +1,8 @@
 ﻿import ContactForm from './ContactForm';
 
 export const metadata = {
-  title: 'اتصل بنا | أرزابريس',
-  description: 'تواصل مباشرة مع فريق أرزابريس عبر نموذج احترافي يصل الرسائل إلى support@arzapress.com.',
+  title: 'اتصل بنا | دريبدو',
+  description: 'تواصل مباشرة مع فريق دريبدو عبر نموذج احترافي يصل الرسائل إلى support@dribdo.com.',
   alternates: { canonical: '/contact' },
 };
 
@@ -14,7 +14,7 @@ export default function ContactPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.4em] text-black/45">تواصل مع فريق الدعم</p>
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white">اتصل بنا</h1>
           <p className="max-w-3xl text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-            هذه الصفحة مخصصة للتواصل المهني مع فريق أرزابريس. يمكنك استخدامها للدعم الفني، الاستفسارات العامة،
+            هذه الصفحة مخصصة للتواصل المهني مع فريق دريبدو. يمكنك استخدامها للدعم الفني، الاستفسارات العامة،
             ملاحظات المنتج، اقتراحات التحسين، أو أي طلب يحتاج متابعة مباشرة من الفريق.
           </p>
         </section>

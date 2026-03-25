@@ -27,8 +27,9 @@ function buildPagination(currentPage, totalPages) {
   return items;
 }
 
-function PostCard({ post }) {
+function PostCard({ post, priority = false }) {
   const readingTime = estimateReadingTime(post.content);
+  const imageAlt = post.coverImageAlt || `صورة توضيحية للمقال: ${post.title}`;
 
   return (
     <article className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_16px_40px_-34px_rgba(15,23,42,0.45)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_45px_-32px_rgba(15,23,42,0.5)]">
@@ -36,9 +37,10 @@ function PostCard({ post }) {
         <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
           <BlogImage
             src={post.coverImageUrl}
-            alt={post.title}
+            alt={imageAlt}
             fill
-            sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 33vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 33vw"
+            priority={priority}
             className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
           />
         </div>
@@ -255,8 +257,8 @@ export default function BlogPostsPaginatedGrid({
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 lg:gap-5">
-        {visiblePosts.map((post) => (
-          <PostCard key={post.slug} post={post} />
+        {visiblePosts.map((post, index) => (
+          <PostCard key={post.slug} post={post} priority={index === 0} />
         ))}
       </div>
 

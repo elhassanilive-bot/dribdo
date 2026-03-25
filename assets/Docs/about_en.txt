@@ -1,17 +1,23 @@
-About Arzapress
+About Dribdo
 
-Effective date: March 25, 2026
+Dribdo is a social platform for sharing posts, stories, groups, channels, short videos, and direct messages.
 
-Arzapress is an Arabic multi-category online newspaper. Our mission is to publish clear, well-structured articles and help readers navigate categories and archives easily.
+Our mission
+- Help people share useful content in a respectful, safe community.
+- Give creators and communities tools to publish, discuss, and grow.
 
-What you can do on Arzapress:
-- Read articles across multiple categories.
-- Save articles to read later.
-- Like and comment (with moderation rules).
-- Submit articles as a contributor (reviewed before publishing).
+What the platform includes
+- Home feed with posts, photos, and videos.
+- Groups for topic communities.
+- Channels for creators and organizations.
+- Stories, chat, and notifications.
+- Privacy and safety controls in Settings.
 
-We value transparency. If we correct a material mistake, we aim to update the content and keep the experience trustworthy.
+Safety and trust
+- We invest in anti-abuse tools, reporting workflows, moderation policies, and account controls.
+- We enforce rules against impersonation, harassment, and copyright abuse.
 
 Support
-- Email: support@arzapress.com
+- Contact support@dribdo.com for technical help, abuse reports, or account/data requests.
 
+Thank you for being part of Dribdo.

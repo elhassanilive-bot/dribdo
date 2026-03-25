@@ -5,7 +5,7 @@ const doc = docsContent.terms;
 
 export const metadata = {
   title: doc.ar.title || "الشروط والأحكام",
-  description: "اطّلع على الشروط التي تنظم استخدام أرزابريس وكيفية التعامل مع المحتوى والمستخدمين.",
+  description: "اطّلع على الشروط التي تنظم استخدام دريبدو وكيفية التعامل مع المحتوى والمستخدمين.",
   alternates: { canonical: "/terms" },
 };
 

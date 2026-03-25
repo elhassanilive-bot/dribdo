@@ -4,24 +4,24 @@
     titleEn: "Frequently Asked Questions",
     updated: "آخر تحديث: 17 مارس 2026",
     arText: `
-1) كيف أبدأ استخدام أرزابريس؟
-قم بإنشاء حساب، حدِّث ملفك الشخصي، ثم ابدأ بقراءة المقالات وحفظ ما يهمك للعودة إليه لاحقا. إذا كنت ترغب بالمساهمة، أرسل مقالك من صفحة حسابك.
+1) كيف أبدأ استخدام دريبدو؟
+قم بإنشاء حساب، حدِّث ملفك الشخصي، وابدأ بمشاركة منشور أو قصة أو فيديو لتكون حاضرًا في الخلاصة.
 
 2) كيف أحمي حسابي؟
 استخدم كلمة مرور قوية، فعِّل التحقق بخطوتين، وراجع تبويب الخصوصية لفرض إعدادات الرسائل والمجموعات.
 
-3) هل يمكنني حذف تعليق أو إلغاء إعجاب/حفظ؟
-نعم، يمكنك حذف تعليقاتك وإلغاء الإعجاب أو الحفظ من صفحة المقال أو من حسابك حسب الأدوات المتاحة.
+3) هل يمكنني حذف منشور أو محتوى؟
+نعم، افتح المنشور المطلوب، اختَر "حذف" وسوف تُزال النسخة من الخلاصة فورًا. يمكنك أيضًا أرشفة القصص ليوم واحد.
 
-4) كيف أبلغ عن محتوى مخالف أو سلوك مسيء؟
-استخدم صفحة "شكاوى وبلاغات" أو "الإبلاغ عن مشكلة / بلاغ محتوى" وشارك الرابط والتفاصيل والوسائط المساندة حتى يتسنى لفريق الإشراف التعامل مع البلاغ.
+4) كيف أبلغ عن انتهاك أو سلوك مسيء؟
+استخدم زر "بلاغ" في المنشور أو الملف الشخصي، وشارك التفاصيل والوسائط المطلوبة حتى يتسنى لفريق الأمان التعامل مع البلاغ.
 
 5) كيف أتحكم بمن يشاهد مشاركاتي؟
 انطلق إلى الإعدادات، واختر الجمهور الافتراضي لكل نوع من المنشورات، وراقب القوائم المحظورة والمُتبعين.
     `,
     enText: `
-1) How do I start with Arzapress?
-Create an account, complete your profile, then read articles, like them, and save what you want to revisit later. You can also submit articles as a contributor.
+1) How do I start with Dribdo?
+Create an account, complete your profile, and publish a post, story, or short video to appear in the feed.
 
 2) How can I lock down my account?
 Use a strong password, enable two-factor authentication, and fine-tune who can message you or join your circles via Privacy settings.
@@ -43,12 +43,12 @@ Use the Audience controls inside Settings to limit posts, stories, and highlight
     arText: `
 نطبق طبقات متعددة من الحماية: الاتصالات المشفرة، تتبع النشاط المشبوه، ومراجعة البلاغات.
 نحتفظ بسجلات تقنية داخلية لدعم التحقيقات والتزامنا بالقوانين، ونُنبهك عند أي تغيير في شروط الأمان.
-نرشّح لك تحديث المتصفح دوريًا واستخدام متصفح موثوق عند فتح الروابط الخارجية.
+نرشّح لك تحديث التطبيق دوريًا واستخدام متصفح موثوق عند فتح الروابط الخارجية.
     `,
     enText: `
-We protect Arzapress with encrypted transport, abuse monitoring, and a strict reports review workflow.
+We protect Dribdo with encrypted transport, anomaly detection, and a strict abuse-review workflow.
 Logs are retained only as long as needed for support, investigations, or legal compliance, and we notify you when security changes occur.
-Keep your browser updated and avoid sharing credentials or suspicious links to stay safe.
+Keep your app updated and avoid sharing credentials or suspicious links to stay safe.
     `,
   },
   deletion: {

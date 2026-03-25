@@ -1,28 +1,39 @@
 import Link from 'next/link';
 import { site } from '@/config/site';
 
-const exploreLinks = [
-  { href: '/archive', label: 'جميع المقالات (الأرشيف)' },
-  { href: '/categories', label: 'التصنيفات' },
-  { href: '/contributors', label: 'المساهمون' },
+const quickLinks = [
+  { href: '/', label: 'الرئيسية' },
+  { href: '/features', label: 'المميزات' },
+  { href: '/download', label: 'التنزيل' },
   { href: '/about', label: 'من نحن' },
-  { href: '/sitemap', label: 'خريطة الموقع' },
+  { href: '/faq', label: 'الأسئلة الشائعة' },
 ];
 
-const policyLinks = [
+const legalLinks = [
   { href: '/privacy', label: 'سياسة الخصوصية' },
-  { href: '/terms', label: 'شروط الاستخدام' },
-  { href: '/comment-policy', label: 'سياسة التعليقات' },
-  { href: '/contributor-policy', label: 'سياسة النشر للمساهمين' },
-  { href: '/disclaimer', label: 'إخلاء المسؤولية' },
+  { href: '/terms', label: 'الشروط والأحكام' },
+  { href: '/agreements', label: 'الاتفاقيات والسياسات' },
+  { href: '/dmca', label: 'حقوق النشر (DMCA)' },
+  { href: '/security', label: 'أمان البيانات' },
+];
+
+const serviceLinks = [
+  { href: '/service-policies/verification', label: 'سياسة توثيق الحسابات' },
+  { href: '/service-policies/marketplace', label: 'سياسة البيع والشراء' },
+  { href: '/service-policies/real-estate', label: 'سياسة العقارات' },
+  { href: '/service-policies/marriage', label: 'سياسة بيت الحلال' },
+  { href: '/service-policies/charity', label: 'سياسة الصدقات' },
+  { href: '/service-policies/jobs', label: 'سياسة الوظائف' },
+  { href: '/service-policies/notes-sheets', label: 'سياسة المذكرات والجداول' },
+  { href: '/service-policies/tools', label: 'سياسة الأدوات الإضافية' },
 ];
 
 const supportLinks = [
-  { href: '/contact', label: 'اتصل بنا' },
-  { href: '/faq', label: 'الأسئلة الشائعة' },
   { href: '/help-center', label: 'مركز المساعدة' },
-  { href: '/complaints', label: 'الإبلاغ عن مشكلة / بلاغ محتوى' },
-  { href: '/dmca', label: 'حقوق النشر (DMCA)' },
+  { href: '/contact', label: 'اتصل بنا' },
+  { href: '/report-issue', label: 'الإبلاغ عن شيء لا يعمل' },
+  { href: '/complaints', label: 'شكاوى وبلاغات' },
+  { href: '/deletion', label: 'طلب حذف الحساب' },
 ];
 
 function SocialIcon({ name }) {
@@ -82,23 +93,25 @@ export default function Footer() {
   ].filter((item) => item.href);
 
   return (
-    <footer className="border-t border-black/10 bg-white py-12 text-black" dir="rtl">
+    <footer className="border-t border-black/10 bg-white py-12 text-black">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:items-start">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-[1.15fr_0.9fr_0.9fr_1fr_1fr] xl:items-start">
           <div className="space-y-4 text-right">
-            <h3 className="text-2xl font-black text-red-700">{site.name}</h3>
-            <p className="leading-8 text-black/70">{site.description}</p>
-            <p className="text-sm text-black/70">
-              تواصل معنا عبر{' '}
-              <a className="font-semibold text-black hover:underline" href={`mailto:${site.supportEmail}`}>
+            <h3 className="text-2xl font-bold text-red-600">دريبدو</h3>
+            <p className="max-w-sm leading-8 text-black/65">
+              دريبدو منصة اجتماعية عربية متكاملة تجمع النشر والتفاعل والدردشة والفيديو والمجتمعات والمساحات، مع أقسام إضافية مثل السوق والعقارات والوظائف والمذكرات داخل تجربة واحدة واضحة ومنظمة.
+            </p>
+            <p className="text-sm text-black/65">
+              تواصل معنا عبر:{' '}
+              <a className="font-medium text-black hover:underline" href={`mailto:${site.supportEmail}`}>
                 {site.supportEmail}
               </a>
             </p>
 
             {socialEntries.length > 0 ? (
               <div className="pt-2">
-                <p className="mb-3 text-sm font-semibold text-black">روابطنا</p>
-                <div className="flex items-center gap-4 text-black/70">
+                <p className="mb-3 text-sm font-semibold text-black">المساعدة والدعم</p>
+                <div className="flex items-center gap-4 text-black/65">
                   {socialEntries.map((social) => (
                     <a
                       key={social.name}
@@ -116,18 +129,18 @@ export default function Footer() {
             ) : null}
           </div>
 
-          <LinkColumn title="استكشف" links={exploreLinks} />
-          <LinkColumn title="سياسات" links={policyLinks} />
-          <LinkColumn title="مساعدة" links={supportLinks} />
+          <LinkColumn title="روابط سريعة" links={quickLinks} />
+          <LinkColumn title="سياسات وقوانين" links={legalLinks} />
+          
+            <LinkColumn title="سياسات الخدمات" links={serviceLinks} />
+            <LinkColumn title="مساعدة ودعم" links={supportLinks} />
+          
         </div>
 
         <div className="mt-10 border-t border-black/10 pt-8">
-          <p className="text-center text-sm text-black/60">
-            &copy; {currentYear} {site.name}. جميع الحقوق محفوظة.
-          </p>
+          <p className="text-center text-sm text-black/55">&copy; {currentYear} دريبدو. جميع الحقوق محفوظة.</p>
         </div>
       </div>
     </footer>
   );
 }
-

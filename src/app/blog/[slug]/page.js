@@ -5,7 +5,8 @@ import { buildTableOfContents, injectHeadingAnchors, renderStoredBlogContent } f
 import BlogImage from "@/components/blog/BlogImage";
 import BlogViewTracker from "@/components/blog/BlogViewTracker";
 import PostInteractions from "@/components/blog/PostInteractions";
-import { site } from "@/config/site";
+import { absoluteUrl, site } from "@/config/site";
+import { createSlugCandidate } from "@/lib/blog/slug";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -87,32 +88,51 @@ export default async function BlogPostPage({ params }) {
   const isForumPost = String(post.category || "").toLowerCase() === "forum";
   const categoryLabel = formatCategoryLabel(post.category) || "مقال";
   const articleUrl = `${site.url}/blog/${post.slug}`;
+  const postImage = post.coverImageUrl || absoluteUrl(site.defaultOgImage);
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": isForumPost ? "DiscussionForumPosting" : "Article",
     headline: post.title,
     description: post.excerpt,
-    image: post.coverImageUrl ? [post.coverImageUrl] : undefined,
+    image: [postImage],
+    thumbnailUrl: postImage,
     datePublished: post.publishedAt || post.createdAt,
     dateModified: post.updatedAt || post.publishedAt || post.createdAt,
     author: {
-      "@type": "Organization",
-      name: "Dribdo Editorial Team",
+      "@type": isForumPost ? "Person" : "Organization",
+      name: isForumPost ? (post.authorName || "عضو في دريبدو") : "Dribdo Editorial Team",
     },
     publisher: {
       "@type": "Organization",
       name: site.nameEn,
       url: site.url,
+      logo: {
+        "@type": "ImageObject",
+        url: absoluteUrl(site.defaultOgImage),
+      },
     },
     mainEntityOfPage: articleUrl,
     articleSection: post.category || "Blog",
     keywords: (post.tags || []).join(", "),
+  };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "الرئيسية", item: site.url },
+      { "@type": "ListItem", position: 2, name: "المدونة", item: `${site.url}/blog` },
+      ...(post.category
+        ? [{ "@type": "ListItem", position: 3, name: categoryLabel, item: `${site.url}/blog/category/${createSlugCandidate(post.category)}` }]
+        : []),
+      { "@type": "ListItem", position: post.category ? 4 : 3, name: post.title, item: articleUrl },
+    ],
   };
 
   return (
     <div className="blog-pages-compact w-full bg-[linear-gradient(180deg,#fff7ed_0%,#fff 26%,#f8fafc_100%)]">
       <BlogViewTracker postId={post.id} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <section className="pb-10 pt-10 sm:pb-14 sm:pt-14">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-[2.25rem] border border-orange-100 bg-white px-6 py-8 shadow-[0_30px_80px_-45px_rgba(15,23,42,0.35)] sm:px-8 sm:py-10">

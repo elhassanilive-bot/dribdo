@@ -1,163 +1,40 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { getPopularHelpSuggestions } from '@/content/helpCenterData';
 
-export default function FaqAccordion({ sections }) {
-  const [search, setSearch] = useState('');
-  const [openSectionId, setOpenSectionId] = useState(() => sections[0]?.id ?? '');
-  const [openId, setOpenId] = useState(() => {
-    if (typeof window === 'undefined') {
-      return '';
-    }
-    return window.location.hash.replace('#', '');
+function normalizeWord(value) {
+  return String(value || '')
+    .trim()
+    .replace(/[،؟.!()"'“”]/g, '')
+    .replace(/\s+/g, ' ');
+}
+
+function buildSearchIndex(sections) {
+  const terms = new Set();
+
+  (sections || []).forEach((section) => {
+    if (section?.title) terms.add(section.title);
+    (section?.items || []).forEach((item) => {
+      (item?.keywords || []).forEach((k) => terms.add(k));
+      String(item?.question || '')
+        .split(' ')
+        .map(normalizeWord)
+        .filter((w) => w.length >= 4)
+        .forEach((w) => terms.add(w));
+    });
   });
-  const inputId = 'help-center-search';
-  const searchIndex = useMemo(() => buildSearchIndex(sections), [sections]);
 
-  const filteredSections = useMemo(() => filterSections(sections, search), [search, sections]);
-  const totalMatches = filteredSections.reduce((sum, section) => sum + section.items.length, 0);
-  const suggestedTerms = useMemo(() => buildSuggestions(searchIndex.terms, search), [searchIndex.terms, search]);
-  const popularTerms = useMemo(() => getPopularHelpSuggestions(), []);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return;
-    }
-    const hash = window.location.hash.replace('#', '');
-    if (hash) {
-      const target = document.getElementById(hash);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-  }, []);
-
-  const handleToggle = (id) => {
-    setOpenId((prev) => (prev === id ? '' : id));
-    if (typeof window !== 'undefined') {
-      window.history.replaceState(null, '', `#${id}`);
-    }
-  };
-
-  const applySuggestion = (value) => {
-    setSearch(value);
-    const nextFiltered = filterSections(sections, value);
-    const firstMatch = nextFiltered[0]?.items[0]?.id ?? '';
-    if (firstMatch) {
-      setOpenSectionId(nextFiltered[0]?.id ?? '');
-      setOpenId(firstMatch);
-    }
-  };
-
-  return (
-    <div className="space-y-8">
-      <section className="rounded-[2rem] border border-black/10 bg-white p-6 shadow-sm sm:p-8">
-        <div className="mx-auto max-w-3xl space-y-5 text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.4em] text-black/40">ابحث في كل الأقسام</p>
-          <h2 className="text-3xl font-black text-black sm:text-4xl">بحث شامل في أسئلة أرزابريس</h2>
-          <p className="text-base leading-8 text-black/65">
-            اكتب أي كلمة مثل: حفظ، إعجاب، تعليق، مساهمون، قيد المراجعة، slug، بلاغ محتوى، أو مشكلة تقنية.
-            سنعرض لك أقرب الإجابات مع اقتراحات جاهزة لتسريع الوصول للمعلومة.
-          </p>
-        </div>
-
-        <div className="mx-auto mt-8 max-w-3xl">
-          <label htmlFor={inputId} className="sr-only">بحث مركز المساعدة</label>
-          <div className="relative">
-            <input
-              id={inputId}
-              type="search"
-              value={search}
-              onChange={(event) => {
-                const nextValue = event.target.value;
-                setSearch(nextValue);
-                const nextFiltered = filterSections(sections, nextValue);
-                const firstMatch = nextFiltered[0]?.items[0]?.id ?? '';
-                if (firstMatch) {
-                  setOpenSectionId(nextFiltered[0]?.id ?? '');
-                  setOpenId(firstMatch);
-                }
-              }}
-              placeholder="ابحث عن سؤال أو ميزة أو مشكلة"
-              className="w-full rounded-[1.6rem] border border-black/10 bg-[#faf8f6] px-5 py-4 pr-14 text-base text-black outline-none transition-shadow focus:shadow-[0_0_0_3px_rgba(0,0,0,0.08)]"
-            />
-            <span className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-black/45">
-              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
-                <circle cx="11" cy="11" r="7" />
-                <path d="m20 20-3.5-3.5" strokeLinecap="round" />
-              </svg>
-            </span>
-          </div>
-
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
-            {(search.trim() ? suggestedTerms : popularTerms).slice(0, 10).map((term) => (
-              <button
-                key={term}
-                type="button"
-                onClick={() => applySuggestion(term)}
-                className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-black/70 transition hover:border-black/20 hover:text-black"
-              >
-                {term}
-              </button>
-            ))}
-          </div>
-
-          <p className="mt-4 text-center text-xs uppercase tracking-[0.4em] text-black/40">{totalMatches} نتيجة مطابقة</p>
-        </div>
-      </section>
-
-      {filteredSections.length === 0 ? (
-        <div className="rounded-[2rem] border border-dashed border-black/15 bg-white p-8 text-center text-black/65 shadow-sm">
-          لم نعثر على نتائج مطابقة. جرّب كلمات أقصر أو استخدم اقتراحات البحث الجاهزة.
-        </div>
-      ) : null}
-
-      <div className="space-y-8">
-        {filteredSections.map((section) => (
-          <section key={section.id} className="rounded-[2rem] border border-black/10 bg-white p-6 shadow-sm sm:p-8">
-            <button
-              type="button"
-              onClick={() => setOpenSectionId((prev) => (prev === section.id && !search.trim() ? '' : section.id))}
-              className="flex w-full items-center justify-between gap-4 text-right"
-            >
-              <div className="flex items-center gap-3">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-black/10 bg-[#faf8f6] text-black">
-                  {renderIcon(section.icon)}
-                </span>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.4em] text-black/35">قسم المساعدة</p>
-                  <h3 className="text-2xl font-bold text-black">{section.title}</h3>
-                </div>
-              </div>
-              <span className="text-2xl leading-none text-black/45">{search.trim() || openSectionId === section.id ? '-' : '+'}</span>
-            </button>
-
-            {(search.trim() || openSectionId === section.id) && (
-              <div className="mt-6 space-y-3">
-                {section.items.map((item) => (
-                  <AccordionItem key={item.id} item={item} isOpen={openId === item.id} onToggle={() => handleToggle(item.id)} />
-                ))}
-              </div>
-            )}
-          </section>
-        ))}
-      </div>
-    </div>
-  );
+  return { terms: Array.from(terms).map((t) => String(t || '').trim()).filter(Boolean) };
 }
 
 function filterSections(sections, query) {
-  if (!query.trim()) {
-    return sections;
-  }
-
+  if (!query.trim()) return sections;
   const term = query.trim().toLowerCase();
 
-  return sections
+  return (sections || [])
     .map((section) => {
-      const items = section.items.filter((item) => {
-        const haystack = [item.question, item.answer, ...(item.keywords ?? [])].join(' ').toLowerCase();
+      const items = (section.items || []).filter((item) => {
+        const haystack = [item.question, item.answer, ...(item.keywords || [])].join(' ').toLowerCase();
         return haystack.includes(term);
       });
       return { ...section, items };
@@ -165,34 +42,46 @@ function filterSections(sections, query) {
     .filter((section) => section.items.length > 0);
 }
 
-function buildSearchIndex(sections) {
-  const terms = new Set();
-
-  sections.forEach((section) => {
-    terms.add(section.title);
-    section.items.forEach((item) => {
-      item.question.split(' ').forEach((word) => {
-        const normalized = word.replace(/[؟.,،]/g, '');
-        if (normalized.length >= 4) {
-          terms.add(normalized);
-        }
-      });
-      (item.keywords ?? []).forEach((word) => terms.add(word));
-    });
-  });
-
-  return { terms: Array.from(terms).filter(Boolean) };
-}
-
 function buildSuggestions(list, query) {
   const lower = query.trim().toLowerCase();
-  if (!lower) {
-    return list.slice(0, 12);
-  }
+  if (!lower) return list.slice(0, 12);
 
   return list
-    .filter((term) => term.toLowerCase().includes(lower))
-    .sort((a, b) => a.length - b.length);
+    .filter((term) => String(term).toLowerCase().includes(lower))
+    .sort((a, b) => String(a).length - String(b).length);
+}
+
+function getPopularTermsFromSections(sections) {
+  const preferred = [
+    'حفظ',
+    'إعجاب',
+    'تعليق',
+    'محفوظات',
+    'مساهم',
+    'قيد المراجعة',
+    'Slug',
+    'سياسة التعليقات',
+    'سياسة الخصوصية',
+    'بلاغ',
+    'تسجيل الدخول',
+    'كلمة المرور',
+  ];
+
+  const index = buildSearchIndex(sections);
+  const pool = index.terms;
+
+  const out = [];
+  preferred.forEach((term) => {
+    const found = pool.find((t) => String(t).toLowerCase() === String(term).toLowerCase());
+    if (found && !out.includes(found)) out.push(found);
+  });
+
+  pool.slice(0, 50).forEach((t) => {
+    if (out.length >= 12) return;
+    if (!out.includes(t)) out.push(t);
+  });
+
+  return out.slice(0, 12);
 }
 
 function renderIcon(name) {
@@ -206,30 +95,49 @@ function renderIcon(name) {
 
   switch (name) {
     case 'user':
-      return <svg {...baseProps}><circle cx="12" cy="8" r="4" /><path d="M6 20c0-3.5 3.5-6 6-6s6 2.5 6 6" /></svg>;
+      return (
+        <svg {...baseProps}>
+          <circle cx="12" cy="8" r="4" />
+          <path d="M6 20c0-3.5 3.5-6 6-6s6 2.5 6 6" />
+        </svg>
+      );
     case 'shield':
-      return <svg {...baseProps}><path d="M12 3 4 6v5c0 5.25 3.5 9.75 8 10 4.5-.25 8-4.75 8-10V6z" /><path d="M9 12h6" /><path d="M12 9v6" /></svg>;
-    case 'message':
-      return <svg {...baseProps}><rect x="3" y="5" width="18" height="14" rx="3" /><path d="M8 11h8M8 15h6" /></svg>;
-    case 'comment':
-      return <svg {...baseProps}><path d="M5 6h14a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H9l-4 3v-3H5a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3z" /><path d="M7.5 10h9M7.5 13h7" /></svg>;
-    case 'bookmark':
-      return <svg {...baseProps}><path d="M7 4h10a2 2 0 0 1 2 2v16l-7-4-7 4V6a2 2 0 0 1 2-2z" /></svg>;
-    case 'heart':
-      return <svg {...baseProps}><path d="M12 21s-7-4.6-9.2-8.8C1.2 9.1 3.1 6 6.6 6c1.9 0 3.1 1 3.9 2.1C11.3 7 12.5 6 14.4 6c3.5 0 5.4 3.1 3.8 6.2C19 16.4 12 21 12 21z" /></svg>;
+      return (
+        <svg {...baseProps}>
+          <path d="M12 3 4 6v5c0 5.25 3.5 9.75 8 10 4.5-.25 8-4.75 8-10V6z" />
+          <path d="M9 12h6" />
+          <path d="M12 9v6" />
+        </svg>
+      );
     case 'sparkles':
-      return <svg {...baseProps}><path d="M12 2v4M12 18v4M4.5 9.5h4M15.5 9.5h4" /><circle cx="12" cy="12" r="2" /></svg>;
+      return (
+        <svg {...baseProps}>
+          <path d="M12 2v4M12 18v4M4.5 9.5h4M15.5 9.5h4" />
+          <circle cx="12" cy="12" r="2" />
+        </svg>
+      );
     case 'users':
-      return <svg {...baseProps}><circle cx="8" cy="8.5" r="3" /><circle cx="16" cy="9.5" r="2.5" /><path d="M3.5 19c.8-2.7 3.1-4.5 6.5-4.5s5.7 1.8 6.5 4.5" /></svg>;
-    case 'cog':
-    case 'gear':
-      return <svg {...baseProps}><circle cx="12" cy="12" r="3" /><path d="M4 12h2M18 12h2M12 4v2M12 18v2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M6.3 17.7l1.4-1.4M16.3 7.7l1.4-1.4" /></svg>;
-    case 'refresh':
-      return <svg {...baseProps}><path d="M4 7a8 8 0 1 1 2.1 12" /><polyline points="4 7 4 3 8 3" /></svg>;
+      return (
+        <svg {...baseProps}>
+          <circle cx="8" cy="8.5" r="3" />
+          <circle cx="16" cy="9.5" r="2.5" />
+          <path d="M3.5 19c.8-2.7 3.1-4.5 6.5-4.5s5.7 1.8 6.5 4.5" />
+        </svg>
+      );
     case 'bug':
-      return <svg {...baseProps}><rect x="7" y="6" width="10" height="12" rx="3" /><path d="M9 6V4M15 6V4M9 18v2M15 18v2M3 12h18" /></svg>;
+      return (
+        <svg {...baseProps}>
+          <rect x="7" y="6" width="10" height="12" rx="3" />
+          <path d="M9 6V4M15 6V4M9 18v2M15 18v2M3 12h18" />
+        </svg>
+      );
     default:
-      return <svg {...baseProps}><circle cx="12" cy="12" r="1" /><path d="M12 6v2M12 16v2" /></svg>;
+      return (
+        <svg {...baseProps}>
+          <circle cx="12" cy="12" r="1" />
+          <path d="M12 6v2M12 16v2" />
+        </svg>
+      );
   }
 }
 
@@ -254,3 +162,135 @@ function AccordionItem({ item, isOpen, onToggle }) {
     </div>
   );
 }
+
+export default function FaqAccordion({ sections }) {
+  const [search, setSearch] = useState('');
+  const [openSectionId, setOpenSectionId] = useState(() => sections[0]?.id ?? '');
+  const [openId, setOpenId] = useState(() => {
+    if (typeof window === 'undefined') return '';
+    return window.location.hash.replace('#', '');
+  });
+  const inputId = 'faq-search';
+
+  const searchIndex = useMemo(() => buildSearchIndex(sections), [sections]);
+  const filteredSections = useMemo(() => filterSections(sections, search), [search, sections]);
+  const totalMatches = filteredSections.reduce((sum, section) => sum + (section.items?.length || 0), 0);
+  const suggestedTerms = useMemo(() => buildSuggestions(searchIndex.terms, search), [searchIndex.terms, search]);
+  const popularTerms = useMemo(() => getPopularTermsFromSections(sections), [sections]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const hash = window.location.hash.replace('#', '');
+    if (!hash) return;
+    const target = document.getElementById(hash);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, []);
+
+  const handleToggle = (id) => {
+    setOpenId((prev) => (prev === id ? '' : id));
+    if (typeof window !== 'undefined') {
+      window.history.replaceState(null, '', `#${id}`);
+    }
+  };
+
+  const applySuggestion = (value) => {
+    setSearch(value);
+    const nextFiltered = filterSections(sections, value);
+    const firstMatch = nextFiltered[0]?.items[0]?.id ?? '';
+    if (firstMatch) {
+      setOpenSectionId(nextFiltered[0]?.id ?? '');
+      setOpenId(firstMatch);
+    }
+  };
+
+  return (
+    <div className="space-y-8" dir="rtl">
+      <section className="rounded-[2rem] border border-black/10 bg-white p-6 shadow-sm sm:p-8">
+        <div className="mx-auto max-w-3xl space-y-4 text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.45em] text-black/45">ابحث داخل الأسئلة</p>
+          <h2 className="text-3xl font-black text-black sm:text-4xl">ابحث عن إجابة بسرعة</h2>
+          <p className="text-base leading-8 text-black/65">
+            اكتب كلمة مثل: حفظ، إعجاب، تعليق، مساهم، Slug، أو بلاغ. سيعرض الموقع أقرب الأسئلة لما تبحث عنه.
+          </p>
+          <p className="text-sm text-black/50">النتائج: {totalMatches}</p>
+        </div>
+
+        <div className="mx-auto mt-6 max-w-3xl">
+          <label htmlFor={inputId} className="sr-only">
+            بحث الأسئلة
+          </label>
+          <div className="relative">
+            <input
+              id={inputId}
+              type="search"
+              value={search}
+              onChange={(event) => {
+                const nextValue = event.target.value;
+                setSearch(nextValue);
+                const nextFiltered = filterSections(sections, nextValue);
+                const firstMatch = nextFiltered[0]?.items[0]?.id ?? '';
+                if (firstMatch) {
+                  setOpenSectionId(nextFiltered[0]?.id ?? '');
+                  setOpenId(firstMatch);
+                }
+              }}
+              placeholder="ابحث عن سؤال أو مشكلة"
+              className="w-full rounded-[1.6rem] border border-black/10 bg-[#faf8f6] px-5 py-4 pr-14 text-base text-black outline-none transition-shadow focus:shadow-[0_0_0_3px_rgba(0,0,0,0.08)]"
+            />
+            <span className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-black/45">
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-3.5-3.5" strokeLinecap="round" />
+              </svg>
+            </span>
+          </div>
+
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+            {(search.trim() ? suggestedTerms : popularTerms).slice(0, 10).map((term) => (
+              <button
+                key={term}
+                type="button"
+                onClick={() => applySuggestion(term)}
+                className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-black/75 transition hover:border-black/20 hover:text-black"
+              >
+                {term}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div className="space-y-4">
+        {filteredSections.map((section) => (
+          <section key={section.id} className="rounded-[2rem] border border-black/10 bg-white p-6 shadow-sm sm:p-8">
+            <button
+              type="button"
+              onClick={() => setOpenSectionId((prev) => (prev === section.id ? '' : section.id))}
+              className="flex w-full items-center justify-between gap-4 text-right"
+            >
+              <div className="flex items-center gap-3">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-black/10 bg-[#faf8f6] text-black">
+                  {renderIcon(section.icon)}
+                </span>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.4em] text-black/35">قسم</p>
+                  <h3 className="text-2xl font-bold text-black">{section.title}</h3>
+                </div>
+              </div>
+              <span className="text-2xl leading-none text-black/45">{openSectionId === section.id ? '-' : '+'}</span>
+            </button>
+
+            {openSectionId === section.id ? (
+              <div className="mt-6 space-y-3">
+                {section.items.map((item) => (
+                  <AccordionItem key={item.id} item={item} isOpen={openId === item.id} onToggle={() => handleToggle(item.id)} />
+                ))}
+              </div>
+            ) : null}
+          </section>
+        ))}
+      </div>
+    </div>
+  );
+}
+

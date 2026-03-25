@@ -84,12 +84,12 @@ export default function Footer() {
   return (
     <footer className="border-t border-black/10 bg-white py-12 text-black" dir="rtl">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="space-y-10">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:items-start">
           <div className="space-y-4 text-right">
             <h3 className="text-2xl font-black text-red-700">{site.name}</h3>
-            <p className="max-w-2xl leading-8 text-black/70">{site.description}</p>
+            <p className="leading-8 text-black/70">{site.description}</p>
             <p className="text-sm text-black/70">
-              تواصل معنا عبر{" "}
+              تواصل معنا عبر{' '}
               <a className="font-semibold text-black hover:underline" href={`mailto:${site.supportEmail}`}>
                 {site.supportEmail}
               </a>
@@ -116,17 +116,18 @@ export default function Footer() {
             ) : null}
           </div>
 
-          <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:items-start">
-            <LinkColumn title="استكشف" links={exploreLinks} />
-            <LinkColumn title="سياسات" links={policyLinks} />
-            <LinkColumn title="مساعدة" links={supportLinks} />
-          </div>
+          <LinkColumn title="استكشف" links={exploreLinks} />
+          <LinkColumn title="سياسات" links={policyLinks} />
+          <LinkColumn title="مساعدة" links={supportLinks} />
         </div>
 
         <div className="mt-10 border-t border-black/10 pt-8">
-          <p className="text-center text-sm text-black/60">&copy; {currentYear} {site.name}. جميع الحقوق محفوظة.</p>
+          <p className="text-center text-sm text-black/60">
+            &copy; {currentYear} {site.name}. جميع الحقوق محفوظة.
+          </p>
         </div>
       </div>
     </footer>
   );
 }
+

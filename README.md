@@ -1,4 +1,4 @@
-Dridoud website built with [Next.js](https://nextjs.org) (Arabic RTL landing site).
+Arzapress website built with [Next.js](https://nextjs.org) (Arabic RTL news/blog site).
 
 ## Getting Started
 

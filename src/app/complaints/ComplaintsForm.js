@@ -39,19 +39,19 @@ function Icon({ name, className = 'h-5 w-5' }) {
           <path d="M8 14h6" />
         </svg>
       );
-    case 'message':
+    case 'comment':
       return (
         <svg {...baseProps}>
-          <rect x="3" y="5" width="18" height="14" rx="3" />
-          <path d="M8 11h8M8 15h6" />
+          <path d="M5 6h14a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H9l-4 3v-3H5a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3z" />
+          <path d="M7.5 10h9" />
+          <path d="M7.5 13h7" />
         </svg>
       );
-    case 'channels':
+    case 'copyright':
       return (
         <svg {...baseProps}>
-          <rect x="6" y="8" width="12" height="8" rx="2" />
-          <path d="M16 12h-8" />
-          <path d="M12 8v-2" />
+          <circle cx="12" cy="12" r="9" />
+          <path d="M14.5 10.3a3.2 3.2 0 1 0 0 3.4" strokeLinecap="round" />
         </svg>
       );
     case 'bug':
@@ -282,7 +282,7 @@ export default function ComplaintsForm() {
               type="text"
               value={form.target}
               onChange={handleChange('target')}
-              placeholder="https://dribdo.com/post/..."
+              placeholder="https://arzapress.com/blog/..."
               className={`w-full rounded-2xl border px-4 py-3 text-sm outline-none transition focus:border-red-500 dark:bg-gray-900 dark:border-gray-800 ${
                 errors.target ? 'border-red-400' : 'border-gray-200'
               }`}
@@ -345,15 +345,15 @@ export default function ComplaintsForm() {
             معلومات إضافية
           </h2>
           <p className="text-sm text-gray-600 dark:text-gray-300 mt-3">
-            استخدم هذا النموذج للإبلاغ عن محتوى مخالف، إساءة استخدام، انتحال شخصية، مشاكل تقنية مؤثرة، أو أي تصرف يخلّ بسياسات دريبدو.
+            استخدم هذا النموذج للإبلاغ عن محتوى مخالف، إساءة استخدام، انتحال شخصية، مشاكل تقنية مؤثرة، أو أي تصرف يخلّ بسياسات أرزابريس.
             كل بلاغ تتم مراجعته بحسب نوعه ودرجة خطورته.
           </p>
         </div>
         <div className="space-y-3 text-sm">
           <p className="flex items-center gap-2">
             <Icon name="mail" className="h-5 w-5 text-black" />
-            <a href="mailto:support@dribdo.com" className="font-semibold text-black hover:underline">
-              support@dribdo.com
+            <a href="mailto:support@arzapress.com" className="font-semibold text-black hover:underline">
+              support@arzapress.com
             </a>
           </p>
           <p className="flex items-center gap-2">

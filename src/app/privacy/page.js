@@ -5,7 +5,7 @@ const doc = docsContent.privacyPolicy;
 
 export const metadata = {
   title: doc.ar.title || "سياسة الخصوصية",
-  description: "توضح سياسة دريبدو كيفية جمع البيانات واستخدامها وحمايتها داخل المنصة.",
+  description: "توضح سياسة أرزابريس كيفية جمع البيانات واستخدامها وحمايتها داخل الموقع.",
   alternates: { canonical: "/privacy" },
 };
 
@@ -21,7 +21,7 @@ export default function Privacy() {
           <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 dark:text-white mt-3">{title}</h1>
           <p className="text-lg text-gray-700 dark:text-gray-300 mt-4">{updated}</p>
           <p className="text-base text-gray-700 dark:text-gray-300 mt-3 max-w-3xl mx-auto">
-            نضع الشفافية في صلب تعاملنا مع البيانات، وتوضح هذه الصفحة كيف تتحكم في المعلومات الخاصة بك على دريبدو.
+            نضع الشفافية في صلب تعاملنا مع البيانات، وتوضح هذه الصفحة كيف تتحكم في المعلومات الخاصة بك على أرزابريس.
           </p>
         </div>
       </section>

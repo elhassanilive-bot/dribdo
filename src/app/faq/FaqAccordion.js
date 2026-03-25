@@ -55,10 +55,10 @@ export default function FaqAccordion({ sections }) {
       <section className="rounded-[2rem] border border-black/10 bg-white p-6 shadow-sm sm:p-8">
         <div className="mx-auto max-w-3xl space-y-5 text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.4em] text-black/40">ابحث في كل الأقسام</p>
-          <h2 className="text-3xl font-black text-black sm:text-4xl">بحث شامل في أسئلة دريبدو</h2>
+          <h2 className="text-3xl font-black text-black sm:text-4xl">بحث شامل في أسئلة أرزابريس</h2>
           <p className="text-base leading-8 text-black/65">
-            اكتب أي كلمة مثل: الرسائل، حذف الحساب، المنشورات، الفيديوهات، المجتمعات، الوظائف، أو الأعطال التقنية،
-            وسيتم عرض الأسئلة الأقرب لما تبحث عنه مع اقتراحات ذكية جاهزة.
+            اكتب أي كلمة مثل: حفظ، إعجاب، تعليق، مساهمون، قيد المراجعة، slug، بلاغ محتوى، أو مشكلة تقنية.
+            سنعرض لك أقرب الإجابات مع اقتراحات جاهزة لتسريع الوصول للمعلومة.
           </p>
         </div>
 
@@ -126,11 +126,11 @@ export default function FaqAccordion({ sections }) {
                   {renderIcon(section.icon)}
                 </span>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.4em] text-black/35">قسم الدعم</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.4em] text-black/35">قسم المساعدة</p>
                   <h3 className="text-2xl font-bold text-black">{section.title}</h3>
                 </div>
               </div>
-              <span className="text-2xl leading-none text-black/45">{search.trim() || openSectionId === section.id ? '−' : '+'}</span>
+              <span className="text-2xl leading-none text-black/45">{search.trim() || openSectionId === section.id ? '-' : '+'}</span>
             </button>
 
             {(search.trim() || openSectionId === section.id) && (
@@ -211,11 +211,18 @@ function renderIcon(name) {
       return <svg {...baseProps}><path d="M12 3 4 6v5c0 5.25 3.5 9.75 8 10 4.5-.25 8-4.75 8-10V6z" /><path d="M9 12h6" /><path d="M12 9v6" /></svg>;
     case 'message':
       return <svg {...baseProps}><rect x="3" y="5" width="18" height="14" rx="3" /><path d="M8 11h8M8 15h6" /></svg>;
+    case 'comment':
+      return <svg {...baseProps}><path d="M5 6h14a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H9l-4 3v-3H5a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3z" /><path d="M7.5 10h9M7.5 13h7" /></svg>;
+    case 'bookmark':
+      return <svg {...baseProps}><path d="M7 4h10a2 2 0 0 1 2 2v16l-7-4-7 4V6a2 2 0 0 1 2-2z" /></svg>;
+    case 'heart':
+      return <svg {...baseProps}><path d="M12 21s-7-4.6-9.2-8.8C1.2 9.1 3.1 6 6.6 6c1.9 0 3.1 1 3.9 2.1C11.3 7 12.5 6 14.4 6c3.5 0 5.4 3.1 3.8 6.2C19 16.4 12 21 12 21z" /></svg>;
     case 'sparkles':
       return <svg {...baseProps}><path d="M12 2v4M12 18v4M4.5 9.5h4M15.5 9.5h4" /><circle cx="12" cy="12" r="2" /></svg>;
     case 'users':
       return <svg {...baseProps}><circle cx="8" cy="8.5" r="3" /><circle cx="16" cy="9.5" r="2.5" /><path d="M3.5 19c.8-2.7 3.1-4.5 6.5-4.5s5.7 1.8 6.5 4.5" /></svg>;
     case 'cog':
+    case 'gear':
       return <svg {...baseProps}><circle cx="12" cy="12" r="3" /><path d="M4 12h2M18 12h2M12 4v2M12 18v2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M6.3 17.7l1.4-1.4M16.3 7.7l1.4-1.4" /></svg>;
     case 'refresh':
       return <svg {...baseProps}><path d="M4 7a8 8 0 1 1 2.1 12" /><polyline points="4 7 4 3 8 3" /></svg>;
@@ -236,7 +243,7 @@ function AccordionItem({ item, isOpen, onToggle }) {
         aria-expanded={isOpen}
       >
         <span className="text-base font-semibold leading-7 text-black">{item.question}</span>
-        <span className="text-2xl leading-none text-black/55">{isOpen ? '−' : '+'}</span>
+        <span className="text-2xl leading-none text-black/55">{isOpen ? '-' : '+'}</span>
       </button>
       <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
         <div className="overflow-hidden px-5">

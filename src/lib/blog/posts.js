@@ -216,6 +216,82 @@ export async function listCategorySummaries({ limit = 20 } = {}) {
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "ar"));
 }
 
+export async function listContributorsPublic({ limit = 100 } = {}) {
+  const safeLimit = Math.max(1, Math.min(Number(limit) || 100, 500));
+
+  // We keep it simple and safe: derive contributor list from published posts only.
+  // This avoids exposing private user profile rows and keeps the UI stable even without extra tables.
+  const { posts, error } = await listPostsDetailed({ limit: Math.max(safeLimit, 500) });
+  if (error) return { contributors: [], error };
+
+  const map = new Map();
+  for (const post of posts || []) {
+    const authorId = post.authorUserId ? String(post.authorUserId) : "";
+    if (!authorId) continue;
+
+    const publishedAt = post.publishedAt || post.createdAt || null;
+
+    const current = map.get(authorId) || {
+      id: authorId,
+      displayName: String(post.authorName || "").trim() || "مساهم",
+      avatarUrl: null,
+      postsCount: 0,
+      lastPublishedAt: null,
+    };
+
+    current.postsCount += 1;
+
+    if (publishedAt) {
+      if (!current.lastPublishedAt || new Date(publishedAt).getTime() > new Date(current.lastPublishedAt).getTime()) {
+        current.lastPublishedAt = publishedAt;
+      }
+    }
+
+    if (!current.displayName && post.authorName) {
+      current.displayName = String(post.authorName || "").trim();
+    }
+
+    map.set(authorId, current);
+  }
+
+  const contributors = [...map.values()]
+    .sort((a, b) => (b.postsCount || 0) - (a.postsCount || 0))
+    .slice(0, safeLimit);
+
+  return { contributors, error: null };
+}
+
+export async function getContributorPublicProfile(contributorId, { limit = 30 } = {}) {
+  const id = String(contributorId || "").trim();
+  if (!id) return { contributor: null, posts: [], error: "معرف المساهم غير صالح." };
+
+  const safeLimit = Math.max(1, Math.min(Number(limit) || 30, 100));
+  const { posts, error } = await listPostsDetailed({ limit: 2000 });
+  if (error) return { contributor: null, posts: [], error };
+
+  const filtered = (posts || []).filter((post) => String(post.authorUserId || "") === id);
+  if (!filtered.length) return { contributor: null, posts: [], error: null };
+
+  filtered.sort((a, b) => {
+    const aTime = new Date(a.publishedAt || a.createdAt || 0).getTime();
+    const bTime = new Date(b.publishedAt || b.createdAt || 0).getTime();
+    return bTime - aTime;
+  });
+
+  const displayName = String(filtered.find((post) => post.authorName)?.authorName || "").trim() || "مساهم";
+  const lastPublishedAt = filtered[0].publishedAt || filtered[0].createdAt || null;
+
+  const contributor = {
+    id,
+    displayName,
+    avatarUrl: null,
+    postsCount: filtered.length,
+    lastPublishedAt,
+  };
+
+  return { contributor, posts: filtered.slice(0, safeLimit), error: null };
+}
+
 export async function listTagSummaries({ limit = 40 } = {}) {
   const { posts } = await listPostsDetailed({ limit: Math.max(limit, 300) });
   const map = new Map();

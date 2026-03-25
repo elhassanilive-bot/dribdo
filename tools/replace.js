@@ -1,13 +1,13 @@
 const fs = require("fs");
 const path = require("path");
 
-const root = path.resolve("c:/Dridoudweb");
+const root = path.resolve("c:/D - Project-Web/Arzapress");
 const exts = new Set([".js", ".jsx", ".ts", ".tsx", ".md", ".css", ".sql", ".mjs"]);
 const replacements = [
   ["دريدود", "دريدود"],
   ["دريدود", "دريدود"],
-  ["Dridoud", "Dridoud"],
-  ["Dridoud", "Dridoud"],
+  ["Dridoud", "Arzapress"],
+  ["dridoud", "arzapress"],
 ];
 
 function walk(directory) {

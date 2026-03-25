@@ -1,4 +1,4 @@
--- Dridoud Blog Schema (Supabase / Postgres)
+-- Arzapress Blog Schema (Supabase / Postgres)
 -- هدف: نظام واحد شامل للمقالات + وسائط (صور/فيديو/صوت/مستندات/روابط) مع RLS.
 --
 -- طريقة الاستخدام:

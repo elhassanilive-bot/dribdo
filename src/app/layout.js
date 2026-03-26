@@ -1,5 +1,6 @@
 ﻿import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { absoluteUrl, site } from "@/config/site";
@@ -106,9 +107,12 @@ export default function RootLayout({ children }) {
         <main className="min-h-screen pt-16">{children}</main>
         <Footer />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
 }
+
+
 
 

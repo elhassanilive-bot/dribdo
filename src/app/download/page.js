@@ -9,6 +9,19 @@ export const metadata = {
 
 const platforms = [
   {
+    id: 'windows',
+    title: 'تنزيل نسخة Windows (EXE)',
+    helper: 'نسخة الكمبيوتر الرسمية',
+    note: 'نسخة مناسبة لنظام Windows للتثبيت المباشر، وهي نفس الحزمة المستخدمة في التوزيع الرسمي.',
+    href: downloadContent.links.windowsExe,
+    accent: 'bg-white text-black',
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 5.5 11 4v7H3v-5.5Zm10 5.5V4l10-1.5V11H13Zm0 2h10v8.5L13 20v-7Zm-2 7-8-1.5V13h8v7Z" />
+      </svg>
+    ),
+  },
+  {
     id: 'android',
     title: 'التنزيل على متجر Play',
     helper: 'نسخة Android الرسمية',
@@ -100,6 +113,16 @@ export default function DownloadPage() {
                     <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M14.5 6.5c.6-.8 1-1.8.9-2.8-.9.1-2 .6-2.6 1.4-.6.7-1 1.7-.9 2.6 1 .1 2-.4 2.6-1.2Z" />
                       <path strokeLinecap="round" strokeLinejoin="round" d="M16.7 12.8c0-2 1.7-3 1.7-3-.9-1.4-2.3-1.6-2.8-1.6-1.2-.1-2.3.7-2.9.7-.7 0-1.6-.7-2.7-.7-1.4 0-2.6.8-3.4 2-.9 1.6-.2 4 .7 5.3.5.8 1.1 1.6 1.9 1.6.7 0 1.1-.5 2-.5s1.3.5 2.1.5 1.3-.7 1.9-1.5c.6-.9.8-1.8.8-1.9 0 0-1.3-.5-1.3-2.9Z" />
+                    </svg>
+                  }
+                />
+                <DownloadAction
+                  href={downloadContent.links.windowsExe}
+                  label="تنزيل نسخة Windows (EXE)"
+                  helper="نسخة الكمبيوتر الرسمية"
+                  icon={
+                    <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 5.5 11 4v7H3v-5.5Zm10 5.5V4l10-1.5V11H13Zm0 2h10v8.5L13 20v-7Zm-2 7-8-1.5V13h8v7Z" />
                     </svg>
                   }
                 />
@@ -229,3 +252,7 @@ function DownloadAction({ href, label, helper, icon, accent = 'light' }) {
     </Link>
   );
 }
+
+
+
+

@@ -9,6 +9,7 @@
     android: 'https://play.google.com/store/apps/details?id=com.dribdo.app',
     ios: 'https://apps.apple.com/app/dribdo/id0000000000',
     apk: 'https://download.dribdo.com/releases/dribdo-latest.apk',
+    windowsExe: 'https://dribdo.com/downloads/windows/10.5.0/Dribdo_Setup_10.5.0.exe',
   },
   versions: [],
   highlights: [
@@ -34,3 +35,5 @@
     },
   ],
 };
+
+

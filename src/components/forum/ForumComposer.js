@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState, useTransition } from "react";
 import RichTextEditorField from "@/components/blog/RichTextEditorField";
@@ -99,7 +99,7 @@ export default function ForumComposer() {
         const { data: authData } = await supabase.auth.getUser();
         const authUser = authData?.user || null;
         if (!authUser) {
-          setStatus({ type: "error", message: "يجب تسجيل الدخول لنشر مشاركة في المنتدى." });
+          setStatus({ type: "error", message: "يجب تسجيل الدخول لنشر منشور جديد." });
           return;
         }
 
@@ -127,12 +127,12 @@ export default function ForumComposer() {
         });
 
         if (error) {
-          setStatus({ type: "error", message: error.message || "تعذر نشر المشاركة." });
+          setStatus({ type: "error", message: error.message || "تعذر نشر المنشور." });
           return;
         }
 
         setLastSlug(slug);
-        setStatus({ type: "success", message: "تم نشر مشاركتك بنجاح وستظهر للجميع." });
+        setStatus({ type: "success", message: "تم نشر منشورك بنجاح وسيظهر للجميع." });
         resetForm();
       } catch (err) {
         setStatus({
@@ -146,9 +146,9 @@ export default function ForumComposer() {
   return (
     <section className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_30px_80px_-60px_rgba(15,23,42,0.35)]">
       <div className="border-b border-slate-200 bg-slate-50 px-6 py-5">
-        <h2 className="text-2xl font-black text-slate-950">شارك رأيك أو مشكلتك</h2>
+        <h2 className="text-2xl font-black text-slate-950">شارك لحظتك أو رأيك</h2>
         <p className="mt-2 text-sm leading-7 text-slate-600">
-          اكتب تجربتك أو المشكلة التي واجهتها وسيراها الجميع، كما ستظهر مشاركتك أيضًا داخل المدونة.
+          اكتب منشورك وسيظهر داخل قسم اللحظات، كما سيظهر أيضًا ضمن محتوى المدونة العامة.
         </p>
       </div>
 
@@ -165,7 +165,7 @@ export default function ForumComposer() {
             />
           </label>
           <label className="block">
-            <span className="mb-2 block text-sm font-semibold text-slate-900">نوع المشاركة</span>
+            <span className="mb-2 block text-sm font-semibold text-slate-900">نوع المنشور</span>
             <select
               value={form.type}
               onChange={(event) => updateField("type", event.target.value)}
@@ -180,7 +180,7 @@ export default function ForumComposer() {
         </div>
 
         <label className="block">
-          <span className="mb-2 block text-sm font-semibold text-slate-900">عنوان المشاركة</span>
+          <span className="mb-2 block text-sm font-semibold text-slate-900">عنوان المنشور</span>
           <input
             type="text"
             value={form.title}
@@ -219,7 +219,7 @@ export default function ForumComposer() {
             {status.message}
             {status.type === "success" && lastSlug ? (
               <div className="mt-2 text-xs text-emerald-700">
-                رابط المشاركة: <span className="font-semibold">/blog/{lastSlug}</span>
+                رابط المنشور: <span className="font-semibold">/blog/{lastSlug}</span>
               </div>
             ) : null}
           </div>
@@ -234,7 +234,7 @@ export default function ForumComposer() {
             disabled={isPending}
             className="inline-flex min-w-44 items-center justify-center rounded-2xl bg-[var(--blog-accent)] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-500/20 transition hover:bg-[var(--blog-accent-strong)] disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {isPending ? "جارٍ النشر..." : "نشر المشاركة"}
+            {isPending ? "جارٍ النشر..." : "نشر المنشور"}
           </button>
         </div>
       </form>

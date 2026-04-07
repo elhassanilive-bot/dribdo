@@ -1,10 +1,11 @@
-import { site } from "@/config/site";
+﻿import { site } from "@/config/site";
 import { listCategorySummaries, listPostsDetailed, listTagSummaries } from "@/lib/blog/posts";
 
 export const staticPages = [
   "/",
   "/about",
   "/blog",
+  "/moments",
   "/forum",
   "/features",
   "/download",
@@ -34,7 +35,7 @@ function escapeXml(value) {
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
+    .replace(/\"/g, "&quot;")
     .replace(/'/g, "&apos;");
 }
 
@@ -54,8 +55,8 @@ export async function getSitemapDatasets() {
     staticEntries: staticPages.map((path, index) => ({
       url: `${site.url}${path}`,
       lastModified: normalizeDate(new Date()),
-      changeFrequency: path === "/" || path === "/blog" || path === "/forum" ? "daily" : "weekly",
-      priority: index === 0 ? 1 : path === "/blog" || path === "/forum" ? 0.9 : 0.75,
+      changeFrequency: path === "/" || path === "/blog" || path === "/moments" || path === "/forum" ? "daily" : "weekly",
+      priority: index === 0 ? 1 : path === "/blog" || path === "/moments" || path === "/forum" ? 0.9 : 0.75,
     })),
     postEntries: (posts || []).map((post) => ({
       url: `${site.url}/blog/${post.slug}`,

@@ -1,4 +1,4 @@
-function stripHtml(value) {
+﻿function stripHtml(value) {
   return String(value || "")
     .replace(/<[^>]*>/g, " ")
     .replace(/&nbsp;/g, " ")
@@ -34,7 +34,7 @@ export function estimateReadingTime(content) {
 export function formatCategoryLabel(category) {
   const value = String(category || "").trim();
   if (!value) return "";
-  if (value.toLowerCase() === "forum") return "منتدى الأعضاء";
+  if (value.toLowerCase() === "forum") return "لحظات المجتمع";
   return value;
 }
 

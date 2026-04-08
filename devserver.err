@@ -1,13 +1,12 @@
-Error: spawn EPERM
-    at ChildProcess.spawn (node:internal/child_process:420:11)
-    at spawn (node:child_process:762:9)
-    at fork (node:child_process:172:10)
-    at C:\Project-Web\DribdoWeb\node_modules\next\dist\cli\next-dev.js:243:45
-    at new Promise (<anonymous>)
-    at startServer (C:\Project-Web\DribdoWeb\node_modules\next\dist\cli\next-dev.js:212:16)
-    at runDevServer (C:\Project-Web\DribdoWeb\node_modules\next\dist\cli\next-dev.js:334:23)
-    at Module.nextDev (C:\Project-Web\DribdoWeb\node_modules\next\dist\cli\next-dev.js:342:11) {
-  errno: -4048,
-  code: 'EPERM',
-  syscall: 'spawn'
-}
+Image with src "/screenshots/ads.png" is using quality "76" which is not configured in images.qualities [75]. Please update your config to [75, 76].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/hero-ads-1.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/hero-ads-2.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/hero-ads-3.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/hero-ads-4.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/hero-ads-5.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities

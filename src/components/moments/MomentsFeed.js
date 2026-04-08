@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { getSupabaseClient } from "@/lib/supabase/client";
 import MomentsComposer from "@/components/moments/MomentsComposer";
 import MomentsPostActions from "@/components/moments/MomentsPostActions";
+import RichMomentText from "@/components/moments/RichMomentText";
 
 function parseMediaUrls(raw) {
   if (!raw) return [];
@@ -63,18 +64,6 @@ function normalizeAttachment(row) {
     size: Number(row?.file_size || row?.size || 0),
     url: String(row?.file_url || row?.url || "").trim(),
   };
-}
-
-function linkifyText(text) {
-  const raw = String(text || "");
-  if (!raw) return null;
-  const parts = raw.split(/(https?:\/\/[^\s]+)/g);
-  return parts.map((part, idx) => {
-    if (/^https?:\/\//i.test(part)) {
-      return <a key={`ln-${idx}`} href={part} target="_blank" rel="noreferrer" className="font-semibold text-blue-700 hover:underline">{part}</a>;
-    }
-    return <span key={`tx-${idx}`}>{part}</span>;
-  });
 }
 
 function hexToRgb(hex) {
@@ -148,7 +137,7 @@ function TextCard({ post, expanded, onToggleExpand }) {
       style={richBackground}
     >
       <div>
-        {linkifyText(visibleText)}
+        <RichMomentText text={visibleText} />
         {isLong ? (
           <button
             type="button"
@@ -342,7 +331,7 @@ function PostHeader({ post, isMine, isFollowing, onToggleFollow, followLoading, 
         </div>
       </div>
 
-      {post.postContextText ? <div className="text-xs font-semibold text-slate-500">{post.postContextText}</div> : null}
+      {post.postContextText ? <div className="text-xs font-semibold text-slate-500"><RichMomentText text={post.postContextText} /></div> : null}
     </header>
   );
 }
@@ -654,6 +643,9 @@ export default function MomentsFeed() {
     </div>
   );
 }
+
+
+
 
 
 

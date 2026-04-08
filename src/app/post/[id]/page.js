@@ -2,6 +2,7 @@
 import PostMediaLightbox from "@/components/post/PostMediaLightbox";
 import { absoluteUrl, site } from "@/config/site";
 import { excerptText, getMomentPostById, listMomentPostsForFeed, mediaKind } from "@/lib/moments/posts";
+import RichMomentText from "@/components/moments/RichMomentText";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -148,7 +149,7 @@ export default async function PostPage({ params }) {
 
       <article className="rounded-3xl border border-slate-200 bg-white px-4 py-4 shadow-sm sm:px-6 sm:py-6">
         <header className="border-b border-slate-200 pb-4">
-          <h1 className="text-xl font-black text-slate-900 sm:text-2xl">{excerptText(post.content, 90) || `منشور من ${post.authorName}`}</h1>
+          <h1 className="text-xl font-black text-slate-900 sm:text-2xl"><RichMomentText text={excerptText(post.content, 90) || `منشور من ${post.authorName}`} /></h1>
           <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-slate-500">
             <span className="font-semibold text-slate-700">{post.authorName}</span>
             <span>•</span>
@@ -161,7 +162,7 @@ export default async function PostPage({ params }) {
             className="mt-5 whitespace-pre-wrap rounded-2xl px-4 py-4 text-[1.06rem] leading-8"
             style={{ background: post.bgColor || "transparent", color: post.textColor || "#111827" }}
           >
-            {post.content}
+            <RichMomentText text={post.content} />
           </div>
         ) : null}
 
@@ -175,7 +176,7 @@ export default async function PostPage({ params }) {
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             {related.map((item) => (
               <Link key={item.id} href={`/post/${item.id}`} className="rounded-xl border border-slate-200 px-3 py-2 text-sm hover:border-blue-200">
-                <div className="line-clamp-2 font-semibold text-slate-800">{excerptText(item.content, 100) || "منشور بدون نص"}</div>
+                <div className="line-clamp-2 font-semibold text-slate-800"><RichMomentText text={excerptText(item.content, 100) || "منشور بدون نص"} /></div>
                 <div className="mt-1 text-xs text-slate-500">{formatDate(item.createdAt)}</div>
               </Link>
             ))}
@@ -185,3 +186,5 @@ export default async function PostPage({ params }) {
     </div>
   );
 }
+
+

@@ -4,6 +4,7 @@ import MomentsPostActions from "@/components/moments/MomentsPostActions";
 import MomentsVideoPlayerClient from "@/components/moments/MomentsVideoPlayerClient";
 import VideoPagerClient from "@/components/moments/VideoPagerClient";
 import ExpandablePostText from "@/components/moments/ExpandablePostText";
+import RichMomentText from "@/components/moments/RichMomentText";
 import { getMomentPostById, excerptText, mediaKind, getMomentVideoNeighbors } from "@/lib/moments/posts";
 import { site } from "@/config/site";
 
@@ -112,7 +113,7 @@ export default async function VideoPage({ params }) {
             <span>{formatDate(post.createdAt)}</span>
           </div>
 
-          <h1 className="mb-2 text-base font-bold text-slate-900">{excerptText(post.content, 90) || `فيديو من ${post.authorName}`}</h1>
+          <h1 className="mb-2 text-base font-bold text-slate-900"><RichMomentText text={excerptText(post.content, 90) || `فيديو من ${post.authorName}`} /></h1>
 
           <MomentsVideoPlayerClient src={videoUrl} nextSrc={nextVideoUrl} prevSrc={prevVideoUrl} nextId={neighbors.nextId} autoNext postId={post.id} userId={post.userId} />
 
@@ -139,4 +140,6 @@ export default async function VideoPage({ params }) {
     </div>
   );
 }
+
+
 

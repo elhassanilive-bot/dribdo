@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from
 import { getSupabaseClient } from "@/lib/supabase/client";
 import { orderedReactionOptions, reactionByValue } from "@/components/moments/reactions";
 import LottieReactionIcon from "@/components/moments/LottieReactionIcon";
+import RichMomentText from "@/components/moments/RichMomentText";
 
 const MEDIA_BUCKET = "media";
 const SORT_OPTIONS = [
@@ -165,7 +166,7 @@ function CommentItem({ comment, currentUserId, onReply, onOpenPicker, pickerComm
                 <Link href={userProfileUrl} className="font-bold text-slate-900 hover:underline">{comment.name}</Link>
               </div>
               {comment.replyToUserName ? <div className="mt-1 text-[11px] text-slate-500">ردًا على {comment.replyToUserName}</div> : null}
-              {comment.content ? <p className="mt-1 whitespace-pre-wrap text-sm leading-7 text-slate-800">{comment.content}</p> : null}
+              {comment.content ? <p className="mt-1 whitespace-pre-wrap text-sm leading-7 text-slate-800"><RichMomentText text={comment.content} /></p> : null}
 
               {comment.mediaUrl ? (
                 <div className="mt-2 overflow-hidden rounded-xl border border-slate-200 bg-slate-100">
@@ -718,6 +719,8 @@ export default function CommentsModal({ postId, postUrl = "", open, onClose, onC
     </div>
   );
 }
+
+
 
 
 

@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { getSupabaseClient } from "@/lib/supabase/client";
 import { orderedReactionOptions, reactionByValue } from "@/components/moments/reactions";
 import LottieReactionIcon from "@/components/moments/LottieReactionIcon";
@@ -369,6 +369,40 @@ export default function MomentsPostActions({ postId, postContent = "", sharePath
 
   const reactionTotal = useMemo(() => reactionStats.reduce((sum, item) => sum + Number(item.count || 0), 0), [reactionStats]);
 
+  function clearLongPressTimer() {
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+  }
+
+  function handleLikeClick() {
+    if (Date.now() < suppressClickUntilRef.current) return;
+    if (!myReaction || myReaction === "none" || myReaction === "like") {
+      applyReaction("like");
+    } else {
+      setShowPicker(true);
+    }
+  }
+
+  function handleLikeTouchStart() {
+    clearLongPressTimer();
+    longPressTimerRef.current = setTimeout(() => {
+      setShowPicker(true);
+      suppressClickUntilRef.current = Date.now() + 700;
+    }, 420);
+  }
+
+  function handleLikeTouchEnd() {
+    clearLongPressTimer();
+  }
+
+  useEffect(() => {
+    return () => {
+      clearLongPressTimer();
+    };
+  }, []);
+
   return (
     <div dir="rtl" className="mt-2 rounded-b-2xl border-t border-slate-200 bg-white">
       <div className="flex items-center justify-between px-4 py-2 text-[11px] text-slate-500">
@@ -397,7 +431,19 @@ export default function MomentsPostActions({ postId, postContent = "", sharePath
       </div>
 
       <div className="grid grid-cols-3 items-center gap-1 border-y border-slate-100 px-2 py-1">
-        <button type="button" onClick={() => { if (!myReaction || myReaction === "none" || myReaction === "like") { applyReaction("like"); } else { setShowPicker(true); } }} onMouseEnter={() => setShowPicker(true)} className="inline-flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
+        <button
+          type="button"
+          onClick={handleLikeClick}
+          onMouseEnter={() => setShowPicker(true)}
+          onTouchStart={handleLikeTouchStart}
+          onTouchEnd={handleLikeTouchEnd}
+          onTouchCancel={handleLikeTouchEnd}
+          onContextMenu={(event) => {
+            event.preventDefault();
+            setShowPicker(true);
+          }}
+          className="inline-flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
+        >
           {myReactionView?.lottie ? <LottieReactionIcon file={myReactionView.lottie} size={18} autoplay={false} loop={false} /> : <img src="/dribdo-assets/fels-posts/likes-posts.svg" alt="إعجاب" className="h-[18px] w-[18px] object-contain" loading="lazy" />}
           <span>{myReactionView?.label || "أعجبني"}</span>
         </button>
@@ -459,6 +505,9 @@ export default function MomentsPostActions({ postId, postContent = "", sharePath
     </div>
   );
 }
+
+
+
 
 
 

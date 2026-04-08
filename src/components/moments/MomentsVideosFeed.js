@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getSupabaseClient } from "@/lib/supabase/client";
 import MomentsPostActions from "@/components/moments/MomentsPostActions";
+import RichMomentText from "@/components/moments/RichMomentText";
 
 function cleanUsername(value = "") {
   return String(value || "").trim().replace(/^@+/, "").toLowerCase();
@@ -37,6 +38,14 @@ function avatarFor(name, explicit = "") {
   if (explicit) return explicit;
   const safe = encodeURIComponent(String(name || "مستخدم").slice(0, 30));
   return `https://ui-avatars.com/api/?name=${safe}&background=fee2e2&color=991b1b&size=96&bold=true`;
+}
+
+function resolveVideoTextSize(length) {
+  if (length <= 100) return "text-[14px] leading-7";
+  if (length <= 180) return "text-[13px] leading-7";
+  if (length <= 260) return "text-[12px] leading-6";
+  if (length <= 360) return "text-[11.5px] leading-6";
+  return "text-[11px] leading-6";
 }
 
 function VideoCreatorTools() {
@@ -285,9 +294,11 @@ export default function MomentsVideosFeed() {
           {visibleVideos.map((post) => {
             const canOpenAuthorProfile = !post.isAnonymous && Boolean(post.authorUsername || post.userId);
             const authorUrl = canOpenAuthorProfile ? profileHref(post.authorUsername, post.userId) : "";
-            const isLong = post.content.length > 140;
+            const normalizedContent = String(post.content || "").trim();
+            const previewLimit = 100;
+            const isLong = normalizedContent.length > previewLimit;
             const isExpanded = Boolean(expanded[post.id]);
-            const shownText = !isLong || isExpanded ? post.content : `${post.content.slice(0, 140)}...`;
+            const shownText = !isLong || isExpanded ? normalizedContent : `${normalizedContent.slice(0, previewLimit).trim()}...`;
             const sharePath = String(post.sharePath || `/v/${post.id}`);
             const pagePath = String(post.pagePath || `/video/${post.id}`);
             const saved = Boolean(savedMap[post.id]);
@@ -357,9 +368,9 @@ export default function MomentsVideosFeed() {
                   </button>
                 </div>
 
-                {post.content ? (
-                  <div className="px-3 py-2 text-right text-sm text-slate-800">
-                    <span className="whitespace-pre-wrap">{shownText}</span>
+                {normalizedContent ? (
+                  <div className={["px-3 py-2 text-right text-slate-800", resolveVideoTextSize(normalizedContent.length)].join(" ")}>
+                    <RichMomentText text={shownText} className="whitespace-pre-wrap" />
                     {isLong ? (
                       <button type="button" onClick={() => setExpanded((prev) => ({ ...prev, [post.id]: !isExpanded }))} className="mr-2 text-xs font-semibold text-blue-700 hover:underline">
                         {isExpanded ? "إخفاء" : "عرض المزيد"}
@@ -381,5 +392,10 @@ export default function MomentsVideosFeed() {
     </div>
   );
 }
+
+
+
+
+
 
 

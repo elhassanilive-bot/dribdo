@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { getSupabaseClient } from "@/lib/supabase/client";
 import MomentsPostActions from "@/components/moments/MomentsPostActions";
+import RichMomentText from "@/components/moments/RichMomentText";
 
 const TABS = [
   { key: "posts", label: "المنشورات" },
@@ -80,6 +81,42 @@ function avatarFor(name, explicit = "") {
   return `https://ui-avatars.com/api/?name=${safe}&background=fee2e2&color=991b1b&size=160&bold=true`;
 }
 
+function hexToRgb(hex) {
+  const clean = String(hex || "").replace("#", "").trim();
+  if (!clean) return null;
+  const full = clean.length === 3 ? clean.split("").map((c) => c + c).join("") : clean;
+  if (!/^[0-9a-fA-F]{6}$/.test(full)) return null;
+  return {
+    r: parseInt(full.slice(0, 2), 16),
+    g: parseInt(full.slice(2, 4), 16),
+    b: parseInt(full.slice(4, 6), 16),
+  };
+}
+
+function isDarkColor(hex) {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return false;
+  const luminance = (0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b) / 255;
+  return luminance < 0.5;
+}
+
+function resolveTextSizeClass(length, hasColorBackground) {
+  if (hasColorBackground) {
+    if (length <= 100) return "text-4xl sm:text-5xl";
+    if (length <= 160) return "text-3xl sm:text-4xl";
+    if (length <= 240) return "text-2xl sm:text-3xl";
+    if (length <= 320) return "text-xl sm:text-2xl";
+    if (length <= 420) return "text-lg sm:text-xl";
+    return "text-base sm:text-lg";
+  }
+
+  if (length <= 100) return "text-[16px] leading-8 font-medium";
+  if (length <= 180) return "text-[15px] leading-7 font-normal";
+  if (length <= 260) return "text-[14px] leading-7 font-normal";
+  if (length <= 360) return "text-[13px] leading-6 font-normal";
+  return "text-[12px] leading-6 font-normal";
+}
+
 function normalizePost(row, filesMap) {
   const profileRaw = Array.isArray(row?.profiles) ? row.profiles[0] : row?.profiles;
   const profile = profileRaw && typeof profileRaw === "object" ? profileRaw : {};
@@ -134,8 +171,20 @@ function MediaGallery({ mediaUrls, postType }) {
 
 function PostCard({ post, expanded, onToggleExpanded }) {
   const text = String(post.content || "").trim();
-  const long = text.length > 170;
-  const shown = !long || expanded ? text : `${text.slice(0, 170)}...`;
+  const hasColorBackground = Boolean(post.bgColor);
+  const previewLimit = 100;
+  const long = text.length > previewLimit;
+  const shown = !long || expanded ? text : `${text.slice(0, previewLimit).trim()}...`;
+  const darkBackground = hasColorBackground ? isDarkColor(post.bgColor) : false;
+  const fallbackTextColor = hasColorBackground ? (darkBackground ? "#ffffff" : "#0f172a") : "#1f2937";
+  const richBackground = hasColorBackground
+    ? {
+        background: `linear-gradient(160deg, ${post.bgColor}, ${post.bgColor})`,
+        border: "1px solid rgba(15,23,42,0.08)",
+        boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.06)",
+        color: darkBackground ? "#ffffff" : (post.textColor || fallbackTextColor),
+      }
+    : { color: post.textColor || fallbackTextColor };
 
   return (
     <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
@@ -152,9 +201,29 @@ function PostCard({ post, expanded, onToggleExpanded }) {
         </div>
 
         {text ? (
-          <div className="mt-3 whitespace-pre-wrap rounded-xl px-3 py-2 text-base font-normal leading-7 text-slate-800" style={{ background: post.bgColor || "transparent", color: post.textColor || "#111827" }}>
-            {shown}
-            {long ? <button type="button" onClick={onToggleExpanded} className="mr-2 inline-flex items-center text-sm font-bold text-blue-600 hover:underline">{expanded ? "إخفاء" : "عرض المزيد"}</button> : null}
+          <div
+            className={[
+              "mt-3 whitespace-pre-wrap rounded-2xl transition",
+              hasColorBackground
+                ? "flex min-h-[230px] items-center justify-center px-6 py-7 text-center font-black leading-[1.45] tracking-tight sm:min-h-[280px]"
+                : "px-3 py-2 text-right",
+              resolveTextSizeClass(text.length, hasColorBackground),
+            ].join(" ")}
+            style={richBackground}
+          >
+            <RichMomentText text={shown} />
+            {long ? (
+              <button
+                type="button"
+                onClick={onToggleExpanded}
+                className={[
+                  "mr-2 inline-flex items-center hover:underline",
+                  hasColorBackground ? "text-sm font-black text-white/95" : "text-sm font-bold text-blue-600",
+                ].join(" ")}
+              >
+                {expanded ? "إخفاء" : "عرض المزيد"}
+              </button>
+            ) : null}
           </div>
         ) : null}
 
@@ -511,6 +580,8 @@ export default function UserProfileShell({ username = "", userId = "" }) {
     </div>
   );
 }
+
+
 
 
 

@@ -197,7 +197,7 @@ function NavLinkMobile({ href, children, onClick, icon, active }) {
       href={href}
       onClick={onClick}
       className={[
-        "inline-flex items-center justify-between rounded-2xl border px-4 py-3 text-right text-[13px] transition",
+        "inline-flex w-full items-center justify-start gap-2.5 rounded-2xl border px-4 py-3 text-right text-[13px] transition",
         active
           ? "border-slate-300 bg-slate-100 text-slate-900 font-semibold"
           : "border-slate-200 text-slate-700 hover:bg-slate-50 font-normal",

@@ -37,6 +37,8 @@ export function excerptText(content, limit = 180) {
 }
 
 function normalizePost(row, files = []) {
+  const isAnonymous = row?.is_anonymous === true || row?.isAnonymous === true;
+  const anonymousName = String(row?.anonymous_name || row?.anonymousName || "مستخدم مجهول").trim() || "مستخدم مجهول";
   const profileRaw = Array.isArray(row?.profiles) ? row.profiles[0] : row?.profiles;
   const profile = profileRaw && typeof profileRaw === "object" ? profileRaw : {};
 
@@ -56,9 +58,11 @@ function normalizePost(row, files = []) {
   return {
     id: String(row?.id || ""),
     userId: String(row?.user_id || ""),
-    authorName: String(profile.name || row?.name || "").trim() || "مستخدم",
-    authorAvatar: String(profile.avatar_url || row?.avatar_url || "").trim(),
+    authorName: isAnonymous ? anonymousName : String(profile.name || row?.name || "").trim() || "مستخدم",
+    authorAvatar: isAnonymous ? "" : String(profile.avatar_url || row?.avatar_url || "").trim(),
     content: String(row?.custom_text || row?.content || "").trim(),
+    isAnonymous,
+    anonymousName,
     createdAt: String(row?.created_at || ""),
     postType: String(row?.type || "text"),
     mediaUrls: urls,
@@ -144,3 +148,46 @@ export async function listIndexableMomentPosts({ limit = 5000 } = {}) {
     lastModified: String(row.updated_at || row.created_at || new Date().toISOString()),
   })).filter((row) => row.id);
 }
+
+
+function hasVideoMedia(row) {
+  const postType = String(row?.type || "").toLowerCase();
+  if (postType === "video") return true;
+  const urls = parseMediaUrls(row?.media_urls);
+  const mediaUrl = String(row?.media_url || "").trim();
+  if (mediaUrl) urls.unshift(mediaUrl);
+  return urls.some((url) => mediaKind(url, postType) === "video");
+}
+
+export async function listMomentVideoIds({ limit = 500 } = {}) {
+  const supabase = getServerSupabase();
+  if (!supabase) return [];
+
+  const { data } = await supabase
+    .from("posts")
+    .select("id,type,media_url,media_urls,created_at")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  return (data || [])
+    .filter((row) => row?.id && hasVideoMedia(row))
+    .map((row) => String(row.id));
+}
+
+export async function getMomentVideoNeighbors(postId, { limit = 500 } = {}) {
+  const targetId = String(postId || "").trim();
+  if (!targetId) return { prevId: "", nextId: "", index: -1, total: 0 };
+
+  const ids = await listMomentVideoIds({ limit });
+  const index = ids.indexOf(targetId);
+  if (index < 0) return { prevId: "", nextId: "", index: -1, total: ids.length };
+
+  return {
+    prevId: ids[index - 1] || "",
+    nextId: ids[index + 1] || "",
+    index,
+    total: ids.length,
+  };
+}
+
+

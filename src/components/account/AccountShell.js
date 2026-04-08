@@ -470,7 +470,10 @@ export default function AccountShell({ mode = "account" }) {
           <section className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-[0_20px_50px_-45px_rgba(15,23,42,0.45)] sm:p-6">
             <h2 className="text-xl font-black text-slate-950">الملف الشخصي</h2>
             <p className="mt-1 text-sm text-slate-600">تعديل الاسم والبريد الإلكتروني والصورة الشخصية.</p>
-
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <Link href="/profile" className="inline-flex rounded-xl border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-bold text-blue-700 transition hover:bg-blue-100">فتح صفحة الملف الشخصي</Link>
+              <Link href="/account/saved-videos" className="inline-flex rounded-xl border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-700 transition hover:bg-amber-100">المحفوظات</Link>
+            </div>
             <form onSubmit={handleUpdateProfile} className="mt-5 grid gap-4">
               <label className="block text-sm font-semibold text-slate-900">
                 الاسم
@@ -593,3 +596,6 @@ export default function AccountShell({ mode = "account" }) {
     </div>
   );
 }
+
+
+

@@ -4,37 +4,15 @@ import { useCallback, useEffect, useMemo, useState, useTransition } from "react"
 import { getSupabaseClient } from "@/lib/supabase/client";
 import { orderedReactionOptions, reactionByValue } from "@/components/moments/reactions";
 import LottieReactionIcon from "@/components/moments/LottieReactionIcon";
+import CommentsModal from "@/components/moments/CommentsModal";
 
 const PICKER_OPTIONS = orderedReactionOptions();
-
-function formatDate(iso) {
-  if (!iso) return "";
-  const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return "";
-  try {
-    return new Intl.DateTimeFormat("ar-MA", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    }).format(date);
-  } catch {
-    return date.toISOString();
-  }
-}
 
 function prettyCount(value) {
   const n = Number(value || 0);
   if (n < 1000) return String(n);
   if (n < 1000000) return `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}K`;
   return `${(n / 1000000).toFixed(n >= 10000000 ? 0 : 1)}M`;
-}
-
-function avatarFor(name, explicit = "") {
-  if (explicit) return explicit;
-  const safe = encodeURIComponent(String(name || "مستخدم").slice(0, 30));
-  return `https://ui-avatars.com/api/?name=${safe}&background=e2e8f0&color=0f172a&size=96&bold=true`;
 }
 
 function normalizeCounts(post) {
@@ -46,23 +24,82 @@ function normalizeCounts(post) {
   };
 }
 
+function normalizeReactionValue(value) {
+  const raw = String(value || "").trim().toLowerCase();
+  if (!raw || raw === "none") return "";
+  if (raw === "haha") return "funny";
+  return raw;
+}
+
+function buildReactionStatsFromMap(map) {
+  return [...map.entries()]
+    .filter(([type, count]) => type && Number(count || 0) > 0)
+    .map(([type, count]) => ({ type, count: Number(count || 0), meta: reactionByValue(type) }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 3);
+}
+
 function StatIcon({ src, alt }) {
   return <img src={src} alt={alt} className="h-[14px] w-[14px] object-contain opacity-75" loading="lazy" />;
 }
 
-export default function MomentsPostActions({ postId, postAuthorId, onMutated }) {
+function ShareOptionsModal({ open, canCopyText, onClose, onShareExternal, onCopyText, onCopyLink }) {
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-[118] bg-black/40 p-3" dir="rtl" onClick={onClose}>
+      <div className="mx-auto max-w-2xl rounded-2xl bg-slate-100 p-2" onClick={(event) => event.stopPropagation()}>
+        <div className="mx-auto mb-1.5 h-1 w-12 rounded-full bg-slate-300" />
+
+        <div className="space-y-1.5">
+          <button type="button" onClick={onShareExternal} className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-right">
+            <div>
+              <div className="text-[11px] font-bold text-slate-900">مشاركة خارجية</div>
+              <div className="text-[10px] text-slate-500">مشاركة المنشور عبر التطبيقات</div>
+            </div>
+            <img src="/dribdo-assets/vedio/share.svg" alt="مشاركة" className="h-4 w-4" loading="lazy" />
+          </button>
+
+          {canCopyText ? (
+            <button type="button" onClick={onCopyText} className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-right">
+              <div>
+                <div className="text-[11px] font-bold text-slate-900">نسخ نص المنشور</div>
+                <div className="text-[10px] text-slate-500">نسخ النص إلى الحافظة</div>
+              </div>
+              <img src="/dribdo-assets/published/copy-text.svg" alt="نسخ النص" className="h-4 w-4" loading="lazy" />
+            </button>
+          ) : null}
+
+          <button type="button" onClick={onCopyLink} className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-right">
+            <div>
+              <div className="text-[11px] font-bold text-slate-900">نسخ رابط المنشور</div>
+              <div className="text-[10px] text-slate-500">نسخ الرابط إلى الحافظة</div>
+            </div>
+            <img src="/dribdo-assets/published/copy-link.svg" alt="نسخ الرابط" className="h-4 w-4" loading="lazy" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function MomentsPostActions({ postId, postContent = "", sharePath = "" }) {
   const [counts, setCounts] = useState({ likes: 0, comments: 0, shares: 0, views: 0 });
   const [myReaction, setMyReaction] = useState("");
   const [reactionStats, setReactionStats] = useState([]);
-  const [comments, setComments] = useState([]);
   const [authUser, setAuthUser] = useState(null);
   const [status, setStatus] = useState("");
   const [showPicker, setShowPicker] = useState(false);
-  const [showComments, setShowComments] = useState(false);
-  const [showShare, setShowShare] = useState(false);
+  const [showShareMenu, setShowShareMenu] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [commentsOpen, setCommentsOpen] = useState(false);
 
   const myReactionView = useMemo(() => reactionByValue(myReaction), [myReaction]);
+  const finalSharePath = useMemo(() => {
+    const candidate = String(sharePath || "").trim();
+    if (!candidate) return `/post/${postId}`;
+    return candidate.startsWith("/") ? candidate : `/${candidate}`;
+  }, [postId, sharePath]);
 
   const refreshPostMeta = useCallback(async () => {
     const supabase = await getSupabaseClient();
@@ -76,7 +113,12 @@ export default function MomentsPostActions({ postId, postAuthorId, onMutated }) 
 
     if (postRow) setCounts(normalizeCounts(postRow));
 
-    const { data: reactionRows } = await supabase.from("reactions").select("type").eq("post_id", postId).limit(300);
+    const { data: reactionRows } = await supabase
+      .from("reactions")
+      .select("type")
+      .eq("post_id", postId)
+      .limit(500);
+
     if (!reactionRows) {
       setReactionStats([]);
       return;
@@ -84,66 +126,31 @@ export default function MomentsPostActions({ postId, postAuthorId, onMutated }) 
 
     const map = new Map();
     for (const row of reactionRows) {
-      const key = String(row?.type || "").trim();
-      if (!key || key === "none") continue;
+      const key = normalizeReactionValue(row?.type);
+      if (!key) continue;
       map.set(key, Number(map.get(key) || 0) + 1);
     }
 
-    const stats = [...map.entries()]
-      .map(([type, count]) => ({ type, count, meta: reactionByValue(type) }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 3);
-
-    setReactionStats(stats);
+    setReactionStats(buildReactionStatsFromMap(map));
   }, [postId]);
 
-  const loadComments = useCallback(async () => {
-    const supabase = await getSupabaseClient();
-    if (!supabase || !postId) return;
+  const loadMyReaction = useCallback(async (supabase, userId) => {
+    if (!supabase || !postId || !userId) {
+      setMyReaction("");
+      return;
+    }
 
-    let rows = [];
-    const firstTry = await supabase
-      .from("comments")
-      .select("id,user_id,content,created_at,parent_id,is_deleted")
+    const { data: reactionRows } = await supabase
+      .from("reactions")
+      .select("id,type")
       .eq("post_id", postId)
+      .eq("user_id", userId)
       .order("created_at", { ascending: false })
-      .limit(30);
+      .limit(20);
 
-    if (firstTry.error) {
-      const fallback = await supabase
-        .from("comments")
-        .select("id,user_id,content,created_at,parent_id")
-        .eq("post_id", postId)
-        .order("created_at", { ascending: false })
-        .limit(30);
-      rows = fallback.data || [];
-    } else {
-      rows = (firstTry.data || []).filter((row) => row.is_deleted !== true);
-    }
-
-    const onlyTopLevel = rows.filter((row) => !row.parent_id);
-    const userIds = [...new Set(onlyTopLevel.map((row) => String(row.user_id || "")).filter(Boolean))];
-
-    let profileMap = new Map();
-    if (userIds.length) {
-      const { data: profiles } = await supabase.from("profiles").select("id,name,avatar_url").in("id", userIds);
-      profileMap = new Map((profiles || []).map((p) => [String(p.id), p]));
-    }
-
-    setComments(
-      onlyTopLevel.map((row) => {
-        const profile = profileMap.get(String(row.user_id || "")) || {};
-        const name = String(profile.name || "").trim() || "مستخدم";
-        return {
-          id: row.id,
-          userId: String(row.user_id || ""),
-          content: row.content || "",
-          createdAt: row.created_at,
-          name,
-          avatar: avatarFor(name, String(profile.avatar_url || "").trim()),
-        };
-      })
-    );
+    const list = Array.isArray(reactionRows) ? reactionRows : [];
+    const first = list[0] || null;
+    setMyReaction(normalizeReactionValue(first?.type));
   }, [postId]);
 
   useEffect(() => {
@@ -159,22 +166,48 @@ export default function MomentsPostActions({ postId, postAuthorId, onMutated }) 
       setAuthUser(user);
 
       if (user?.id) {
-        const { data: reactionRow } = await supabase
-          .from("reactions")
-          .select("type")
-          .eq("post_id", postId)
-          .eq("user_id", user.id)
-          .maybeSingle();
-        if (active) setMyReaction(String(reactionRow?.type || ""));
+        await loadMyReaction(supabase, user.id);
+      } else {
+        setMyReaction("");
       }
 
-      await Promise.all([refreshPostMeta(), loadComments()]);
+      await refreshPostMeta();
     })();
 
     return () => {
       active = false;
     };
-  }, [postId, refreshPostMeta, loadComments]);
+  }, [postId, refreshPostMeta, loadMyReaction]);
+
+  useEffect(() => {
+    let supabaseClient = null;
+    let channel = null;
+
+    (async () => {
+      const supabase = await getSupabaseClient();
+      if (!supabase || !postId) return;
+      supabaseClient = supabase;
+
+      channel = supabase
+        .channel(`moments_reactions_${postId}`)
+        .on("postgres_changes", { event: "*", schema: "public", table: "reactions", filter: `post_id=eq.${postId}` }, () => {
+          refreshPostMeta();
+        })
+        .subscribe();
+    })();
+
+    return () => {
+      if (supabaseClient && channel) {
+        supabaseClient.removeChannel(channel);
+      }
+    };
+  }, [postId, refreshPostMeta]);
+
+  function rollbackReaction(previousReaction, previousStats, previousLikes) {
+    setMyReaction(previousReaction);
+    setReactionStats(previousStats);
+    setCounts((current) => ({ ...current, likes: previousLikes }));
+  }
 
   function applyReaction(reactionValue) {
     if (!postId) return;
@@ -183,110 +216,155 @@ export default function MomentsPostActions({ postId, postAuthorId, onMutated }) 
       return;
     }
 
+    const selectedReaction = normalizeReactionValue(reactionValue);
+    const previousReaction = normalizeReactionValue(myReaction);
+    const nextReaction = previousReaction === selectedReaction ? "" : selectedReaction;
+    const previousStats = reactionStats;
+    const previousLikes = counts.likes;
+
     setShowPicker(false);
     setStatus("");
 
+    // Optimistic UI: apply immediately like Flutter app behavior.
+    setMyReaction(nextReaction);
+    setReactionStats((current) => {
+      const map = new Map();
+      for (const item of current) {
+        const key = normalizeReactionValue(item?.type);
+        if (!key) continue;
+        map.set(key, Number(item?.count || 0));
+      }
+      if (previousReaction) {
+        map.set(previousReaction, Math.max(0, Number(map.get(previousReaction) || 0) - 1));
+      }
+      if (nextReaction) {
+        map.set(nextReaction, Number(map.get(nextReaction) || 0) + 1);
+      }
+      return buildReactionStatsFromMap(map);
+    });
+    setCounts((current) => ({
+      ...current,
+      likes: Math.max(0, Number(current.likes || 0) + (nextReaction ? 1 : 0) - (previousReaction ? 1 : 0)),
+    }));
+
     startTransition(async () => {
       const supabase = await getSupabaseClient();
-      if (!supabase) return;
-
-      const normalizedReaction = reactionValue === "haha" ? "funny" : reactionValue;
+      if (!supabase) {
+        rollbackReaction(previousReaction, previousStats, previousLikes);
+        return;
+      }
 
       try {
         const { error: rpcError } = await supabase.rpc("simple_toggle_reaction", {
           p_user_id: authUser.id,
           p_post_id: postId,
-          p_type: normalizedReaction,
+          p_type: selectedReaction,
         });
         if (rpcError) throw rpcError;
       } catch (_) {
-        const { data: existing } = await supabase
-          .from("reactions")
-          .select("id,type")
-          .eq("post_id", postId)
-          .eq("user_id", authUser.id)
-          .maybeSingle();
+        try {
+          const { data: existingRows } = await supabase
+            .from("reactions")
+            .select("id,type")
+            .eq("post_id", postId)
+            .eq("user_id", authUser.id)
+            .order("created_at", { ascending: false })
+            .limit(20);
 
-        if (existing && existing.type === normalizedReaction) {
-          await supabase.from("reactions").delete().eq("id", existing.id);
-        } else if (existing) {
-          await supabase.from("reactions").update({ type: normalizedReaction }).eq("id", existing.id);
-        } else {
-          await supabase.from("reactions").insert({ post_id: postId, user_id: authUser.id, type: normalizedReaction });
+          const existingList = Array.isArray(existingRows) ? existingRows : [];
+
+          if (!nextReaction) {
+            if (existingList.length) {
+              const ids = existingList.map((row) => row.id).filter(Boolean);
+              if (ids.length) {
+                await supabase.from("reactions").delete().in("id", ids);
+              }
+            }
+          } else if (existingList.length) {
+            const [first, ...rest] = existingList;
+            await supabase.from("reactions").update({ type: nextReaction }).eq("id", first.id);
+            const restIds = rest.map((row) => row.id).filter(Boolean);
+            if (restIds.length) {
+              await supabase.from("reactions").delete().in("id", restIds);
+            }
+          } else {
+            await supabase.from("reactions").insert({ post_id: postId, user_id: authUser.id, type: nextReaction });
+          }
+        } catch (_) {
+          rollbackReaction(previousReaction, previousStats, previousLikes);
+          setStatus("تعذر حفظ التفاعل.");
+          return;
         }
       }
 
-      const { data: myRow } = await supabase
-        .from("reactions")
-        .select("type")
-        .eq("post_id", postId)
-        .eq("user_id", authUser.id)
-        .maybeSingle();
+      try {
+        await loadMyReaction(supabase, authUser.id);
+      } catch (_) {}
 
-      setMyReaction(String(myRow?.type || ""));
-      await refreshPostMeta();
-      onMutated?.();
+      try {
+        await refreshPostMeta();
+      } catch (_) {}
     });
   }
 
-  async function shareExternal() {
+
+  async function reportShareEvent() {
+    try {
+      await fetch("/api/video/analytics", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          postId,
+          userId: String(authUser?.id || ""),
+          eventType: "share",
+          watchSeconds: 0,
+          path: finalSharePath,
+        }),
+        keepalive: true,
+      });
+    } catch {}
+  }
+  async function copyPostLink() {
     if (!postId) return;
-    const url = `${window.location.origin}/post/${postId}`;
-
-    if (navigator.share) {
-      try {
-        await navigator.share({ url, title: "منشور من دريبدو" });
-        return;
-      } catch (_) {}
-    }
-
+    const url = `${window.location.origin}${finalSharePath}`;
     try {
       await navigator.clipboard.writeText(url);
       setStatus("تم نسخ رابط المنشور.");
+      reportShareEvent();
     } catch (_) {
       setStatus(url);
     }
   }
 
-  function shareInside() {
+  async function shareExternal() {
     if (!postId) return;
-    if (!authUser?.id) {
-      setStatus("سجّل الدخول للمشاركة.");
+    const url = `${window.location.origin}${finalSharePath}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ url, title: "منشور من دريبدو" });
+        setStatus("تمت المشاركة الخارجية.");
+        reportShareEvent();
+        return;
+      } catch (_) {}
+    }
+
+    await copyPostLink();
+  }
+
+  async function copyPostText() {
+    const text = String(postContent || "").trim();
+    if (!text) {
+      setStatus("لا يوجد نص في هذا المنشور.");
       return;
     }
 
-    setShowShare(false);
-    setStatus("");
-
-    startTransition(async () => {
-      const supabase = await getSupabaseClient();
-      if (!supabase) return;
-
-      const { error: insertError } = await supabase.from("posts").insert({
-        user_id: authUser.id,
-        content: "قام بمشاركة منشور",
-        type: "shared",
-        shared_post_id: postId,
-        posts_privacy: "everyone",
-        post_source_type: "user_post",
-      });
-
-      if (insertError) {
-        setStatus(insertError.message || "تعذرت المشاركة داخل دريبدو.");
-        return;
-      }
-
-      try {
-        await supabase.rpc("increment_post_shares", { post_id_param: postId });
-      } catch (_) {
-        const { data: current } = await supabase.from("posts").select("shares_count").eq("id", postId).maybeSingle();
-        await supabase.from("posts").update({ shares_count: Number(current?.shares_count || 0) + 1 }).eq("id", postId);
-      }
-
-      await refreshPostMeta();
-      onMutated?.();
-      setStatus("تمت مشاركة المنشور.");
-    });
+    try {
+      await navigator.clipboard.writeText(text);
+      setStatus("تم نسخ نص المنشور.");
+    } catch (_) {
+      setStatus("تعذر نسخ النص.");
+    }
   }
 
   const reactionTotal = useMemo(() => reactionStats.reduce((sum, item) => sum + Number(item.count || 0), 0), [reactionStats]);
@@ -324,12 +402,12 @@ export default function MomentsPostActions({ postId, postAuthorId, onMutated }) 
           <span>{myReactionView?.label || "أعجبني"}</span>
         </button>
 
-        <button type="button" onClick={() => setShowComments((value) => !value)} className="inline-flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
+        <button type="button" onClick={() => setCommentsOpen(true)} className="inline-flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
           <img src="/dribdo-assets/fels-posts/comments-posts.svg" alt="تعليق" className="h-[18px] w-[18px] object-contain" loading="lazy" />
           <span>تعليق</span>
         </button>
 
-        <button type="button" onClick={() => setShowShare((value) => !value)} className="inline-flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
+        <button type="button" onClick={() => { setShowPicker(false); setShowShareMenu(true); }} className="inline-flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
           <img src="/dribdo-assets/fels-posts/sharing-posts.svg" alt="مشاركة" className="h-[18px] w-[18px] object-contain" loading="lazy" />
           <span>مشاركة</span>
         </button>
@@ -349,55 +427,38 @@ export default function MomentsPostActions({ postId, postAuthorId, onMutated }) 
         </div>
       ) : null}
 
-      {showShare ? (
-        <div className="border-b border-slate-100 bg-slate-50 px-3 py-2 text-xs">
-          <div className="flex flex-wrap gap-2">
-            <button type="button" onClick={shareInside} disabled={isPending} className="rounded-full border border-slate-300 bg-white px-3 py-1.5 font-semibold text-slate-700 transition hover:bg-slate-100 disabled:opacity-70">مشاركة داخل دريبدو</button>
-            <button type="button" onClick={shareExternal} className="rounded-full border border-slate-300 bg-white px-3 py-1.5 font-semibold text-slate-700 transition hover:bg-slate-100">مشاركة خارجية</button>
-          </div>
-        </div>
-      ) : null}
+      <ShareOptionsModal
+        open={showShareMenu}
+        canCopyText={Boolean(String(postContent || "").trim())}
+        onClose={() => setShowShareMenu(false)}
+        onShareExternal={async () => {
+          setShowShareMenu(false);
+          await shareExternal();
+        }}
+        onCopyText={async () => {
+          setShowShareMenu(false);
+          await copyPostText();
+        }}
+        onCopyLink={async () => {
+          setShowShareMenu(false);
+          await copyPostLink();
+        }}
+      />
 
-            {showComments ? (
-        <div className="space-y-2 border-t border-slate-100 px-3 py-3">
-          <div className="mb-2">
-            <a href={`/post/${postId}`} className="inline-flex items-center rounded-full border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100">
-              فتح صفحة المنشور لإضافة تعليق
-            </a>
-          </div>
-          {comments.length > 0 ? (
-            comments.map((comment) => (
-              <article key={comment.id} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
-                <div className="flex items-start gap-2">
-                  <img src={comment.avatar} alt={comment.name} className="mt-0.5 h-7 w-7 rounded-full border border-slate-200" loading="lazy" />
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-500">
-                      <span className="font-semibold text-slate-800">{comment.name}</span>
-                      <span>{formatDate(comment.createdAt)}</span>
-                      {comment.userId && comment.userId === postAuthorId ? <span className="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[10px]">صاحب المنشور</span> : null}
-                    </div>
-                    <p className="mt-1 whitespace-pre-wrap text-xs leading-6 text-slate-700">{comment.content}</p>
-                  </div>
-                </div>
-              </article>
-            ))
-          ) : (
-            <div className="text-xs text-slate-500">لا توجد تعليقات بعد.</div>
-          )}
-        </div>
-      ) : null}
+      <CommentsModal
+        open={commentsOpen}
+        onClose={() => setCommentsOpen(false)}
+        postId={postId}
+        postUrl={finalSharePath}
+        onCountChanged={() => {
+          refreshPostMeta();
+        }}
+      />
 
       {status ? <div className="border-t border-slate-100 px-3 py-2 text-xs text-rose-700">{status}</div> : null}
     </div>
   );
 }
-
-
-
-
-
-
-
 
 
 

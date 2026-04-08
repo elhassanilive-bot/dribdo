@@ -1,0 +1,447 @@
+Image with src "/screenshots/ads.png" is using quality "76" which is not configured in images.qualities [75]. Please update your config to [75, 76].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/hero-ads-1.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/hero-ads-2.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/hero-ads-3.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/hero-ads-4.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/hero-ads-5.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+⨯ ./src/components/moments/MomentsFeed.js
+Error:   x Unexpected token `no substitution template literal`. Expected identifier, string literal, numeric literal or [ for the computed key
+    ,-[C:\Project-Web\DribdoWeb\src\components\moments\MomentsFeed.js:90:1]
+ 87 |     id: String(row.id || ""),
+ 88 |     userId: String(row.user_id || ""),
+ 89 |     authorName: isAnonymous ? "مستخدم مجهول" : String(profile.name || row.name || "").trim() || "مستخدم",
+ 90 |     authorAvatar: isAnonymous ? "" : String(profile.avatar_url || row.avatar_url || "").trim(),`r`n    authorUsername: isAnonymous ? "" : cleanUsername(profile.username || row.username || ""),
+    :                                                                                                ^^^
+ 91 |     content,
+ 92 |     createdAt: String(row.created_at || ""),
+ 93 |     postType: String(row.type || "text"),
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/MomentsFeed.js
+./src/app/moments/page.js
+⨯ ./src/components/moments/MomentsFeed.js
+Error:   x Unexpected token `no substitution template literal`. Expected identifier, string literal, numeric literal or [ for the computed key
+    ,-[C:\Project-Web\DribdoWeb\src\components\moments\MomentsFeed.js:90:1]
+ 87 |     id: String(row.id || ""),
+ 88 |     userId: String(row.user_id || ""),
+ 89 |     authorName: isAnonymous ? "مستخدم مجهول" : String(profile.name || row.name || "").trim() || "مستخدم",
+ 90 |     authorAvatar: isAnonymous ? "" : String(profile.avatar_url || row.avatar_url || "").trim(),`r`n    authorUsername: isAnonymous ? "" : cleanUsername(profile.username || row.username || ""),
+    :                                                                                                ^^^
+ 91 |     content,
+ 92 |     createdAt: String(row.created_at || ""),
+ 93 |     postType: String(row.type || "text"),
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/MomentsFeed.js
+./src/app/moments/page.js
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⨯ ./src/components/moments/MomentsFeed.js
+Error:   x Unexpected token `no substitution template literal`. Expected identifier, string literal, numeric literal or [ for the computed key
+    ,-[C:\Project-Web\DribdoWeb\src\components\moments\MomentsFeed.js:90:1]
+ 87 |     id: String(row.id || ""),
+ 88 |     userId: String(row.user_id || ""),
+ 89 |     authorName: isAnonymous ? "مستخدم مجهول" : String(profile.name || row.name || "").trim() || "مستخدم",
+ 90 |     authorAvatar: isAnonymous ? "" : String(profile.avatar_url || row.avatar_url || "").trim(),`r`n    authorUsername: isAnonymous ? "" : cleanUsername(profile.username || row.username || ""),
+    :                                                                                                ^^^
+ 91 |     content,
+ 92 |     createdAt: String(row.created_at || ""),
+ 93 |     postType: String(row.type || "text"),
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/MomentsFeed.js
+./src/app/moments/page.js
+⨯ ./src/components/moments/MomentsFeed.js
+Error:   x Unexpected token `no substitution template literal`. Expected identifier, string literal, numeric literal or [ for the computed key
+    ,-[C:\Project-Web\DribdoWeb\src\components\moments\MomentsFeed.js:90:1]
+ 87 |     id: String(row.id || ""),
+ 88 |     userId: String(row.user_id || ""),
+ 89 |     authorName: isAnonymous ? "مستخدم مجهول" : String(profile.name || row.name || "").trim() || "مستخدم",
+ 90 |     authorAvatar: isAnonymous ? "" : String(profile.avatar_url || row.avatar_url || "").trim(),`r`n    authorUsername: isAnonymous ? "" : cleanUsername(profile.username || row.username || ""),
+    :                                                                                                ^^^
+ 91 |     content,
+ 92 |     createdAt: String(row.created_at || ""),
+ 93 |     postType: String(row.type || "text"),
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/MomentsFeed.js
+./src/app/moments/page.js
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+⨯ ./src/components/moments/CommentsModal.js
+Error:   x Expected ';', '}' or <eof>
+   ,-[C:\Project-Web\DribdoWeb\src\components\moments\CommentsModal.js:4:1]
+ 1 | 
+ 2 | "use client";
+ 3 | 
+ 4 | import Link from "next/link";`r`nimport { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+   :                              ^|^^^^^^^^
+   :                               `-- This is the expression part of an expression statement
+ 5 | import { getSupabaseClient } from "@/lib/supabase/client";
+ 6 | import { orderedReactionOptions, reactionByValue } from "@/components/moments/reactions";
+ 7 | import LottieReactionIcon from "@/components/moments/LottieReactionIcon";
+   `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/CommentsModal.js
+./src/components/moments/MomentsPostActions.js
+./src/components/profile/UserProfileShell.js
+⨯ ./src/components/moments/CommentsModal.js
+Error:   x Expected ';', '}' or <eof>
+   ,-[C:\Project-Web\DribdoWeb\src\components\moments\CommentsModal.js:4:1]
+ 1 | 
+ 2 | "use client";
+ 3 | 
+ 4 | import Link from "next/link";`r`nimport { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+   :                              ^|^^^^^^^^
+   :                               `-- This is the expression part of an expression statement
+ 5 | import { getSupabaseClient } from "@/lib/supabase/client";
+ 6 | import { orderedReactionOptions, reactionByValue } from "@/components/moments/reactions";
+ 7 | import LottieReactionIcon from "@/components/moments/LottieReactionIcon";
+   `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/CommentsModal.js
+./src/components/moments/MomentsPostActions.js
+./src/components/profile/UserProfileShell.js
+⨯ ./src/components/moments/CommentsModal.js
+Error:   x Expected ';', '}' or <eof>
+   ,-[C:\Project-Web\DribdoWeb\src\components\moments\CommentsModal.js:4:1]
+ 1 | 
+ 2 | "use client";
+ 3 | 
+ 4 | import Link from "next/link";`r`nimport { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+   :                              ^|^^^^^^^^
+   :                               `-- This is the expression part of an expression statement
+ 5 | import { getSupabaseClient } from "@/lib/supabase/client";
+ 6 | import { orderedReactionOptions, reactionByValue } from "@/components/moments/reactions";
+ 7 | import LottieReactionIcon from "@/components/moments/LottieReactionIcon";
+   `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/CommentsModal.js
+./src/components/moments/MomentsPostActions.js
+./src/components/profile/UserProfileShell.js
+⨯ ./src/components/moments/CommentsModal.js
+Error:   x Expected ';', '}' or <eof>
+   ,-[C:\Project-Web\DribdoWeb\src\components\moments\CommentsModal.js:4:1]
+ 1 | 
+ 2 | "use client";
+ 3 | 
+ 4 | import Link from "next/link";`r`nimport { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+   :                              ^|^^^^^^^^
+   :                               `-- This is the expression part of an expression statement
+ 5 | import { getSupabaseClient } from "@/lib/supabase/client";
+ 6 | import { orderedReactionOptions, reactionByValue } from "@/components/moments/reactions";
+ 7 | import LottieReactionIcon from "@/components/moments/LottieReactionIcon";
+   `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/CommentsModal.js
+./src/components/moments/MomentsPostActions.js
+./src/components/profile/UserProfileShell.js
+⨯ ./src/components/moments/CommentsModal.js
+Error:   x Expected ';', '}' or <eof>
+   ,-[C:\Project-Web\DribdoWeb\src\components\moments\CommentsModal.js:4:1]
+ 1 | 
+ 2 | "use client";
+ 3 | 
+ 4 | import Link from "next/link";`r`nimport { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+   :                              ^|^^^^^^^^
+   :                               `-- This is the expression part of an expression statement
+ 5 | import { getSupabaseClient } from "@/lib/supabase/client";
+ 6 | import { orderedReactionOptions, reactionByValue } from "@/components/moments/reactions";
+ 7 | import LottieReactionIcon from "@/components/moments/LottieReactionIcon";
+   `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/CommentsModal.js
+./src/components/moments/MomentsPostActions.js
+./src/components/profile/UserProfileShell.js
+⨯ ./src/components/moments/CommentsModal.js
+Error:   x Expected ';', '}' or <eof>
+   ,-[C:\Project-Web\DribdoWeb\src\components\moments\CommentsModal.js:4:1]
+ 1 | 
+ 2 | "use client";
+ 3 | 
+ 4 | import Link from "next/link";`r`nimport { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+   :                              ^|^^^^^^^^
+   :                               `-- This is the expression part of an expression statement
+ 5 | import { getSupabaseClient } from "@/lib/supabase/client";
+ 6 | import { orderedReactionOptions, reactionByValue } from "@/components/moments/reactions";
+ 7 | import LottieReactionIcon from "@/components/moments/LottieReactionIcon";
+   `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/CommentsModal.js
+./src/components/moments/MomentsPostActions.js
+./src/components/profile/UserProfileShell.js
+⨯ ./src/components/moments/CommentsModal.js
+Error:   x Expected ';', '}' or <eof>
+   ,-[C:\Project-Web\DribdoWeb\src\components\moments\CommentsModal.js:4:1]
+ 1 | 
+ 2 | "use client";
+ 3 | 
+ 4 | import Link from "next/link";`r`nimport { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+   :                              ^|^^^^^^^^
+   :                               `-- This is the expression part of an expression statement
+ 5 | import { getSupabaseClient } from "@/lib/supabase/client";
+ 6 | import { orderedReactionOptions, reactionByValue } from "@/components/moments/reactions";
+ 7 | import LottieReactionIcon from "@/components/moments/LottieReactionIcon";
+   `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/CommentsModal.js
+./src/components/moments/MomentsPostActions.js
+./src/components/profile/UserProfileShell.js
+⨯ ./src/components/moments/CommentsModal.js
+Error:   x Expected ';', '}' or <eof>
+   ,-[C:\Project-Web\DribdoWeb\src\components\moments\CommentsModal.js:4:1]
+ 1 | 
+ 2 | "use client";
+ 3 | 
+ 4 | import Link from "next/link";`r`nimport { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+   :                              ^|^^^^^^^^
+   :                               `-- This is the expression part of an expression statement
+ 5 | import { getSupabaseClient } from "@/lib/supabase/client";
+ 6 | import { orderedReactionOptions, reactionByValue } from "@/components/moments/reactions";
+ 7 | import LottieReactionIcon from "@/components/moments/LottieReactionIcon";
+   `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/CommentsModal.js
+./src/components/moments/MomentsPostActions.js
+./src/components/profile/UserProfileShell.js
+⨯ ./src/components/moments/CommentsModal.js
+Error:   x Expected ';', '}' or <eof>
+   ,-[C:\Project-Web\DribdoWeb\src\components\moments\CommentsModal.js:4:1]
+ 1 | 
+ 2 | "use client";
+ 3 | 
+ 4 | import Link from "next/link";`r`nimport { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+   :                              ^|^^^^^^^^
+   :                               `-- This is the expression part of an expression statement
+ 5 | import { getSupabaseClient } from "@/lib/supabase/client";
+ 6 | import { orderedReactionOptions, reactionByValue } from "@/components/moments/reactions";
+ 7 | import LottieReactionIcon from "@/components/moments/LottieReactionIcon";
+   `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/CommentsModal.js
+./src/components/moments/MomentsPostActions.js
+./src/components/profile/UserProfileShell.js
+⨯ ./src/components/moments/CommentsModal.js
+Error:   x Expected ';', '}' or <eof>
+   ,-[C:\Project-Web\DribdoWeb\src\components\moments\CommentsModal.js:4:1]
+ 1 | 
+ 2 | "use client";
+ 3 | 
+ 4 | import Link from "next/link";`r`nimport { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+   :                              ^|^^^^^^^^
+   :                               `-- This is the expression part of an expression statement
+ 5 | import { getSupabaseClient } from "@/lib/supabase/client";
+ 6 | import { orderedReactionOptions, reactionByValue } from "@/components/moments/reactions";
+ 7 | import LottieReactionIcon from "@/components/moments/LottieReactionIcon";
+   `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/CommentsModal.js
+./src/components/moments/MomentsPostActions.js
+./src/components/profile/UserProfileShell.js
+⨯ ./src/components/moments/CommentsModal.js
+Error:   x Expected ';', '}' or <eof>
+   ,-[C:\Project-Web\DribdoWeb\src\components\moments\CommentsModal.js:4:1]
+ 1 | 
+ 2 | "use client";
+ 3 | 
+ 4 | import Link from "next/link";`r`nimport { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+   :                              ^|^^^^^^^^
+   :                               `-- This is the expression part of an expression statement
+ 5 | import { getSupabaseClient } from "@/lib/supabase/client";
+ 6 | import { orderedReactionOptions, reactionByValue } from "@/components/moments/reactions";
+ 7 | import LottieReactionIcon from "@/components/moments/LottieReactionIcon";
+   `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/CommentsModal.js
+./src/components/moments/MomentsPostActions.js
+./src/components/profile/UserProfileShell.js
+⨯ ./src/components/moments/CommentsModal.js
+Error:   x Expected ';', '}' or <eof>
+   ,-[C:\Project-Web\DribdoWeb\src\components\moments\CommentsModal.js:4:1]
+ 1 | 
+ 2 | "use client";
+ 3 | 
+ 4 | import Link from "next/link";`r`nimport { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+   :                              ^|^^^^^^^^
+   :                               `-- This is the expression part of an expression statement
+ 5 | import { getSupabaseClient } from "@/lib/supabase/client";
+ 6 | import { orderedReactionOptions, reactionByValue } from "@/components/moments/reactions";
+ 7 | import LottieReactionIcon from "@/components/moments/LottieReactionIcon";
+   `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/CommentsModal.js
+./src/components/moments/MomentsPostActions.js
+./src/components/profile/UserProfileShell.js
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+Error: Route "/[username]" used `params.username`. `params` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at PublicUserProfilePage (src\app\[username]\page.js:6:27)
+  4 |
+  5 | export default function PublicUserProfilePage({ params }) {
+> 6 |   const username = String(params?.username || "").trim();
+    |                           ^
+  7 |
+  8 |   return (
+  9 |     <div dir="rtl" className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-5 bg-slate-100 px-2 pb-16 pt-4 sm:px-4">
+Error: Route "/[username]" used `params.username`. `params` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at PublicUserProfilePage (src\app\[username]\page.js:6:27)
+  4 |
+  5 | export default function PublicUserProfilePage({ params }) {
+> 6 |   const username = String(params?.username || "").trim();
+    |                           ^
+  7 |
+  8 |   return (
+  9 |     <div dir="rtl" className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-5 bg-slate-100 px-2 pb-16 pt-4 sm:px-4">
+Error: Route "/[username]" used `params.username`. `params` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at PublicUserProfilePage (src\app\[username]\page.js:6:27)
+  4 |
+  5 | export default function PublicUserProfilePage({ params }) {
+> 6 |   const username = String(params?.username || "").trim();
+    |                           ^
+  7 |
+  8 |   return (
+  9 |     <div dir="rtl" className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-5 bg-slate-100 px-2 pb-16 pt-4 sm:px-4">
+Error: Route "/[username]" used `params.username`. `params` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at PublicUserProfilePage (src\app\[username]\page.js:6:27)
+  4 |
+  5 | export default function PublicUserProfilePage({ params }) {
+> 6 |   const username = String(params?.username || "").trim();
+    |                           ^
+  7 |
+  8 |   return (
+  9 |     <div dir="rtl" className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-5 bg-slate-100 px-2 pb-16 pt-4 sm:px-4">
+Error: Route "/[username]" used `params.username`. `params` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at PublicUserProfilePage (src\app\[username]\page.js:6:27)
+  4 |
+  5 | export default function PublicUserProfilePage({ params }) {
+> 6 |   const username = String(params?.username || "").trim();
+    |                           ^
+  7 |
+  8 |   return (
+  9 |     <div dir="rtl" className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-5 bg-slate-100 px-2 pb-16 pt-4 sm:px-4">
+Error: Route "/[username]" used `params.username`. `params` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at PublicUserProfilePage (src\app\[username]\page.js:6:27)
+  4 |
+  5 | export default function PublicUserProfilePage({ params }) {
+> 6 |   const username = String(params?.username || "").trim();
+    |                           ^
+  7 |
+  8 |   return (
+  9 |     <div dir="rtl" className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-5 bg-slate-100 px-2 pb-16 pt-4 sm:px-4">
+Error: Route "/[username]" used `params.username`. `params` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at PublicUserProfilePage (src\app\[username]\page.js:6:27)
+  4 |
+  5 | export default function PublicUserProfilePage({ params }) {
+> 6 |   const username = String(params?.username || "").trim();
+    |                           ^
+  7 |
+  8 |   return (
+  9 |     <div dir="rtl" className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-5 bg-slate-100 px-2 pb-16 pt-4 sm:px-4">
+Error: Route "/[username]" used `params.username`. `params` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at PublicUserProfilePage (src\app\[username]\page.js:6:27)
+  4 |
+  5 | export default function PublicUserProfilePage({ params, searchParams }) {
+> 6 |   const username = String(params?.username || "").trim();
+    |                           ^
+  7 |   const uid = String(searchParams?.uid || "").trim();
+  8 |
+  9 |   return (
+Error: Route "/[username]" used `params.username`. `params` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at PublicUserProfilePage (src\app\[username]\page.js:6:27)
+  4 |
+  5 | export default function PublicUserProfilePage({ params, searchParams }) {
+> 6 |   const username = String(params?.username || "").trim();
+    |                           ^
+  7 |   const uid = String(searchParams?.uid || "").trim();
+  8 |
+  9 |   return (
+Error: Route "/[username]" used `params.username`. `params` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at PublicUserProfilePage (src\app\[username]\page.js:6:27)
+  4 |
+  5 | export default function PublicUserProfilePage({ params, searchParams }) {
+> 6 |   const username = String(params?.username || "").trim();
+    |                           ^
+  7 |   const uid = String(searchParams?.uid || "").trim();
+  8 |
+  9 |   return (
+Error: Route "/[username]" used `params.username`. `params` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at PublicUserProfilePage (src\app\[username]\page.js:6:27)
+  4 |
+  5 | export default function PublicUserProfilePage({ params, searchParams }) {
+> 6 |   const username = String(params?.username || "").trim();
+    |                           ^
+  7 |   const uid = String(searchParams?.uid || "").trim();
+  8 |
+  9 |   return (

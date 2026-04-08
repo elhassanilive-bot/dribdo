@@ -1,4 +1,4 @@
-﻿import MomentsFeed from "@/components/moments/MomentsFeed";
+﻿import MomentsHub from "@/components/moments/MomentsHub";
 import { site } from "@/config/site";
 
 export const metadata = {
@@ -33,7 +33,8 @@ export default function MomentsPage() {
   return (
     <div dir="rtl" className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-5 bg-slate-100 px-2 pb-16 pt-4 sm:px-4">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(momentsJsonLd) }} />
-      <MomentsFeed />
+      <MomentsHub />
     </div>
   );
 }
+

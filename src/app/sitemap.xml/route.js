@@ -14,6 +14,7 @@ export async function GET() {
   const xml = buildSitemapIndex([
     { url: `${site.url}/sitemaps/pages.xml`, lastModified },
     { url: `${site.url}/sitemaps/blog.xml`, lastModified },
+    { url: `${site.url}/sitemaps/posts.xml`, lastModified },
     { url: `${site.url}/sitemaps/categories.xml`, lastModified },
     { url: `${site.url}/sitemaps/tags.xml`, lastModified },
   ]);

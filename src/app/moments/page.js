@@ -31,17 +31,8 @@ export default function MomentsPage() {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 pb-20 pt-28 sm:px-6 lg:px-8">
+    <div dir="rtl" className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-5 bg-slate-100 px-2 pb-16 pt-4 sm:px-4">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(momentsJsonLd) }} />
-
-      <header className="rounded-[2.2rem] border border-orange-100 bg-[radial-gradient(circle_at_top_left,_rgba(249,115,22,0.16),_transparent_40%),linear-gradient(135deg,#fff7ed_0%,#ffffff_55%,#f8fafc_100%)] px-6 py-8 text-center shadow-[0_25px_70px_-55px_rgba(15,23,42,0.35)]">
-        <p className="text-xs font-semibold uppercase tracking-[0.45em] text-orange-400">Dribdo Moments</p>
-        <h1 className="mt-3 text-3xl font-black text-slate-950 sm:text-4xl">قسم اللحظات</h1>
-        <p className="mt-2 text-sm leading-7 text-slate-600 sm:text-base">
-          هنا تظهر منشورات المستخدمين، ويمكنك نشر نصوص وصور وفيديو والتفاعل مباشرة.
-        </p>
-      </header>
-
       <MomentsFeed />
     </div>
   );

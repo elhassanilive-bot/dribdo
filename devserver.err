@@ -10,3 +10,191 @@ Image with src "/screenshots/hero-ads-4.jpg" is using quality "72" which is not 
 Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
 Image with src "/screenshots/hero-ads-5.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
 Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+⨯ ./src/components/moments/MomentsComposer.js
+Error:   x Expected ';', '}' or <eof>
+     ,-[C:\Project-Web\DribdoWeb\src\components\moments\MomentsComposer.js:48:1]
+  45 |       const [text, setText] = useState("");
+  46 |       const [selectedFiles, setSelectedFiles] = useState([]);
+  47 |       const [isAnonymous, setIsAnonymous] = useState(false);
+  48 | ,->   const [status, setStatus] = useState({ type: "", message: "" });`n  const [bgColor, setBgColor] = useState("");
+  49 | |     const [isPending, startTransition] = useTransition();
+  50 | |     const [isOpen, setIsOpen] = useState(false);
+  51 | |     const [viewer, setViewer] = useState({ id: "", name: "", avatar: "" });
+  52 | |     const [storyUsers, setStoryUsers] = useState([]);
+  53 | |   
+  54 | |     const mediaInputRef = useRef(null);
+  55 | |     const videoInputRef = useRef(null);
+  56 | |     const fileInputRef = useRef(null);
+  57 | |   
+  58 | |     const previewFiles = useMemo(
+  59 | |       () =>
+  60 | |         selectedFiles.map((item) => ({
+  61 | |           ...item,
+  62 | |           previewUrl: URL.createObjectURL(item.file),
+  63 | |         })),
+  64 | |       [selectedFiles]
+  65 | |     );
+  66 | |   
+  67 | |     useEffect(() => {
+  68 | |       return () => {
+  69 | |         previewFiles.forEach((item) => URL.revokeObjectURL(item.previewUrl));
+  70 | |       };
+  71 | |     }, [previewFiles]);
+  72 | |   
+  73 | |     useEffect(() => {
+  74 | |       let active = true;
+  75 | |       (async () => {
+  76 | |         const supabase = await getSupabaseClient();
+  77 | |         if (!supabase || !active) return;
+  78 | |   
+  79 | |         const { data: authData } = await supabase.auth.getUser();
+  80 | |         const user = authData?.user || null;
+  81 | |         if (!user) return;
+  82 | |   
+  83 | |         const { data: profile } = await supabase.from("profiles").select("name,avatar_url").eq("id", user.id).maybeSingle();
+  84 | |         if (active) {
+  85 | |           setViewer({
+  86 | |             id: user.id,
+  87 | |             name: String(profile?.name || user.user_metadata?.name || "").trim() || "مستخدم",
+  88 | |             avatar: String(profile?.avatar_url || user.user_metadata?.avatar_url || "").trim(),
+  89 | |           });
+  90 | |         }
+  91 | |   
+  92 | |         const { data: posts } = await supabase
+  93 | |           .from("posts")
+  94 | |           .select("user_id,created_at,profiles:posts_user_id_fkey(name,avatar_url)")
+  95 | |           .order("created_at", { ascending: false })
+  96 | |           .limit(40);
+  97 | |   
+  98 | |         if (!active || !posts) return;
+  99 | |         const seen = new Set();
+ 100 | |         const users = [];
+ 101 | |         for (const row of posts) {
+ 102 | |           const uid = String(row.user_id || "").trim();
+ 103 | |           if (!uid || seen.has(uid)) continue;
+ 104 | |           seen.add(uid);
+ 105 | |           const profileRaw = Array.isArray(row.profiles) ? row.profiles[0] : row.profiles;
+ 106 | |           const name = String(profileRaw?.name || "").trim() || "مستخدم";
+ 107 | |           const avatar = String(profileRaw?.avatar_url || "").trim();
+ 108 | |           users.push({ id: uid, name, avatar });
+ 109 | |           if (users.length >= 8) break;
+ 110 | |         }
+ 111 | |         setStoryUsers(users);
+ 112 | |       })();
+ 113 | |   
+ 114 | |       return () => {
+ 115 | |         active = false;
+ 116 | |       };
+ 117 | |     }, []);
+ 118 | |   
+ 119 | |     function clearComposer() {
+ 120 | |       setText("");
+ 121 | |       setSelectedFiles([]);
+ 122 | |       setIsAnonymous(false);
+ 123 | |     }
+ 124 | |   
+ 125 | |     function handleFilesChange(event) {
+ 126 | |       const files = Array.from(event.target.files || []);
+ 127 | |       event.target.value = "";
+ 128 | |       if (!files.length) return;
+ 129 | |   
+ 130 | |       const normalized = [];
+ 131 | |       for (const file of files) {
+ 132 | |         const mediaType = normalizeMediaType(file);
+ 133 | |         if (!mediaType) {
+ 134 | |           setStatus({ type: "error", message: "يمكنك رفع صور أو فيديو فقط." });
+ 135 | |           return;
+ 136 | |         }
+ 137 | |         if (mediaType === "image" && file.size > MAX_IMAGE_SIZE) {
+ 138 | |->         setStatus({ type: "error", message: `الصورة ${file.name} أكبر من 10MB.` });
+     : `---                                             ^^^^^^
+     : `---- This is the expression part of an expression statement
+ 139 |             return;
+ 140 |           }
+ 140 |           if (mediaType === "video" && file.size > MAX_VIDEO_SIZE) {
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/MomentsComposer.js
+./src/components/moments/MomentsFeed.js
+⨯ ./src/components/moments/MomentsFeed.js
+Error:   x Expected ';', '}' or <eof>
+     ,-[C:\Project-Web\DribdoWeb\src\components\moments\MomentsFeed.js:188:1]
+ 185 |   const [error, setError] = useState("");
+ 186 |   const [authUserId, setAuthUserId] = useState("");
+ 187 |   const [followMap, setFollowMap] = useState({});
+ 188 |   const [followBusy, setFollowBusy] = useState({});`r`n  const [expandedPosts, setExpandedPosts] = useState({});
+     :                                                    ^|^^
+     :                                                     `-- This is the expression part of an expression statement
+ 189 | 
+ 190 |   const syncFollowMap = useCallback(async (rows) => {
+ 191 |     const supabase = await getSupabaseClient();
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/MomentsFeed.js
+./src/app/moments/page.js
+⨯ ./src/components/moments/MomentsPostActions.js
+Error:   x Expected '</', got '{'
+     ,-[C:\Project-Web\DribdoWeb\src\components\moments\MomentsPostActions.js:409:1]
+ 406 |         </div>
+ 407 |       ) : null
+ 408 | 
+ 409 |       {showComments ? (
+     :       ^
+ 410 |         <div className="space-y-2 border-t border-slate-100 px-3 py-3">
+ 411 |           {comments.length > 0 ? (
+ 412 |             comments.map((comment) => (
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/MomentsPostActions.js
+./src/components/moments/MomentsFeed.js
+⨯ ./src/components/moments/MomentsPostActions.js
+Error:   x Expected ';', '}' or <eof>
+     ,-[C:\Project-Web\DribdoWeb\src\components\moments\MomentsPostActions.js:229:1]
+ 226 |       await refreshPostMeta();
+ 227 |       onMutated?.();
+ 228 |     });
+ 229 |   }`r`n`r`n  async function shareExternal() {
+     :    ^|^^
+     :     `-- This is the expression part of an expression statement
+ 230 |     if (!postId) return;
+ 231 |     const url = `${window.location.origin}/post/${postId}`;
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/MomentsPostActions.js
+./src/components/moments/MomentsFeed.js
+⨯ ./src/components/moments/MomentsPostActions.js
+Error:   x Expected ';', '}' or <eof>
+    ,-[C:\Project-Web\DribdoWeb\src\components\moments\MomentsPostActions.js:56:1]
+ 53 | export default function MomentsPostActions({ postId, postAuthorId, onMutated }) {
+ 54 |   const [counts, setCounts] = useState({ likes: 0, comments: 0, shares: 0, views: 0 });
+ 55 |   const [myReaction, setMyReaction] = useState("");
+ 56 |   const [reactionStats, setReactionStats] = useState([]);`r`n  const [comments, setComments] = useState([]);
+    :                                                          ^|^^
+    :                                                           `-- This is the expression part of an expression statement
+ 57 |   const [authUser, setAuthUser] = useState(null);
+ 58 |   const [status, setStatus] = useState("");
+ 59 |   const [showPicker, setShowPicker] = useState(false);
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/moments/MomentsPostActions.js
+./src/components/moments/MomentsFeed.js

@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { getSupabaseClient } from "@/lib/supabase/client";
 import MomentsComposer from "@/components/moments/MomentsComposer";
@@ -13,10 +14,8 @@ function parseMediaUrls(raw) {
     if (!value) return [];
     try {
       const decoded = JSON.parse(value);
-      if (Array.isArray(decoded)) {
-        return decoded.map((v) => String(v || "").trim()).filter(Boolean);
-      }
-    } catch (_) {}
+      if (Array.isArray(decoded)) return decoded.map((v) => String(v || "").trim()).filter(Boolean);
+    } catch {}
     return [value];
   }
   return [];
@@ -60,7 +59,7 @@ function MediaGallery({ mediaUrls, postType }) {
     return (
       <div className="mt-3 overflow-hidden rounded-xl bg-slate-100">
         {mediaKind(url, postType) === "video" ? (
-          <video src={url} controls preload="metadata" className="h-auto max-h-[620px] w-full bg-black" />
+          <video src={url} preload="metadata" muted playsInline className="h-auto max-h-[620px] w-full bg-black object-cover" />
         ) : (
           <img src={url} alt="وسائط المنشور" className="h-auto max-h-[620px] w-full object-cover" loading="lazy" />
         )}
@@ -73,7 +72,7 @@ function MediaGallery({ mediaUrls, postType }) {
       {mediaUrls.slice(0, 4).map((url, index) => (
         <div key={`${url}-${index}`} className="overflow-hidden rounded-lg bg-slate-100">
           {mediaKind(url, postType) === "video" ? (
-            <video src={url} controls preload="metadata" className="h-56 w-full object-cover bg-black" />
+            <video src={url} preload="metadata" muted playsInline className="h-56 w-full object-cover bg-black" />
           ) : (
             <img src={url} alt="وسائط المنشور" className="h-56 w-full object-cover" loading="lazy" />
           )}
@@ -88,60 +87,126 @@ function normalizePost(row) {
   const profileRaw = Array.isArray(row.profiles) ? row.profiles[0] : row.profiles;
   const profile = profileRaw && typeof profileRaw === "object" ? profileRaw : {};
 
-  const spaceRaw = Array.isArray(row.space) ? row.space[0] : row.space;
-  const communityRaw = Array.isArray(row.community) ? row.community[0] : row.community;
-
-  const isSpacePost = Boolean(row.space_id);
-  const isCommunityPost = !isSpacePost && Boolean(row.community_id);
-
-  const authorName = isAnonymous
-    ? String(row.anonymous_name || "").trim() || "مستخدم مجهول"
-    : isSpacePost
-      ? String(row.space_name || spaceRaw?.name || "").trim() || "مساحة"
-      : isCommunityPost
-        ? String(row.community_name || communityRaw?.name || "").trim() || "مجتمع"
-        : String(profile.name || row.name || "").trim() || "مستخدم";
-
-  const authorAvatar = isAnonymous
-    ? ""
-    : isSpacePost
-      ? String(row.space_avatar || spaceRaw?.avatar_url || "").trim()
-      : isCommunityPost
-        ? String(row.community_avatar || communityRaw?.avatar_url || "").trim()
-        : String(profile.avatar_url || row.avatar_url || "").trim();
-
   const urls = parseMediaUrls(row.media_urls);
   const mediaUrl = String(row.media_url || "").trim();
   if (mediaUrl && !urls.includes(mediaUrl)) urls.unshift(mediaUrl);
 
   const content = String(row.custom_text || row.content || "").trim();
-  const hasVisualMoment = Boolean(urls.length || row.bg_color || row.custom_background_color || row.shared_post_id || row.space_id || row.community_id);
 
   return {
     id: String(row.id || ""),
     userId: String(row.user_id || ""),
-    authorName,
-    authorAvatar,
+    authorName: isAnonymous ? "مستخدم مجهول" : String(profile.name || row.name || "").trim() || "مستخدم",
+    authorAvatar: isAnonymous ? "" : String(profile.avatar_url || row.avatar_url || "").trim(),
     content,
     createdAt: String(row.created_at || ""),
     postType: String(row.type || "text"),
     mediaUrls: urls,
-    likesCount: Number(row.likes_count || 0),
-    commentsCount: Number(row.comments_count || 0),
-    sharesCount: Number(row.shares_count || 0),
-    viewsCount: Number(row.views_count || 0),
     bgColor: String(row.custom_background_color || row.bg_color || "").trim(),
     textColor: String(row.custom_text_color || "").trim(),
     postContextText: String(row.post_context_text || "").trim(),
-    isAnonymous,
-    hasVisualMoment,
+    hasVisualMoment: Boolean(urls.length || content || row.bg_color || row.custom_background_color || row.shared_post_id),
   };
+}
+
+function PostHeader({ post, isMine, isFollowing, onToggleFollow, followLoading }) {
+  return (
+    <header dir="rtl" className="space-y-3">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <img src={avatarFor(post.authorName, post.authorAvatar)} alt={post.authorName} className="h-12 w-12 rounded-full border border-slate-200" loading="lazy" />
+          <div className="text-right">
+            <div className="inline-flex items-center gap-2 text-lg font-bold text-slate-900">{post.authorName}</div>
+            <div className="text-xs text-slate-500">{formatDate(post.createdAt)}</div>
+          </div>
+
+          {!isMine ? (
+            <button
+              type="button"
+              onClick={onToggleFollow}
+              disabled={followLoading}
+              className={[
+                "inline-flex items-center gap-2 rounded-xl border px-3 py-1 text-sm font-bold transition",
+                isFollowing ? "border-slate-300 bg-slate-100 text-slate-700 hover:bg-slate-200" : "border-blue-500 text-blue-600 hover:bg-blue-50",
+              ].join(" ")}
+            >
+              <img src="/dribdo-assets/published/follow-user.svg" alt="متابعة" className="h-4 w-4" loading="lazy" />
+              {followLoading ? "..." : isFollowing ? "متابع" : "متابعة"}
+            </button>
+          ) : null}
+        </div>
+
+        <div className="flex items-center gap-1 text-slate-500">
+          <button type="button" className="rounded-full p-1.5 hover:bg-slate-100" aria-label="خيارات">
+            <svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg>
+          </button>
+        </div>
+      </div>
+
+      {post.postContextText ? <div className="text-xs font-semibold text-slate-500">{post.postContextText}</div> : null}
+    </header>
+  );
 }
 
 export default function MomentsFeed() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [authUserId, setAuthUserId] = useState("");
+  const [followMap, setFollowMap] = useState({});
+  const [followBusy, setFollowBusy] = useState({});
+  const [expandedPosts, setExpandedPosts] = useState({});
+
+  const syncFollowMap = useCallback(async (rows) => {
+    const supabase = await getSupabaseClient();
+    if (!supabase) return;
+
+    const { data: authData } = await supabase.auth.getUser();
+    const currentUserId = String(authData?.user?.id || "");
+    setAuthUserId(currentUserId);
+
+    if (!currentUserId || !rows.length) {
+      setFollowMap({});
+      return;
+    }
+
+    const authorIds = [...new Set(rows.map((item) => item.userId).filter((id) => id && id !== currentUserId))];
+    if (!authorIds.length) {
+      setFollowMap({});
+      return;
+    }
+
+    const map = {};
+
+    try {
+      const { data: followedRows } = await supabase
+        .from("followers")
+        .select("following_id")
+        .eq("follower_id", currentUserId)
+        .in("following_id", authorIds);
+
+      for (const row of followedRows || []) {
+        const targetId = String(row.following_id || "");
+        if (targetId) map[targetId] = true;
+      }
+    } catch {}
+
+    try {
+      const { data: followsRows } = await supabase
+        .from("follows")
+        .select("following_id,status")
+        .eq("follower_id", currentUserId)
+        .in("following_id", authorIds)
+        .eq("status", "accepted");
+
+      for (const row of followsRows || []) {
+        const targetId = String(row.following_id || "");
+        if (targetId) map[targetId] = true;
+      }
+    } catch {}
+
+    setFollowMap(map);
+  }, []);
 
   const loadMoments = useCallback(async () => {
     setLoading(true);
@@ -158,12 +223,7 @@ export default function MomentsFeed() {
 
     const primary = await supabase
       .from("posts")
-      .select(`
-        *,
-        profiles:posts_user_id_fkey(name,avatar_url,is_verified,is_gold_verified),
-        space:space_id(id,name,avatar_url),
-        community:community_id(id,name,avatar_url)
-      `)
+      .select(`*,profiles:posts_user_id_fkey(name,avatar_url,is_verified,is_gold_verified)`)
       .order("created_at", { ascending: false })
       .limit(120);
 
@@ -181,8 +241,43 @@ export default function MomentsFeed() {
 
     const normalized = rows.map(normalizePost).filter((post) => post.id && post.hasVisualMoment);
     setPosts(normalized);
+    await syncFollowMap(normalized);
     setLoading(false);
-  }, []);
+  }, [syncFollowMap]);
+
+  async function toggleFollow(authorId) {
+    if (!authorId || !authUserId || authorId === authUserId) return;
+
+    setFollowBusy((prev) => ({ ...prev, [authorId]: true }));
+
+    const supabase = await getSupabaseClient();
+    if (!supabase) {
+      setFollowBusy((prev) => ({ ...prev, [authorId]: false }));
+      return;
+    }
+
+    const isFollowing = Boolean(followMap[authorId]);
+
+    if (!isFollowing) {
+      try {
+        const { error: rpcError } = await supabase.rpc("send_follow_request", { p_following_id: authorId });
+        if (rpcError) throw rpcError;
+      } catch {
+        await supabase.from("followers").insert({ follower_id: authUserId, following_id: authorId });
+      }
+      setFollowMap((prev) => ({ ...prev, [authorId]: true }));
+    } else {
+      try {
+        const { error: rpcError } = await supabase.rpc("cancel_follow", { p_following_id: authorId });
+        if (rpcError) throw rpcError;
+      } catch {
+        await supabase.from("followers").delete().eq("follower_id", authUserId).eq("following_id", authorId);
+      }
+      setFollowMap((prev) => ({ ...prev, [authorId]: false }));
+    }
+
+    setFollowBusy((prev) => ({ ...prev, [authorId]: false }));
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -195,63 +290,73 @@ export default function MomentsFeed() {
   const hasPosts = useMemo(() => posts.length > 0, [posts]);
 
   return (
-    <div className="space-y-6">
+    <div dir="rtl" className="space-y-4">
       <MomentsComposer onCreated={loadMoments} />
 
-      <section className="space-y-4">
-        <div className="flex items-center justify-between px-1">
-          <h2 className="text-xl font-black text-slate-950 sm:text-2xl">منشورات المستخدمين</h2>
-          <button
-            type="button"
-            onClick={loadMoments}
-            className="rounded-full border border-slate-300 px-4 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
-          >
-            تحديث
-          </button>
-        </div>
+      {loading ? (
+        <div className="rounded-2xl border border-slate-200 bg-white px-5 py-6 text-sm text-slate-600">جارٍ تحميل المنشورات...</div>
+      ) : error ? (
+        <div className="rounded-2xl border border-rose-200 bg-rose-50 px-5 py-6 text-sm text-rose-700">{error}</div>
+      ) : !hasPosts ? (
+        <div className="rounded-2xl border border-slate-200 bg-white px-5 py-7 text-center text-sm text-slate-600">لا توجد منشورات لحظات بعد.</div>
+      ) : (
+        <div className="space-y-4">
+          {posts.map((post) => (
+            <article key={post.id} className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+              <div className="px-4 pt-4 sm:px-5">
+                <PostHeader
+                  post={post}
+                  isMine={authUserId && authUserId === post.userId}
+                  isFollowing={Boolean(followMap[post.userId])}
+                  onToggleFollow={() => toggleFollow(post.userId)}
+                  followLoading={Boolean(followBusy[post.userId])}
+                />
 
-        {loading ? (
-          <div className="rounded-2xl border border-slate-200 bg-white px-5 py-6 text-sm text-slate-600">جارٍ تحميل المنشورات...</div>
-        ) : error ? (
-          <div className="rounded-2xl border border-rose-200 bg-rose-50 px-5 py-6 text-sm text-rose-700">{error}</div>
-        ) : !hasPosts ? (
-          <div className="rounded-2xl border border-slate-200 bg-white px-5 py-7 text-center text-sm text-slate-600">لا توجد منشورات لحظات بعد.</div>
-        ) : (
-          <div className="space-y-3">
-            {posts.map((post) => (
-              <article key={post.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-                <div className="px-4 pt-4 sm:px-5">
-                  {post.postContextText ? <div className="mb-2 text-[11px] font-semibold text-slate-500">{post.postContextText}</div> : null}
-
-                  <header className="flex items-center gap-3">
-                    <img src={avatarFor(post.authorName, post.authorAvatar)} alt={post.authorName} className="h-11 w-11 rounded-full border border-slate-200" loading="lazy" />
-                    <div className="min-w-0">
-                      <div className="truncate text-sm font-bold text-slate-900">{post.authorName}</div>
-                      <div className="text-xs text-slate-500">{formatDate(post.createdAt)}</div>
-                    </div>
-                  </header>
-
+                <Link href={`/post/${post.id}`} className="group block">
                   {post.content ? (
-                    <div
-                      className="mt-3 whitespace-pre-wrap rounded-xl px-3 py-2 text-sm leading-7"
-                      style={{
-                        background: post.bgColor || "transparent",
-                        color: post.textColor || "#0f172a",
-                      }}
-                    >
-                      {post.content}
-                    </div>
+                    (() => {
+                      const normalizedText = String(post.content || "").trim();
+                      const limit = 170;
+                      const expanded = Boolean(expandedPosts[post.id]);
+                      const isLong = normalizedText.length > limit;
+                      const visibleText = !isLong || expanded ? normalizedText : `${normalizedText.slice(0, limit)}...`;
+
+                      return (
+                        <div
+                          className="mt-4 whitespace-pre-wrap rounded-xl px-3 py-2 text-base font-normal leading-7 text-slate-800 transition group-hover:ring-1 group-hover:ring-slate-200"
+                          style={{ background: post.bgColor || "transparent", color: post.textColor || "#111827" }}
+                        >
+                          {visibleText}
+                          {isLong ? (
+                            <button
+                              type="button"
+                              onClick={(event) => {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                setExpandedPosts((prev) => ({ ...prev, [post.id]: !expanded }));
+                              }}
+                              className="mr-2 inline-flex items-center text-sm font-bold text-blue-600 hover:underline"
+                            >
+                              {expanded ? "إخفاء" : "عرض المزيد"}
+                            </button>
+                          ) : null}
+                        </div>
+                      );
+                    })()
                   ) : null}
 
                   <MediaGallery mediaUrls={post.mediaUrls} postType={post.postType} />
-                </div>
+                  <div className="mb-1 mt-3 text-sm font-semibold text-blue-700">فتح صفحة المنشور</div>
+                </Link>
+              </div>
 
-                <MomentsPostActions postId={post.id} postAuthorId={post.userId} onMutated={loadMoments} />
-              </article>
-            ))}
-          </div>
-        )}
-      </section>
+              <MomentsPostActions postId={post.id} postAuthorId={post.userId} onMutated={loadMoments} />
+            </article>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
+
+

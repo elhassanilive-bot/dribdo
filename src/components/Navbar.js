@@ -6,6 +6,7 @@ import { useState } from "react";
 
 const links = [
   { href: "/moments", label: "الواجهة", icon: "moment" },
+  { href: "/forum", label: "المنتدى", icon: "forum" },
   { href: "/", label: "النبذة", icon: "home" },
   { href: "/features", label: "المميزات", icon: "spark" },
   { href: "/blog", label: "المدونة", icon: "blog" },
@@ -105,6 +106,8 @@ function iconFor(type, filled = false) {
         return <svg {...commonFilled}><path d="m12 2.5 2.2 5.1 5.5 1.8-4.2 3.4 1.3 5.5L12 15.2 7.2 18.3l1.3-5.5-4.2-3.4 5.5-1.8Z" /></svg>;
       case "blog":
         return <svg {...commonFilled}><path d="M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Zm3 4v2h8V8Zm0 4v2h8v-2Zm0 4v2h5v-2Z" /></svg>;
+      case "forum":
+        return <svg {...commonFilled}><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7A2.5 2.5 0 0 1 17.5 16H10l-4.2 3.3a.8.8 0 0 1-1.3-.63V16h-1A2.5 2.5 0 0 1 1 13.5v-7A2.5 2.5 0 0 1 3.5 4H4Zm3.2 2.9a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Zm4.8 0a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Zm4.8 0a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Z" /></svg>;
       case "download":
         return <svg {...commonFilled}><path d="M11 3h2v9.2l2.8-2.8 1.4 1.4-5.2 5.2-5.2-5.2 1.4-1.4 2.8 2.8zM4 19h16v2H4z" /></svg>;
       case "account":
@@ -148,6 +151,13 @@ function iconFor(type, filled = false) {
         <svg {...common}>
           <path d="M5 5h14v14H5z" />
           <path d="M8 9h8M8 12h8M8 15h5" strokeLinecap="round" />
+        </svg>
+      );
+    case "forum":
+      return (
+        <svg {...common}>
+          <path d="M4.5 6.5h15a1.5 1.5 0 0 1 1.5 1.5v7a1.5 1.5 0 0 1-1.5 1.5H10l-4.3 3.3a.5.5 0 0 1-.8-.4V16.5h-.4A1.5 1.5 0 0 1 3 15V8a1.5 1.5 0 0 1 1.5-1.5Z" strokeLinejoin="round" />
+          <path d="M8 11h.01M12 11h.01M16 11h.01" strokeLinecap="round" />
         </svg>
       );
     case "download":

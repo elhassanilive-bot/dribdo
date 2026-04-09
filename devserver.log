@@ -542,3 +542,55 @@
  GET /moments 200 in 1812ms (compile: 33ms, render: 1778ms)
  GET /moments 200 in 192ms (compile: 14ms, render: 178ms)
  GET /manifest.webmanifest 200 in 50ms (compile: 10ms, render: 41ms)
+○ Compiling /_error ...
+ GET /moments 500 in 21.6s (compile: 21.2s, render: 478ms)
+ GET /moments 500 in 158ms (compile: 65ms, render: 93ms)
+ GET /moments 500 in 376ms (compile: 210ms, render: 166ms)
+ GET /favicon.ico 500 in 43s
+ GET /moments 500 in 19.6s
+ GET /moments 500 in 887ms
+ GET /moments 500 in 246ms
+ GET /moments 500 in 566ms
+ GET /moments 500 in 230ms
+ GET /moments 500 in 415ms
+ GET /moments 500 in 204ms
+ GET /moments 500 in 369ms
+ GET /moments 500 in 2.0s
+ GET /moments 500 in 61ms (compile: 28ms, render: 34ms)
+ GET /favicon.ico 500 in 26ms
+ GET /moments 500 in 2.1s
+○ Compiling /_error ...
+ GET /moments 200 in 7.8s (compile: 6.0s, render: 1823ms)
+○ Compiling /manifest.webmanifest ...
+ GET /manifest.webmanifest 200 in 5.7s (compile: 5.6s, render: 61ms)
+ GET /moments 200 in 1054ms (compile: 238ms, render: 816ms)
+ GET /moments 200 in 270ms (compile: 13ms, render: 257ms)
+ GET /moments 200 in 461ms (compile: 6ms, render: 455ms)
+○ Compiling /favicon.ico ...
+ GET /favicon.ico 200 in 5.7s (compile: 5.4s, render: 281ms)
+ GET /moments 200 in 1094ms (compile: 167ms, render: 927ms)
+ GET /manifest.webmanifest 200 in 1883ms (compile: 1824ms, render: 59ms)
+ GET /moments 200 in 3.2s (compile: 2.3s, render: 882ms)
+ GET /moments 200 in 226ms (compile: 53ms, render: 173ms)
+ GET /moments 200 in 879ms (compile: 66ms, render: 813ms)
+○ Compiling /manifest.webmanifest ...
+ GET /manifest.webmanifest 200 in 4.3s (compile: 4.2s, render: 87ms)
+ GET /moments 200 in 2.0s (compile: 366ms, render: 1651ms)
+ GET /manifest.webmanifest 200 in 146ms (compile: 118ms, render: 29ms)
+ GET /moments 200 in 721ms (compile: 78ms, render: 643ms)
+ GET /manifest.webmanifest 200 in 42ms (compile: 17ms, render: 25ms)
+ GET /moments 200 in 626ms (compile: 12ms, render: 613ms)
+ GET /moments 200 in 449ms (compile: 54ms, render: 395ms)
+ GET /moments 200 in 331ms (compile: 6ms, render: 325ms)
+ GET /moments 200 in 913ms (compile: 498ms, render: 415ms)
+ GET /moments 200 in 171ms (compile: 12ms, render: 159ms)
+ GET /manifest.webmanifest 200 in 2.9s (compile: 2.6s, render: 267ms)
+ GET /moments 200 in 4.9s (compile: 3.9s, render: 974ms)
+ GET /manifest.webmanifest 200 in 32ms (compile: 17ms, render: 16ms)
+ GET /moments 200 in 297ms (compile: 17ms, render: 279ms)
+ GET /moments 200 in 213ms (compile: 7ms, render: 206ms)
+ GET /moments 200 in 200ms (compile: 7ms, render: 193ms)
+ GET /moments 200 in 218ms (compile: 7ms, render: 210ms)
+ GET /moments 200 in 3.5s (compile: 2.7s, render: 786ms)
+ GET /manifest.webmanifest 200 in 106ms (compile: 66ms, render: 40ms)
+ GET /moments 200 in 4.6s (compile: 2.9s, render: 1649ms)

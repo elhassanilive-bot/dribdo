@@ -27,8 +27,23 @@ function normalizeCounts(post) {
 function normalizeReactionValue(value) {
   const raw = String(value || "").trim().toLowerCase();
   if (!raw || raw === "none") return "";
-  if (raw === "haha") return "funny";
+  if (raw === "haha" || raw === "laugh" || raw === "laughing" || raw === "😂") return "funny";
+  if (raw === "thumbsup" || raw === "thumbs_up" || raw === "liked" || raw === "👍") return "like";
+  if (raw === "heart" || raw === "favorite" || raw === "favourite" || raw === "❤" || raw === "❤️") return "love";
   return raw;
+}
+
+function reactionValueFromRow(row) {
+  if (!row || typeof row !== "object") return "";
+  return normalizeReactionValue(
+    row.type ??
+      row.reaction_type ??
+      row.reactionType ??
+      row.reaction ??
+      row.value ??
+      row.emoji ??
+      ""
+  );
 }
 
 function buildReactionStatsFromMap(map) {
@@ -115,11 +130,7 @@ export default function MomentsPostActions({ postId, postContent = "", sharePath
 
     if (postRow) setCounts(normalizeCounts(postRow));
 
-    const { data: reactionRows } = await supabase
-      .from("reactions")
-      .select("type")
-      .eq("post_id", postId)
-      .limit(500);
+    const { data: reactionRows } = await supabase.from("reactions").select("*").eq("post_id", postId).limit(500);
 
     if (!reactionRows) {
       setReactionStats([]);
@@ -128,7 +139,7 @@ export default function MomentsPostActions({ postId, postContent = "", sharePath
 
     const map = new Map();
     for (const row of reactionRows) {
-      const key = normalizeReactionValue(row?.type);
+      const key = reactionValueFromRow(row);
       if (!key) continue;
       map.set(key, Number(map.get(key) || 0) + 1);
     }
@@ -142,17 +153,28 @@ export default function MomentsPostActions({ postId, postContent = "", sharePath
       return;
     }
 
-    const { data: reactionRows } = await supabase
-      .from("reactions")
-      .select("id,type")
-      .eq("post_id", postId)
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false })
-      .limit(20);
+    const userColumns = ["user_id", "uid", "profile_id", "author_user_id", "owner_id"];
+    let list = [];
 
-    const list = Array.isArray(reactionRows) ? reactionRows : [];
+    for (const column of userColumns) {
+      try {
+        const { data } = await supabase
+          .from("reactions")
+          .select("*")
+          .eq("post_id", postId)
+          .eq(column, userId)
+          .order("created_at", { ascending: false })
+          .limit(20);
+
+        if (Array.isArray(data) && data.length) {
+          list = data;
+          break;
+        }
+      } catch {}
+    }
+
     const first = list[0] || null;
-    setMyReaction(normalizeReactionValue(first?.type));
+    setMyReaction(reactionValueFromRow(first));
   }, [postId]);
 
   useEffect(() => {

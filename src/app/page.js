@@ -361,8 +361,8 @@ export default async function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd) }} />
       <section className="border-b border-black/8">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
-          <div className="relative overflow-hidden rounded-[40px] border border-red-100 bg-[linear-gradient(135deg,#fff3f1_0%,#ffd9d2_18%,#f7b4b4_42%,#fbe9e5_72%,#fff7f4_100%)] px-5 py-8 shadow-[0_30px_80px_-50px_rgba(127,29,29,0.42)] sm:px-8 sm:py-10 lg:px-10 lg:py-12">
-            <div className="pointer-events-none absolute -right-12 top-0 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(190,24,24,0.22),rgba(190,24,24,0)_72%)]" />
+          <div className="relative overflow-hidden rounded-[40px] border border-red-100 bg-[linear-gradient(135deg,#fff9e8_0%,#f8e2a8_20%,#d9b45b_44%,#f5e7c2_72%,#fffaf0_100%)] px-5 py-8 shadow-[0_30px_80px_-50px_rgba(92,65,8,0.42)] sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+            <div className="pointer-events-none absolute -right-12 top-0 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(122,86,11,0.24),rgba(122,86,11,0)_72%)]" />
             <div className="pointer-events-none absolute -left-10 bottom-0 h-52 w-52 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.45),rgba(255,255,255,0)_72%)]" />
             <div className="relative grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
               <div className="space-y-8 text-right">
@@ -397,7 +397,7 @@ export default async function Home() {
               </div>
 
               <div className="lg:pr-2">
-                <article className="overflow-hidden rounded-[34px] border border-white/55 bg-white/35 shadow-[0_24px_70px_-45px_rgba(127,29,29,0.45)] backdrop-blur-sm">
+                <article className="overflow-hidden rounded-[34px] border border-white/55 bg-white/35 shadow-[0_24px_70px_-45px_rgba(92,65,8,0.45)] backdrop-blur-sm">
                   <div className="relative bg-[linear-gradient(180deg,rgba(255,255,255,0.18),rgba(255,255,255,0.04))] p-4 sm:p-5">
                     <Image
                       src="/screenshots/ads.png"

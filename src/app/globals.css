@@ -531,14 +531,6 @@ body {
   position: absolute;
 }
 
-a[href] {
-  color: var(--gold-700);
-}
-
-a[href]:hover {
-  color: var(--gold-800);
-}
-
 /* Global mapping from red/rose utilities to a dark-gold palette */
 .text-red-500,
 .text-rose-500 {

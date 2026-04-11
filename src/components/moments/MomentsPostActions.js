@@ -93,6 +93,8 @@ export default function MomentsPostActions({ postId, postContent = "", sharePath
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [commentsOpen, setCommentsOpen] = useState(false);
+  const longPressTimerRef = useRef(null);
+  const suppressClickUntilRef = useRef(0);
 
   const myReactionView = useMemo(() => reactionByValue(myReaction), [myReaction]);
   const finalSharePath = useMemo(() => {

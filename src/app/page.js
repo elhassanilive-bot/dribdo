@@ -256,6 +256,7 @@ const downloadOptions = [
     label: 'Google Play',
     helper: 'نسخة Android',
     href: '/download',
+    comingSoon: true,
     icon: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
         <path strokeLinecap="round" strokeLinejoin="round" d="m7 5 10 7-10 7V5Z" />
@@ -267,6 +268,7 @@ const downloadOptions = [
     label: 'App Store',
     helper: 'نسخة iPhone',
     href: '/download',
+    comingSoon: true,
     icon: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
         <path strokeLinecap="round" strokeLinejoin="round" d="M14.5 6.5c.6-.8 1-1.8.9-2.8-.9.1-2 .6-2.6 1.4-.6.7-1 1.7-.9 2.6 1 .1 2-.4 2.6-1.2Z" />
@@ -656,23 +658,37 @@ export default async function Home() {
               <p className="mt-4 text-base leading-8 text-white/70">{homeContent.download.sub}</p>
 
               <div className="mt-8 grid gap-4">
-                {downloadOptions.map((option) => (
-                  <Link
-                    key={option.label}
-                    href={option.href}
-                    className={`flex min-h-[7rem] flex-col items-center justify-center rounded-[24px] border px-8 py-5 text-center transition ${
-                      option.primary
-                        ? 'border-red-700 bg-red-700 text-white hover:bg-red-800'
-                        : 'border-white/10 bg-white text-black hover:bg-white/90'
-                    }`}
-                  >
-                    <div className={`mb-3 ${option.primary ? 'text-white' : 'text-black'}`}>{option.icon}</div>
-                    <div className="mx-auto flex max-w-full flex-col items-center justify-center text-center">
-                      <p className={`text-base font-semibold ${option.primary ? 'text-white' : 'text-black'}`}>{option.label}</p>
-                      <p className={`text-sm ${option.primary ? 'text-white/70' : 'text-black/55'}`}>{option.helper}</p>
+                {downloadOptions.map((option) => {
+                  const isReady = Boolean(option.href) && option.comingSoon !== true;
+                  const cardClass = `flex min-h-[7rem] flex-col items-center justify-center rounded-[24px] border px-8 py-5 text-center transition ${
+                    option.primary
+                      ? 'border-red-700 bg-red-700 text-white hover:bg-red-800'
+                      : 'border-white/10 bg-white text-black hover:bg-white/90'
+                  }`;
+
+                  const cardBody = (
+                    <div className={cardClass}>
+                      <div className={`mb-3 ${option.primary ? 'text-white' : 'text-black'}`}>{option.icon}</div>
+                      <div className="mx-auto flex max-w-full flex-col items-center justify-center text-center">
+                        <p className={`text-base font-semibold ${option.primary ? 'text-white' : 'text-black'}`}>{option.label}</p>
+                        <p className={`text-sm ${option.primary ? 'text-white/70' : 'text-black/55'}`}>
+                          {option.helper}
+                          {isReady ? '' : ' • قريباً'}
+                        </p>
+                      </div>
                     </div>
-                  </Link>
-                ))}
+                  );
+
+                  return isReady ? (
+                    <Link key={option.label} href={option.href}>
+                      {cardBody}
+                    </Link>
+                  ) : (
+                    <div key={option.label} aria-disabled="true" className="cursor-not-allowed opacity-85">
+                      {cardBody}
+                    </div>
+                  );
+                })}
               </div>
             </div>
 

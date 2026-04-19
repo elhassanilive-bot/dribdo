@@ -1,0 +1,1 @@
+export const SECRET_SUPPORT_DASHBOARD_PATH = "/dribdo-vault-q8k2m9x4t1p7z6c3r5-support-inbox-portal";

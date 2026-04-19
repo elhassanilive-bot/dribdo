@@ -27,6 +27,7 @@ const platforms = [
     helper: 'نسخة Android الرسمية',
     note: 'مناسب للمستخدمين الذين يريدون التحديثات التلقائية والاستقرار عبر المتجر.',
     href: downloadContent.links.android,
+    comingSoon: true,
     accent: 'bg-[#111111] text-white',
     icon: (
       <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -40,6 +41,7 @@ const platforms = [
     helper: 'نسخة iPhone وiPad',
     note: 'أفضل خيار لمستخدمي iOS مع تجربة تنزيل وتحديثات موثوقة من متجر آبل.',
     href: downloadContent.links.ios,
+    comingSoon: true,
     accent: 'bg-white text-black',
     icon: (
       <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -98,6 +100,7 @@ export default function DownloadPage() {
                   href={downloadContent.links.android}
                   label="التنزيل على متجر Play"
                   helper="نسخة Android الرسمية"
+                  comingSoon
                   accent="dark"
                   icon={
                     <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -109,6 +112,7 @@ export default function DownloadPage() {
                   href={downloadContent.links.ios}
                   label="التنزيل عبر App Store"
                   helper="نسخة iPhone وiPad"
+                  comingSoon
                   icon={
                     <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M14.5 6.5c.6-.8 1-1.8.9-2.8-.9.1-2 .6-2.6 1.4-.6.7-1 1.7-.9 2.6 1 .1 2-.4 2.6-1.2Z" />
@@ -153,7 +157,7 @@ export default function DownloadPage() {
 
         <div className="grid gap-6 lg:grid-cols-3">
           {platforms.map((platform) => {
-            const ready = Boolean(platform.href);
+            const ready = Boolean(platform.href) && platform.comingSoon !== true;
             const body = (
               <div
                 className={`rounded-[1.6rem] border p-6 text-center shadow-sm ${platform.accent} ${platform.accent.includes('bg-white') ? 'border-black/10' : 'border-black/0'}`}
@@ -176,7 +180,9 @@ export default function DownloadPage() {
                         ? platform.accent.includes('bg-white')
                           ? 'bg-red-700 text-white'
                           : 'bg-white text-black'
-                        : 'bg-black/10 text-black/45'
+                        : platform.accent.includes('bg-white')
+                          ? 'bg-black/10 text-black/45'
+                          : 'bg-white/15 text-white/80'
                     }`}
                   >
                     {ready ? 'ابدأ التنزيل' : 'سيتم التفعيل قريبًا'}
@@ -231,26 +237,40 @@ export default function DownloadPage() {
   );
 }
 
-function DownloadAction({ href, label, helper, icon, accent = 'light' }) {
+function DownloadAction({ href, label, helper, icon, accent = 'light', comingSoon = false }) {
+  const isReady = Boolean(href) && !comingSoon;
   const className =
     accent === 'dark'
       ? 'border-black bg-[#111111] text-white hover:bg-black'
       : 'border-black/10 bg-[#faf8f6] text-black hover:border-black/20 hover:bg-white';
 
-  return (
-    <Link href={href} className={`flex items-center justify-between gap-4 rounded-[1.35rem] border px-5 py-4 transition ${className}`}>
+  const body = (
+    <div className={`flex items-center justify-between gap-4 rounded-[1.35rem] border px-5 py-4 transition ${className}`}>
       <div className="flex items-center gap-3">
         <span>{icon}</span>
         <div className="text-right">
           <p className="text-base font-semibold">{label}</p>
-          <p className={`text-sm ${accent === 'dark' ? 'text-white/65' : 'text-black/55'}`}>{helper}</p>
+          <p className={`text-sm ${accent === 'dark' ? 'text-white/65' : 'text-black/55'}`}>
+            {helper}
+            {isReady ? null : ' • قريباً'}
+          </p>
         </div>
       </div>
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 6l6 6-6 6" />
       </svg>
-    </Link>
+    </div>
   );
+
+  if (!isReady) {
+    return (
+      <div aria-disabled="true" className="cursor-not-allowed opacity-80">
+        {body}
+      </div>
+    );
+  }
+
+  return <Link href={href} className="block">{body}</Link>;
 }
 
 

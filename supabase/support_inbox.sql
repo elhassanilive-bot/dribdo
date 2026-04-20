@@ -6,6 +6,8 @@ create table if not exists public.support_tickets (
   request_type text not null,
   source text,
   status text not null default 'open',
+  is_read boolean not null default false,
+  read_at timestamptz,
   priority text not null default 'normal',
   requester_name text,
   requester_email text not null,
@@ -32,8 +34,13 @@ create table if not exists public.support_ticket_replies (
   created_at timestamptz not null default now()
 );
 
+-- Backward-compatible upgrades for existing projects
+alter table public.support_tickets add column if not exists is_read boolean not null default false;
+alter table public.support_tickets add column if not exists read_at timestamptz;
+
 create index if not exists support_tickets_created_at_idx on public.support_tickets(created_at desc);
 create index if not exists support_tickets_status_idx on public.support_tickets(status);
+create index if not exists support_tickets_is_read_idx on public.support_tickets(is_read);
 create index if not exists support_tickets_request_type_idx on public.support_tickets(request_type);
 create index if not exists support_tickets_requester_email_idx on public.support_tickets(requester_email);
 create index if not exists support_ticket_replies_ticket_id_idx on public.support_ticket_replies(ticket_id);

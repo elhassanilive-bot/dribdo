@@ -1,4 +1,4 @@
-﻿import { revalidatePath } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import SupportRealtimeNotifier from "./SupportRealtimeNotifier";
@@ -24,22 +24,22 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export const metadata = {
-  title: "Ù„ÙˆØ­Ø© Ø§Ù„Ø¯Ø¹Ù… ÙˆØ§Ù„Ø±Ø³Ø§Ø¦Ù„",
-  description: "Ù„ÙˆØ­Ø© Ø³Ø±ÙŠØ© Ù„Ø¥Ø¯Ø§Ø±Ø© Ø·Ù„Ø¨Ø§Øª Ø§ØªØµÙ„ Ø¨Ù†Ø§ ÙˆØ§Ù„Ø´ÙƒØ§ÙˆÙ‰ ÙˆØ§Ù„Ø¥Ø¨Ù„Ø§ØºØ§Øª ÙˆØ·Ù„Ø¨Ø§Øª Ø§Ù„Ø­Ø°Ù.",
+  title: "لوحة الدعم والرسائل",
+  description: "لوحة سرية لإدارة طلبات اتصل بنا والشكاوى والإبلاغات وطلبات الحذف.",
   robots: { index: false, follow: false },
 };
 
 const typeLabelMap = {
-  contact: "Ø§ØªØµÙ„ Ø¨Ù†Ø§",
-  deletion: "Ø·Ù„Ø¨ Ø­Ø°Ù Ø§Ù„Ø­Ø³Ø§Ø¨",
-  report_issue: "Ø§Ù„Ø¥Ø¨Ù„Ø§Øº Ø¹Ù† Ù…Ø´ÙƒÙ„Ø©",
-  complaint: "Ø´ÙƒØ§ÙˆÙ‰ ÙˆØ¨Ù„Ø§ØºØ§Øª",
+  contact: "اتصل بنا",
+  deletion: "طلب حذف الحساب",
+  report_issue: "الإبلاغ عن مشكلة",
+  complaint: "شكاوى وبلاغات",
 };
 
 const statusLabelMap = {
-  open: "Ù…ÙØªÙˆØ­",
-  answered: "ØªÙ… Ø§Ù„Ø±Ø¯",
-  closed: "Ù…ØºÙ„Ù‚",
+  open: "مفتوح",
+  answered: "تم الرد",
+  closed: "مغلق",
 };
 
 function formatDate(iso) {
@@ -73,7 +73,7 @@ function AttachmentPreview({ attachment }) {
   if (!attachment.hasData) {
     return (
       <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-600">
-        Ø§Ù„Ù…Ø±ÙÙ‚: {attachment.name || "Ù…Ù„Ù Ù…Ø±ÙÙ‚"} (Ø¨Ø¯ÙˆÙ† Ù…Ø¹Ø§ÙŠÙ†Ø© Ù„Ù‡Ø°Ø§ Ø§Ù„Ø·Ù„Ø¨ Ø§Ù„Ù‚Ø¯ÙŠÙ…)
+        المرفق: {attachment.name || "ملف مرفق"} (بدون معاينة لهذا الطلب القديم)
       </div>
     );
   }
@@ -84,7 +84,7 @@ function AttachmentPreview({ attachment }) {
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-3">
-      <div className="mb-2 text-xs font-semibold text-slate-700">Ø§Ù„Ù…Ø±ÙÙ‚: {attachment.name || "Ù…Ù„Ù"}</div>
+      <div className="mb-2 text-xs font-semibold text-slate-700">المرفق: {attachment.name || "ملف"}</div>
       {isImage ? (
         <Image
           src={attachment.src}
@@ -102,14 +102,14 @@ function AttachmentPreview({ attachment }) {
       ) : null}
       {isPdf ? <iframe title={attachment.name || "PDF"} src={attachment.src} className="h-80 w-full rounded-xl border border-slate-200" /> : null}
       {!isImage && !isVideo && !isPdf ? (
-        <div className="rounded-xl border border-slate-200 bg-slate-50 p-2 text-xs text-slate-600">Ø§Ù„Ù…Ø¹Ø§ÙŠÙ†Ø© ØºÙŠØ± Ù…Ø¯Ø¹ÙˆÙ…Ø© Ù„Ù‡Ø°Ø§ Ø§Ù„Ù†ÙˆØ¹.</div>
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-2 text-xs text-slate-600">المعاينة غير مدعومة لهذا النوع.</div>
       ) : null}
       <a
         href={attachment.src}
         download={attachment.name || "attachment"}
         className="mt-2 inline-block rounded-xl border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50"
       >
-        ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù…Ø±ÙÙ‚
+        تحميل المرفق
       </a>
     </div>
   );
@@ -203,8 +203,8 @@ async function replyAction(formData) {
     emailError = "smtp_not_configured";
   } else {
     try {
-      const subject = `Ø±Ø¯ Ù…Ù† ÙØ±ÙŠÙ‚ Ø¯Ø±ÙŠØ¨Ø¯Ùˆ${subjectBase ? ` - ${subjectBase}` : ""}`;
-      const text = `Ù…Ø±Ø­Ø¨Ù‹Ø§ØŒ\n\n${replyMessage}\n\n---\nÙ‡Ø°Ø§ Ø§Ù„Ø±Ø¯ Ù…Ø±Ø³Ù„ Ù…Ù† ÙØ±ÙŠÙ‚ Ø¯Ø¹Ù… Ø¯Ø±ÙŠØ¨Ø¯Ùˆ.`;
+      const subject = `رد من فريق دريبدو${subjectBase ? ` - ${subjectBase}` : ""}`;
+      const text = `مرحبًا،\n\n${replyMessage}\n\n---\nهذا الرد مرسل من فريق دعم دريبدو.`;
 
       await sendEmailToUser({ to: toEmail, subject, text });
       emailDeliveryStatus = "sent";
@@ -239,14 +239,14 @@ async function replyAction(formData) {
 function LoginCard({ error, info }) {
   return (
     <section className="mx-auto mt-16 max-w-xl rounded-3xl border border-slate-200 bg-white p-8 text-right shadow-sm" dir="rtl">
-      <h1 className="text-2xl font-black text-slate-900">Ù„ÙˆØ­Ø© Ø§Ù„Ø±Ø³Ø§Ø¦Ù„ Ø§Ù„Ø³Ø±ÙŠØ©</h1>
-      <p className="mt-3 text-sm text-slate-600">Ù‡Ø°Ù‡ Ø§Ù„ØµÙØ­Ø© Ø®Ø§ØµØ© Ø¨Ø§Ù„Ø¥Ø¯Ø§Ø±Ø© ÙÙ‚Ø·. Ø£Ø¯Ø®Ù„ Ù…ÙØªØ§Ø­ Ø§Ù„Ù…Ø§Ù„Ùƒ Ø£Ùˆ Ù…ÙØªØ§Ø­ Ø§Ù„Ù…Ø´Ø±Ù Ù„Ù„ÙˆØµÙˆÙ„.</p>
+      <h1 className="text-2xl font-black text-slate-900">لوحة الرسائل السرية</h1>
+      <p className="mt-3 text-sm text-slate-600">هذه الصفحة خاصة بالإدارة فقط. أدخل مفتاح المالك أو مفتاح المشرف للوصول.</p>
 
-      {error ? <div className="mt-4 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-2 text-sm text-rose-700">ÙØ´Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„: {error}</div> : null}
+      {error ? <div className="mt-4 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-2 text-sm text-rose-700">فشل الدخول: {error}</div> : null}
       {info ? <div className="mt-4 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-2 text-sm text-blue-700">{info}</div> : null}
 
       <form action={unlockAction} className="mt-6 space-y-3">
-        <label className="block text-sm font-semibold text-slate-700">Ù…ÙØªØ§Ø­ Ø§Ù„Ø¯Ø®ÙˆÙ„</label>
+        <label className="block text-sm font-semibold text-slate-700">مفتاح الدخول</label>
         <input
           name="accessKey"
           type="password"
@@ -255,7 +255,7 @@ function LoginCard({ error, info }) {
           placeholder="SUPPORT_DASHBOARD_OWNER_KEY / SUPPORT_DASHBOARD_ADMIN_KEYS"
         />
         <button type="submit" className="w-full rounded-2xl bg-slate-900 px-4 py-3 text-sm font-bold text-white hover:bg-slate-800">
-          ÙØªØ­ Ø§Ù„Ù„ÙˆØ­Ø©
+          فتح اللوحة
         </button>
       </form>
     </section>
@@ -272,9 +272,9 @@ export default async function SecretSupportDashboard({ searchParams }) {
   if (!isSupportAccessConfigured()) {
     return (
       <section className="mx-auto mt-16 max-w-3xl rounded-3xl border border-amber-200 bg-amber-50 p-8 text-right" dir="rtl">
-        <h1 className="text-2xl font-black text-amber-900">Ù„ÙˆØ­Ø© Ø§Ù„Ø¯Ø¹Ù… ØºÙŠØ± Ù…ÙØ¹Ù„Ø©</h1>
+        <h1 className="text-2xl font-black text-amber-900">لوحة الدعم غير مفعلة</h1>
         <p className="mt-3 text-sm text-amber-800">
-          Ø£Ø¶Ù Ù…ØªØºÙŠØ± Ø§Ù„Ø¨ÙŠØ¦Ø© <code>SUPPORT_DASHBOARD_OWNER_KEY</code> (Ø£Ùˆ <code>SUPPORT_DASHBOARD_KEY</code>) Ø«Ù… Ø£Ø¹Ø¯ Ø§Ù„Ù†Ø´Ø±.
+          أضف متغير البيئة <code>SUPPORT_DASHBOARD_OWNER_KEY</code> (أو <code>SUPPORT_DASHBOARD_KEY</code>) ثم أعد النشر.
         </p>
       </section>
     );
@@ -293,7 +293,7 @@ export default async function SecretSupportDashboard({ searchParams }) {
   const repliesByTicket = repliesResult?.ok ? repliesResult.repliesByTicket || {} : {};
   const initialOpenCount = statsResult?.ok ? statsResult.stats?.openCount || 0 : 0;
   const initialLatestTicketId = statsResult?.ok ? statsResult.stats?.latestTicketId || "" : "";
-  const roleLabel = isOwnerRole(session.role) ? "Ù…Ø§Ù„Ùƒ" : "Ù…Ø´Ø±Ù";
+  const roleLabel = isOwnerRole(session.role) ? "مالك" : "مشرف";
 
   return (
     <div className="min-h-screen bg-slate-50" dir="rtl">
@@ -301,9 +301,9 @@ export default async function SecretSupportDashboard({ searchParams }) {
         <header className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h1 className="text-2xl font-black text-slate-900">ØµÙ†Ø¯ÙˆÙ‚ Ø±Ø³Ø§Ø¦Ù„ Ø§Ù„Ø¯Ø¹Ù…</h1>
-              <p className="mt-1 text-sm text-slate-600">ØªØµÙ„ Ù‡Ù†Ø§ ÙƒÙ„ Ø§Ù„Ø±Ø³Ø§Ø¦Ù„ Ù…Ù† Ø§ØªØµÙ„ Ø¨Ù†Ø§ØŒ Ø§Ù„Ø¥Ø¨Ù„Ø§ØºØ§ØªØŒ Ø§Ù„Ø´ÙƒØ§ÙˆÙ‰ØŒ ÙˆØ·Ù„Ø¨Ø§Øª Ø­Ø°Ù Ø§Ù„Ø­Ø³Ø§Ø¨.</p>
-              <div className="mt-2 inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ© Ø§Ù„Ø­Ø§Ù„ÙŠØ©: {roleLabel}</div>
+              <h1 className="text-2xl font-black text-slate-900">صندوق رسائل الدعم</h1>
+              <p className="mt-1 text-sm text-slate-600">تصل هنا كل الرسائل من اتصل بنا، الإبلاغات، الشكاوى، وطلبات حذف الحساب.</p>
+              <div className="mt-2 inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">الصلاحية الحالية: {roleLabel}</div>
             </div>
             <div className="flex items-center gap-2">
               <SupportRealtimeNotifier initialLatestTicketId={initialLatestTicketId} initialOpenCount={initialOpenCount} />
@@ -314,7 +314,7 @@ export default async function SecretSupportDashboard({ searchParams }) {
               </form>
               <form action={logoutAction}>
                 <button type="submit" className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">
-                  ØªØ³Ø¬ÙŠÙ„ Ø®Ø±ÙˆØ¬
+                  تسجيل خروج
                 </button>
               </form>
             </div>
@@ -322,26 +322,26 @@ export default async function SecretSupportDashboard({ searchParams }) {
 
           <form method="get" className="mt-4 grid gap-3 sm:grid-cols-3">
             <select name="type" defaultValue={type} className="rounded-2xl border border-slate-200 px-3 py-2 text-sm">
-              <option value="">ÙƒÙ„ Ø§Ù„ØµÙØ­Ø§Øª</option>
-              <option value="contact">Ø§ØªØµÙ„ Ø¨Ù†Ø§</option>
-              <option value="report_issue">Ø§Ù„Ø¥Ø¨Ù„Ø§Øº Ø¹Ù† Ù…Ø´ÙƒÙ„Ø©</option>
-              <option value="complaint">Ø´ÙƒØ§ÙˆÙ‰ ÙˆØ¨Ù„Ø§ØºØ§Øª</option>
-              <option value="deletion">Ø·Ù„Ø¨ Ø­Ø°Ù Ø§Ù„Ø­Ø³Ø§Ø¨</option>
+              <option value="">كل الصفحات</option>
+              <option value="contact">اتصل بنا</option>
+              <option value="report_issue">الإبلاغ عن مشكلة</option>
+              <option value="complaint">شكاوى وبلاغات</option>
+              <option value="deletion">طلب حذف الحساب</option>
             </select>
             <select name="status" defaultValue={status} className="rounded-2xl border border-slate-200 px-3 py-2 text-sm">
-              <option value="">ÙƒÙ„ Ø§Ù„Ø­Ø§Ù„Ø§Øª</option>
-              <option value="open">Ù…ÙØªÙˆØ­</option>
-              <option value="answered">ØªÙ… Ø§Ù„Ø±Ø¯</option>
-              <option value="closed">Ù…ØºÙ„Ù‚</option>
+              <option value="">كل الحالات</option>
+              <option value="open">مفتوح</option>
+              <option value="answered">تم الرد</option>
+              <option value="closed">مغلق</option>
             </select>
             <button type="submit" className="rounded-2xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
-              ØªØ·Ø¨ÙŠÙ‚ Ø§Ù„ÙÙ„ØªØ±Ø©
+              تطبيق الفلترة
             </button>
           </form>
 
           {info ? <div className="mt-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-700">{info}</div> : null}
           {error ? <div className="mt-3 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-2 text-sm text-rose-700">{error}</div> : null}
-          {!ok && queryError ? <div className="mt-3 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-2 text-sm text-rose-700">ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ø±Ø³Ø§Ø¦Ù„: {queryError}</div> : null}
+          {!ok && queryError ? <div className="mt-3 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-2 text-sm text-rose-700">تعذر تحميل الرسائل: {queryError}</div> : null}
         </header>
 
         <section className="space-y-3">
@@ -355,7 +355,7 @@ export default async function SecretSupportDashboard({ searchParams }) {
               if (safePayload.attachmentData) {
                 safePayload.attachmentData = "[base64-hidden-for-preview]";
               }
-              const typeLabel = typeLabelMap[ticket?.request_type] || ticket?.request_type || "ØºÙŠØ± Ù…Ø­Ø¯Ø¯";
+              const typeLabel = typeLabelMap[ticket?.request_type] || ticket?.request_type || "غير محدد";
               const statusLabel = statusLabelMap[ticket?.status] || ticket?.status || "-";
               const replies = Array.isArray(repliesByTicket[ticket.id]) ? repliesByTicket[ticket.id] : [];
               const canClose = isOwnerRole(session.role);
@@ -372,12 +372,12 @@ export default async function SecretSupportDashboard({ searchParams }) {
                     <form action={changeStatusAction} className="flex items-center gap-2">
                       <input type="hidden" name="ticketId" value={ticket.id} />
                       <select name="status" defaultValue={ticket.status || "open"} className="rounded-xl border border-slate-200 px-2 py-1 text-xs">
-                        <option value="open">Ù…ÙØªÙˆØ­</option>
-                        <option value="answered">ØªÙ… Ø§Ù„Ø±Ø¯</option>
-                        {canClose ? <option value="closed">Ù…ØºÙ„Ù‚</option> : null}
+                        <option value="open">مفتوح</option>
+                        <option value="answered">تم الرد</option>
+                        {canClose ? <option value="closed">مغلق</option> : null}
                       </select>
                       <button type="submit" className="rounded-xl border border-slate-200 px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50">
-                        Ø­ÙØ¸ Ø§Ù„Ø­Ø§Ù„Ø©
+                        حفظ الحالة
                       </button>
                     </form>
                   </div>
@@ -385,19 +385,19 @@ export default async function SecretSupportDashboard({ searchParams }) {
                   <div className="mt-3 grid gap-3 lg:grid-cols-[1.2fr_0.8fr]">
                     <div className="space-y-2 text-sm text-slate-700">
                       <div>
-                        <span className="font-semibold">Ø§Ù„Ù…Ø±Ø³Ù„:</span> {ticket.requester_name || "-"}
+                        <span className="font-semibold">المرسل:</span> {ticket.requester_name || "-"}
                       </div>
                       <div>
-                        <span className="font-semibold">Ø§Ù„Ø¨Ø±ÙŠØ¯:</span> {ticket.requester_email || "-"}
+                        <span className="font-semibold">البريد:</span> {ticket.requester_email || "-"}
                       </div>
                       <div>
-                        <span className="font-semibold">Ø§Ù„Ø¹Ù†ÙˆØ§Ù†:</span> {subject || "-"}
+                        <span className="font-semibold">العنوان:</span> {subject || "-"}
                       </div>
-                      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 whitespace-pre-wrap">{message || "Ø¨Ø¯ÙˆÙ† Ø±Ø³Ø§Ù„Ø©"}</div>
+                      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 whitespace-pre-wrap">{message || "بدون رسالة"}</div>
                       <AttachmentPreview attachment={attachment} />
 
                       <details className="rounded-2xl border border-slate-200 bg-white p-3">
-                        <summary className="cursor-pointer text-xs font-semibold text-slate-600">Ø³Ø¬Ù„ Ø§Ù„Ù…Ø­Ø§Ø¯Ø«Ø©</summary>
+                        <summary className="cursor-pointer text-xs font-semibold text-slate-600">سجل المحادثة</summary>
                         {replies.length ? (
                           <div className="mt-2 space-y-2">
                             {replies.map((reply) => (
@@ -405,18 +405,18 @@ export default async function SecretSupportDashboard({ searchParams }) {
                                 <div className="font-semibold text-slate-800">{reply.author_name || "Support"}</div>
                                 <div className="mt-1 whitespace-pre-wrap text-slate-700">{reply.message || "-"}</div>
                                 <div className="mt-1 text-[11px] text-slate-500">
-                                  {formatDate(reply.created_at)} - Ø§Ù„Ø¨Ø±ÙŠØ¯: {reply.email_delivery_status === "sent" ? "ØªÙ… Ø§Ù„Ø¥Ø±Ø³Ø§Ù„" : "ÙØ´Ù„ Ø§Ù„Ø¥Ø±Ø³Ø§Ù„"}
+                                  {formatDate(reply.created_at)} - البريد: {reply.email_delivery_status === "sent" ? "تم الإرسال" : "فشل الإرسال"}
                                 </div>
                               </div>
                             ))}
                           </div>
                         ) : (
-                          <div className="mt-2 text-xs text-slate-500">Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø±Ø¯ÙˆØ¯ Ø­ØªÙ‰ Ø§Ù„Ø¢Ù†.</div>
+                          <div className="mt-2 text-xs text-slate-500">لا يوجد ردود حتى الآن.</div>
                         )}
                       </details>
 
                       <details className="rounded-2xl border border-slate-200 bg-white p-3">
-                        <summary className="cursor-pointer text-xs font-semibold text-slate-600">Ø¹Ø±Ø¶ Ø§Ù„ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ø®Ø§Ù… Ù„Ù„Ø·Ù„Ø¨</summary>
+                        <summary className="cursor-pointer text-xs font-semibold text-slate-600">عرض التفاصيل الخام للطلب</summary>
                         <pre className="mt-2 overflow-auto rounded-xl bg-slate-50 p-3 text-[11px] leading-5 text-slate-700">{JSON.stringify(safePayload, null, 2)}</pre>
                       </details>
                     </div>
@@ -425,16 +425,16 @@ export default async function SecretSupportDashboard({ searchParams }) {
                       <input type="hidden" name="ticketId" value={ticket.id} />
                       <input type="hidden" name="toEmail" value={ticket.requester_email || ""} />
                       <input type="hidden" name="subject" value={subject} />
-                      <div className="text-sm font-bold text-slate-800">Ø§Ù„Ø±Ø¯ Ø¹Ù„Ù‰ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…</div>
+                      <div className="text-sm font-bold text-slate-800">الرد على المستخدم</div>
                       <textarea
                         name="replyMessage"
                         required
                         rows={6}
                         className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm"
-                        placeholder="Ø§ÙƒØªØ¨ Ø§Ù„Ø±Ø¯ Ø§Ù„Ø°ÙŠ Ø³ÙŠØµÙ„ Ø¥Ù„Ù‰ Ø¨Ø±ÙŠØ¯ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…"
+                        placeholder="اكتب الرد الذي سيصل إلى بريد المستخدم"
                       />
                       <button type="submit" className="w-full rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800">
-                        Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø±Ø¯ Ø¹Ø¨Ø± Ø§Ù„Ø¨Ø±ÙŠØ¯
+                        إرسال الرد عبر البريد
                       </button>
                     </form>
                   </div>
@@ -442,11 +442,10 @@ export default async function SecretSupportDashboard({ searchParams }) {
               );
             })
           ) : (
-            <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center text-sm text-slate-600">Ù„Ø§ ØªÙˆØ¬Ø¯ Ø±Ø³Ø§Ø¦Ù„ Ø­Ø§Ù„ÙŠÙ‹Ø§.</div>
+            <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center text-sm text-slate-600">لا توجد رسائل حاليًا.</div>
           )}
         </section>
       </main>
     </div>
   );
 }
-

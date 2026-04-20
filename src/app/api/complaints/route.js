@@ -5,6 +5,7 @@ import { createSupportTicket } from "@/lib/support/tickets";
 
 const RATE_LIMIT_WINDOW_MS = 90 * 1000;
 const MAX_REQUESTS_PER_WINDOW = 4;
+const MAX_BASE64_CHARS = 900000;
 const rateLimitStore = new Map();
 
 function getClientIp(request) {
@@ -30,14 +31,37 @@ function enforceRateLimit(request) {
   return true;
 }
 
+function sanitizeEvidenceMime(value) {
+  const mime = String(value || "").trim().toLowerCase();
+  if (!mime) return "";
+  if (mime.startsWith("image/")) return mime;
+  if (mime === "application/pdf") return mime;
+  return "";
+}
+
+function sanitizeEvidenceData(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  const cleaned = raw.replace(/[^A-Za-z0-9+/=]/g, "");
+  if (cleaned.length > MAX_BASE64_CHARS) return "";
+  return cleaned;
+}
+
 function buildMessage(payload) {
   const now = new Date().toISOString();
-  return `نوع البلاغ: ${payload.reportTypeLabel}\nالمرسل: ${payload.name || "غير معروف"}\nالبريد الإلكتروني: ${payload.email}\nالرابط أو الحساب: ${payload.target}\nالوصف:\n${payload.description}\n\nتاريخ الإرسال: ${now}`;
+  return `نوع البلاغ: ${payload.reportTypeLabel}
+المرسل: ${payload.name || "غير معروف"}
+البريد الإلكتروني: ${payload.email}
+الرابط أو الحساب: ${payload.target}
+الوصف:
+${payload.description}
+
+تاريخ الإرسال: ${now}`;
 }
 
 export async function POST(request) {
   if (!enforceRateLimit(request)) {
-    return NextResponse.json({ message: "تم الوصول للحد الأقصى للإرسال. حاول لاحقاً." }, { status: 429 });
+    return NextResponse.json({ message: "تم الوصول للحد الأقصى للإرسال. حاول لاحقًا." }, { status: 429 });
   }
 
   let body;
@@ -49,6 +73,7 @@ export async function POST(request) {
 
   const errors = {};
   if (!body.email?.trim()) errors.email = "البريد الإلكتروني مطلوب.";
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email)) errors.email = "الرجاء إدخال بريد إلكتروني صالح.";
   if (!body.reportType) errors.reportType = "نوع البلاغ مطلوب.";
   if (!body.target?.trim()) errors.target = "الرابط أو اسم المستخدم مطلوب.";
   if (!body.description?.trim()) errors.description = "وصف المشكلة مطلوب.";
@@ -67,8 +92,12 @@ export async function POST(request) {
     reportTypeLabel: typeMeta?.label || body.reportType,
     target: body.target.trim(),
     description: body.description.trim(),
-    evidenceName: body.evidenceName || "",
+    evidenceName: String(body.evidenceName || "").trim(),
+    evidenceMime: sanitizeEvidenceMime(body.evidenceMime),
+    evidenceData: sanitizeEvidenceData(body.evidenceData),
   };
+
+  const ticketPayload = { ...payload, evidenceData: payload.evidenceData ? "[base64-hidden]" : "" };
 
   const ticket = await createSupportTicket({
     requestType: "complaint",
@@ -77,7 +106,7 @@ export async function POST(request) {
     requesterEmail: payload.email,
     subject: `بلاغ جديد - ${payload.reportTypeLabel}`,
     message: payload.description,
-    payload,
+    payload: ticketPayload,
     attachmentName: payload.evidenceName,
   });
 
@@ -92,8 +121,8 @@ export async function POST(request) {
         subject: `بلاغ جديد - ${payload.reportTypeLabel}`,
         text: buildMessage(payload),
         attachments:
-          body.evidenceData && body.evidenceName
-            ? [{ filename: body.evidenceName, content: Buffer.from(body.evidenceData, "base64") }]
+          payload.evidenceData && payload.evidenceName
+            ? [{ filename: payload.evidenceName, content: Buffer.from(payload.evidenceData, "base64") }]
             : undefined,
       });
     } catch (error) {

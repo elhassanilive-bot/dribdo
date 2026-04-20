@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { reportTypes } from './reportTypes';
 
 const MAX_EVIDENCE_SIZE = 5 * 1024 * 1024;
+const MAX_BASE64_CHARS = 900000;
 const initialForm = {
   name: '',
   email: '',
@@ -91,6 +92,37 @@ export default function ComplaintsForm() {
   const [evidence, setEvidence] = useState(null);
   const [evidenceError, setEvidenceError] = useState('');
 
+  const fileToDataUrl = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
+      reader.onerror = () => reject(new Error('file_read_failed'));
+      reader.readAsDataURL(file);
+    });
+
+  const shrinkImageToDataUrl = (dataUrl, mime) =>
+    new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const maxSide = 1280;
+        const ratio = Math.min(1, maxSide / Math.max(img.width, img.height));
+        const width = Math.max(1, Math.round(img.width * ratio));
+        const height = Math.max(1, Math.round(img.height * ratio));
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return reject(new Error('canvas_context_failed'));
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const outMime = mime === 'image/png' ? 'image/png' : 'image/jpeg';
+        const quality = outMime === 'image/jpeg' ? 0.78 : undefined;
+        resolve(canvas.toDataURL(outMime, quality));
+      };
+      img.onerror = () => reject(new Error('image_decode_failed'));
+      img.src = dataUrl;
+    });
+
   const validate = () => {
     const validationErrors = {};
     if (!form.email.trim()) {
@@ -120,7 +152,7 @@ export default function ComplaintsForm() {
     setErrors((prev) => ({ ...prev, reportType: undefined }));
   };
 
-  const handleEvidence = (event) => {
+  const handleEvidence = async (event) => {
     const file = event.target.files?.[0];
     if (!file) {
       setEvidence(null);
@@ -134,16 +166,30 @@ export default function ComplaintsForm() {
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = reader.result;
-      if (typeof result === 'string') {
-        const base64 = result.split(',')[1] ?? '';
-        setEvidence({ name: file.name, data: base64 });
-        setEvidenceError('');
+    try {
+      let dataUrl = await fileToDataUrl(file);
+      const isImage = file.type.startsWith('image/');
+      if (isImage) {
+        dataUrl = await shrinkImageToDataUrl(dataUrl, file.type || 'image/jpeg');
       }
-    };
-    reader.readAsDataURL(file);
+
+      const base64 = dataUrl.split(',')[1] ?? '';
+      if (!base64 || base64.length > MAX_BASE64_CHARS) {
+        setEvidence(null);
+        setEvidenceError('الملف كبير جدًا بعد المعالجة. استخدم صورة أخف أو أقل دقة.');
+        return;
+      }
+
+      setEvidence({
+        name: file.name,
+        mime: isImage ? (file.type === 'image/png' ? 'image/png' : 'image/jpeg') : file.type || '',
+        data: base64,
+      });
+      setEvidenceError('');
+    } catch {
+      setEvidence(null);
+      setEvidenceError('تعذر قراءة الملف. حاول بملف آخر.');
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -169,6 +215,7 @@ export default function ComplaintsForm() {
           target: form.target.trim(),
           description: form.description.trim(),
           evidenceName: evidence?.name,
+          evidenceMime: evidence?.mime,
           evidenceData: evidence?.data,
         }),
       });

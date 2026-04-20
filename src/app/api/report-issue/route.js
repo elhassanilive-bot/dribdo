@@ -4,6 +4,7 @@ import { createSupportTicket } from "@/lib/support/tickets";
 
 const RATE_LIMIT_WINDOW_MS = 90 * 1000;
 const MAX_REQUESTS_PER_WINDOW = 4;
+const MAX_BASE64_CHARS = 900000;
 const rateLimitStore = new Map();
 
 function getClientIp(request) {
@@ -29,6 +30,24 @@ function enforceRateLimit(request) {
   return true;
 }
 
+function sanitizeAttachmentMime(value) {
+  const mime = String(value || "").trim().toLowerCase();
+  if (!mime) return "";
+  if (mime.startsWith("image/")) return mime;
+  if (mime.startsWith("video/")) return mime;
+  if (mime === "application/pdf") return mime;
+  if (mime === "text/plain") return mime;
+  return "";
+}
+
+function sanitizeAttachmentData(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  const cleaned = raw.replace(/[^A-Za-z0-9+/=]/g, "");
+  if (cleaned.length > MAX_BASE64_CHARS) return "";
+  return cleaned;
+}
+
 function buildMessage(payload) {
   return [
     `الاسم: ${payload.fullName}`,
@@ -47,25 +66,6 @@ function buildMessage(payload) {
     "خطوات إعادة ظهور المشكلة:",
     payload.steps,
   ].join("\n");
-}
-
-function sanitizeAttachmentMime(value) {
-  const mime = String(value || "").trim().toLowerCase();
-  if (!mime) return "";
-  if (mime.startsWith("image/")) return mime;
-  if (mime.startsWith("video/")) return mime;
-  if (mime === "application/pdf") return mime;
-  if (mime === "text/plain") return mime;
-  return "";
-}
-
-function sanitizeAttachmentData(value) {
-  const raw = String(value || "").trim();
-  if (!raw) return "";
-  const cleaned = raw.replace(/[^A-Za-z0-9+/=]/g, "");
-  const MAX_BASE64_CHARS = 1_500_000;
-  if (cleaned.length > MAX_BASE64_CHARS) return "";
-  return cleaned;
 }
 
 export async function POST(request) {
@@ -102,7 +102,7 @@ export async function POST(request) {
     expectedResult: body.expectedResult?.trim() || "",
     actualResult: body.actualResult.trim(),
     steps: body.steps.trim(),
-    attachmentName: body.attachmentName || "",
+    attachmentName: String(body.attachmentName || "").trim(),
     attachmentMime: sanitizeAttachmentMime(body.attachmentMime),
     attachmentData: sanitizeAttachmentData(body.attachmentData),
   };
@@ -118,6 +118,7 @@ export async function POST(request) {
     attachmentName: payload.attachmentName,
   });
 
+  // Ensure ticket creation never fails only because attachment payload is large.
   if (!ticket.ok && payload.attachmentData) {
     const fallbackPayload = { ...payload, attachmentData: "", attachmentMime: "", attachmentDropped: true };
     ticket = await createSupportTicket({

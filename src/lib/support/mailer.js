@@ -56,3 +56,42 @@ export async function sendEmailToUser({ to, subject, text }) {
     text,
   });
 }
+
+export async function testSmtpConnection({ sendProbe = false } = {}) {
+  if (!isSmtpConfigured()) {
+    return { ok: false, code: "smtp_not_configured", message: "Missing SMTP configuration." };
+  }
+
+  const currentTransporter = getTransporter();
+
+  try {
+    await currentTransporter.verify();
+  } catch (error) {
+    return {
+      ok: false,
+      code: "smtp_verify_failed",
+      message: error instanceof Error ? error.message : "SMTP verify failed",
+    };
+  }
+
+  if (!sendProbe) {
+    return { ok: true, code: "smtp_verified", message: "SMTP connection verified." };
+  }
+
+  try {
+    await currentTransporter.sendMail({
+      from: process.env.EMAIL_FROM || "Dribdo <no-reply@dribdo.com>",
+      to: getSupportRecipient(),
+      subject: "SMTP Test - Dribdo Support Dashboard",
+      text: `SMTP test succeeded at ${new Date().toISOString()}.`,
+    });
+
+    return { ok: true, code: "smtp_probe_sent", message: "SMTP verified and test email sent." };
+  } catch (error) {
+    return {
+      ok: false,
+      code: "smtp_probe_failed",
+      message: error instanceof Error ? error.message : "SMTP test mail failed",
+    };
+  }
+}

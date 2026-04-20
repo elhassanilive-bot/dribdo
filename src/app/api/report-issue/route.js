@@ -62,7 +62,10 @@ function sanitizeAttachmentMime(value) {
 function sanitizeAttachmentData(value) {
   const raw = String(value || "").trim();
   if (!raw) return "";
-  return raw.replace(/[^A-Za-z0-9+/=]/g, "");
+  const cleaned = raw.replace(/[^A-Za-z0-9+/=]/g, "");
+  const MAX_BASE64_CHARS = 1_500_000;
+  if (cleaned.length > MAX_BASE64_CHARS) return "";
+  return cleaned;
 }
 
 export async function POST(request) {
@@ -104,7 +107,7 @@ export async function POST(request) {
     attachmentData: sanitizeAttachmentData(body.attachmentData),
   };
 
-  const ticket = await createSupportTicket({
+  let ticket = await createSupportTicket({
     requestType: "report_issue",
     source: "report_issue_form",
     requesterName: payload.fullName,
@@ -114,6 +117,20 @@ export async function POST(request) {
     payload,
     attachmentName: payload.attachmentName,
   });
+
+  if (!ticket.ok && payload.attachmentData) {
+    const fallbackPayload = { ...payload, attachmentData: "", attachmentMime: "", attachmentDropped: true };
+    ticket = await createSupportTicket({
+      requestType: "report_issue",
+      source: "report_issue_form",
+      requesterName: fallbackPayload.fullName,
+      requesterEmail: fallbackPayload.email,
+      subject: `بلاغ تقني - ${fallbackPayload.issueArea}`,
+      message: fallbackPayload.actualResult,
+      payload: fallbackPayload,
+      attachmentName: fallbackPayload.attachmentName,
+    });
+  }
 
   if (!ticket.ok) {
     return NextResponse.json({ message: `تعذر حفظ الطلب: ${ticket.error || "unknown"}` }, { status: 500 });

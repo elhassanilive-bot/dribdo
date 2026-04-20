@@ -49,6 +49,22 @@ function buildMessage(payload) {
   ].join("\n");
 }
 
+function sanitizeAttachmentMime(value) {
+  const mime = String(value || "").trim().toLowerCase();
+  if (!mime) return "";
+  if (mime.startsWith("image/")) return mime;
+  if (mime.startsWith("video/")) return mime;
+  if (mime === "application/pdf") return mime;
+  if (mime === "text/plain") return mime;
+  return "";
+}
+
+function sanitizeAttachmentData(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  return raw.replace(/[^A-Za-z0-9+/=]/g, "");
+}
+
 export async function POST(request) {
   if (!enforceRateLimit(request)) {
     return NextResponse.json({ message: "تم الوصول للحد الأقصى من البلاغات. حاول لاحقًا." }, { status: 429 });
@@ -84,6 +100,8 @@ export async function POST(request) {
     actualResult: body.actualResult.trim(),
     steps: body.steps.trim(),
     attachmentName: body.attachmentName || "",
+    attachmentMime: sanitizeAttachmentMime(body.attachmentMime),
+    attachmentData: sanitizeAttachmentData(body.attachmentData),
   };
 
   const ticket = await createSupportTicket({
@@ -108,8 +126,8 @@ export async function POST(request) {
         subject: `بلاغ تقني جديد - ${payload.issueArea}`,
         text: buildMessage(payload),
         attachments:
-          body.attachmentName && body.attachmentData
-            ? [{ filename: body.attachmentName, content: Buffer.from(body.attachmentData, "base64") }]
+          payload.attachmentName && payload.attachmentData
+            ? [{ filename: payload.attachmentName, content: Buffer.from(payload.attachmentData, "base64") }]
             : undefined,
       });
     } catch (error) {

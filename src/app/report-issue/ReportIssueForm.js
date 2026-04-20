@@ -99,6 +99,7 @@ export default function ReportIssueForm() {
       if (typeof result === 'string') {
         setAttachment({
           name: file.name,
+          mime: file.type || '',
           data: result.split(',')[1] ?? '',
         });
         setAttachmentError('');
@@ -137,6 +138,7 @@ export default function ReportIssueForm() {
         body: JSON.stringify({
           ...form,
           attachmentName: attachment?.name,
+          attachmentMime: attachment?.mime,
           attachmentData: attachment?.data,
         }),
       });

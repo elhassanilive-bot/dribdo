@@ -1,5 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import Image from "next/image";
 import SupportRealtimeNotifier from "./SupportRealtimeNotifier";
 import {
   clearSupportSession,
@@ -56,6 +57,62 @@ function formatDate(iso) {
   } catch {
     return date.toISOString();
   }
+}
+
+function getAttachmentFromPayload(payload, fallbackName) {
+  const name = String(payload?.attachmentName || fallbackName || "").trim();
+  const mime = String(payload?.attachmentMime || "").trim().toLowerCase();
+  const data = String(payload?.attachmentData || "").trim();
+  if (!name && !data) return null;
+  if (!data || !mime) return { name, mime: "", src: "", hasData: false };
+  return { name, mime, src: `data:${mime};base64,${data}`, hasData: true };
+}
+
+function AttachmentPreview({ attachment }) {
+  if (!attachment) return null;
+  if (!attachment.hasData) {
+    return (
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-600">
+        المرفق: {attachment.name || "ملف مرفق"} (بدون معاينة لهذا الطلب القديم)
+      </div>
+    );
+  }
+
+  const isImage = attachment.mime.startsWith("image/");
+  const isVideo = attachment.mime.startsWith("video/");
+  const isPdf = attachment.mime === "application/pdf";
+
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-3">
+      <div className="mb-2 text-xs font-semibold text-slate-700">المرفق: {attachment.name || "ملف"}</div>
+      {isImage ? (
+        <Image
+          src={attachment.src}
+          alt={attachment.name || "attachment"}
+          width={900}
+          height={540}
+          unoptimized
+          className="max-h-72 w-auto rounded-xl border border-slate-200 object-contain"
+        />
+      ) : null}
+      {isVideo ? (
+        <video controls className="max-h-72 w-full rounded-xl border border-slate-200">
+          <source src={attachment.src} type={attachment.mime} />
+        </video>
+      ) : null}
+      {isPdf ? <iframe title={attachment.name || "PDF"} src={attachment.src} className="h-80 w-full rounded-xl border border-slate-200" /> : null}
+      {!isImage && !isVideo && !isPdf ? (
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-2 text-xs text-slate-600">المعاينة غير مدعومة لهذا النوع.</div>
+      ) : null}
+      <a
+        href={attachment.src}
+        download={attachment.name || "attachment"}
+        className="mt-2 inline-block rounded-xl border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+      >
+        تحميل المرفق
+      </a>
+    </div>
+  );
 }
 
 async function requireSessionOrRedirect() {
@@ -273,6 +330,11 @@ export default async function SecretSupportDashboard({ searchParams }) {
               const subject = String(ticket?.subject || "").trim();
               const message = String(ticket?.message || "").trim();
               const payload = ticket?.payload && typeof ticket.payload === "object" ? ticket.payload : {};
+              const attachment = getAttachmentFromPayload(payload, ticket?.attachment_name);
+              const safePayload = { ...payload };
+              if (safePayload.attachmentData) {
+                safePayload.attachmentData = "[base64-hidden-for-preview]";
+              }
               const typeLabel = typeLabelMap[ticket?.request_type] || ticket?.request_type || "غير محدد";
               const statusLabel = statusLabelMap[ticket?.status] || ticket?.status || "-";
               const replies = Array.isArray(repliesByTicket[ticket.id]) ? repliesByTicket[ticket.id] : [];
@@ -312,6 +374,7 @@ export default async function SecretSupportDashboard({ searchParams }) {
                         <span className="font-semibold">العنوان:</span> {subject || "-"}
                       </div>
                       <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 whitespace-pre-wrap">{message || "بدون رسالة"}</div>
+                      <AttachmentPreview attachment={attachment} />
 
                       <details className="rounded-2xl border border-slate-200 bg-white p-3">
                         <summary className="cursor-pointer text-xs font-semibold text-slate-600">سجل المحادثة</summary>
@@ -334,7 +397,7 @@ export default async function SecretSupportDashboard({ searchParams }) {
 
                       <details className="rounded-2xl border border-slate-200 bg-white p-3">
                         <summary className="cursor-pointer text-xs font-semibold text-slate-600">عرض التفاصيل الخام للطلب</summary>
-                        <pre className="mt-2 overflow-auto rounded-xl bg-slate-50 p-3 text-[11px] leading-5 text-slate-700">{JSON.stringify(payload, null, 2)}</pre>
+                        <pre className="mt-2 overflow-auto rounded-xl bg-slate-50 p-3 text-[11px] leading-5 text-slate-700">{JSON.stringify(safePayload, null, 2)}</pre>
                       </details>
                     </div>
 

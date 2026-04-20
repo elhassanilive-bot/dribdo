@@ -543,12 +543,7 @@ export default async function Home() {
               <div className="min-w-[920px]">
                 <div className="grid grid-cols-[220px_minmax(340px,1fr)_minmax(340px,1fr)] bg-[#f7f3f1] text-right">
                   <div className="border-l border-black/10 p-5 text-lg font-bold text-black">السمات</div>
-                  <div className="border-l border-black/10 p-5 text-lg font-bold text-black">
-                    <span className="inline-flex items-center gap-2">
-                      <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-red-700 text-sm font-bold text-white">D</span>
-                      دريبدو
-                    </span>
-                  </div>
+                  <div className="border-l border-black/10 p-5 text-lg font-bold text-black">دريبدو</div>
                   <div className="p-5 text-lg font-bold text-black">المنصات الأخرى</div>
                 </div>
 

@@ -60,11 +60,11 @@ function formatDate(iso) {
 }
 
 function getAttachmentFromPayload(payload, fallbackName) {
-  const name = String(payload?.attachmentName || fallbackName || "").trim();
-  const mime = String(payload?.attachmentMime || "").trim().toLowerCase();
-  const data = String(payload?.attachmentData || "").trim();
+  const name = String(payload?.attachmentName || payload?.evidenceName || fallbackName || "").trim();
+  const mime = String(payload?.attachmentMime || payload?.evidenceMime || "").trim().toLowerCase();
+  const data = String(payload?.attachmentData || payload?.evidenceData || "").trim();
   if (!name && !data) return null;
-  if (!data || !mime) return { name, mime: "", src: "", hasData: false };
+  if (!data || !mime || data === "[base64-hidden]") return { name, mime: "", src: "", hasData: false };
   return { name, mime, src: `data:${mime};base64,${data}`, hasData: true };
 }
 
@@ -354,6 +354,9 @@ export default async function SecretSupportDashboard({ searchParams }) {
               const safePayload = { ...payload };
               if (safePayload.attachmentData) {
                 safePayload.attachmentData = "[base64-hidden-for-preview]";
+              }
+              if (safePayload.evidenceData) {
+                safePayload.evidenceData = "[base64-hidden-for-preview]";
               }
               const typeLabel = typeLabelMap[ticket?.request_type] || ticket?.request_type || "غير محدد";
               const statusLabel = statusLabelMap[ticket?.status] || ticket?.status || "-";

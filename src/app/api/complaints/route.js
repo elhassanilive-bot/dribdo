@@ -95,9 +95,10 @@ export async function POST(request) {
     evidenceName: String(body.evidenceName || "").trim(),
     evidenceMime: sanitizeEvidenceMime(body.evidenceMime),
     evidenceData: sanitizeEvidenceData(body.evidenceData),
+    attachmentName: String(body.evidenceName || "").trim(),
+    attachmentMime: sanitizeEvidenceMime(body.evidenceMime),
+    attachmentData: sanitizeEvidenceData(body.evidenceData),
   };
-
-  const ticketPayload = { ...payload, evidenceData: payload.evidenceData ? "[base64-hidden]" : "" };
 
   const ticket = await createSupportTicket({
     requestType: "complaint",
@@ -106,7 +107,7 @@ export async function POST(request) {
     requesterEmail: payload.email,
     subject: `بلاغ جديد - ${payload.reportTypeLabel}`,
     message: payload.description,
-    payload: ticketPayload,
+    payload,
     attachmentName: payload.evidenceName,
   });
 

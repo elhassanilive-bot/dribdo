@@ -1,4 +1,4 @@
-Image with src "/screenshots/ads.png" is using quality "76" which is not configured in images.qualities [75]. Please update your config to [75, 76].
+Image with src "/screenshots/baner.jpg" is using quality "76" which is not configured in images.qualities [75]. Please update your config to [75, 76].
 Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
 Image with src "/screenshots/hero-ads-1.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
 Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
@@ -10,11 +10,15 @@ Image with src "/screenshots/hero-ads-4.jpg" is using quality "72" which is not 
 Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
 Image with src "/screenshots/hero-ads-5.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
 Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
-⨯ Error: Invalid OpenGraph type: product
-    at ignore-listed frames {
-  digest: '4148573888@E237'
-}
-⚠ Fast Refresh had to perform a full reload due to a runtime error.
-⚠ Fast Refresh had to perform a full reload due to a runtime error.
-⚠ Fast Refresh had to perform a full reload due to a runtime error.
-⚠ Fast Refresh had to perform a full reload due to a runtime error.
+Image with src "/screenshots/baner.jpg" is using quality "76" which is not configured in images.qualities [75]. Please update your config to [75, 76].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/hero-ads-1.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/hero-ads-2.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/hero-ads-3.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/hero-ads-4.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities
+Image with src "/screenshots/hero-ads-5.jpg" is using quality "72" which is not configured in images.qualities [75]. Please update your config to [72, 75].
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities

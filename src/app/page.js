@@ -402,7 +402,7 @@ export default async function Home() {
                 <article className="overflow-hidden rounded-[34px] border border-white/55 bg-white/35 shadow-[0_24px_70px_-45px_rgba(92,65,8,0.45)] backdrop-blur-sm">
                   <div className="relative bg-[linear-gradient(180deg,rgba(255,255,255,0.18),rgba(255,255,255,0.04))] p-4 sm:p-5">
                     <Image
-                      src="/screenshots/ads.png"
+                      src="/screenshots/baner.jpg"
                       alt={`لقطة شاشة: ${heroScreenshots[0].title}`}
                       width={1200}
                       height={820}
@@ -514,13 +514,28 @@ export default async function Home() {
 
       <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
         <div className="rounded-[34px] border border-black/10 bg-white p-8 sm:p-10">
-          <div className="mb-10 grid gap-6 border-b border-black/10 pb-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-              <div className="text-right">
+          <div className="mb-10 grid gap-6 border-b border-black/10 pb-8 lg:grid-cols-[1.15fr_0.85fr]">
+            <div className="overflow-hidden rounded-[26px] border border-black/10 bg-[linear-gradient(145deg,#fff8e9,#f7e8c6)] p-4 shadow-[0_18px_50px_-35px_rgba(87,58,7,0.45)]">
+              <div className="relative flex min-h-[520px] items-center justify-center rounded-[20px] border border-white/60 bg-white/35 p-3 backdrop-blur-sm sm:min-h-[620px] lg:min-h-[700px]">
+                <Image
+                  src="/screenshots/baner2.png"
+                  alt="بانر إضافي لدريبدو"
+                  width={1100}
+                  height={700}
+                  sizes="(max-width: 1024px) 100vw, 60vw"
+                  quality={88}
+                  className="h-[500px] w-full object-contain object-center sm:h-[590px] lg:h-[670px]"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="rounded-[24px] bg-[#faf6f3] p-6 text-right">
                 <p className="text-sm font-semibold uppercase tracking-[0.45em] text-black/35">مقارنة مباشرة</p>
                 <h2 className="mt-4 text-4xl font-black text-black sm:text-5xl">
-                  لماذا  <span className="text-red-700">دريبدو</span>   يختاره المستخدمين أكثر من التطبيقات الأخرى؟
+                  لماذا <span className="text-red-700">دريبدو</span> يختاره المستخدمين أكثر من التطبيقات الأخرى؟
                 </h2>
-                <p className="mt-4 max-w-3xl text-lg leading-8 text-black/65">
+                <p className="mt-4 text-lg leading-8 text-black/65">
                   تعرف لمذا دريبدو يختاره أغلب الأشخاص ويفضلونه أكثر من التطبيقات الأخرى, ليس بهذف النشر والتواصل والدردشة فقط, ولاكن هناك هذف معين يجعله مميز من بين التطبيقات الأخرى.
                 </p>
               </div>
@@ -534,6 +549,7 @@ export default async function Home() {
                 ))}
               </div>
             </div>
+          </div>
 
           <div className="overflow-hidden rounded-[28px] border border-black/10 bg-white">
             <div className="border-b border-black/10 bg-[#f8f5f3] px-4 py-2 text-xs font-semibold text-black/55 sm:hidden">

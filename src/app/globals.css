@@ -4,21 +4,21 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --gold-50: #fff8e1;
-  --gold-100: #ffefbf;
-  --gold-200: #f5d27a;
-  --gold-300: #eabf52;
-  --gold-400: #d9a732;
-  --gold-500: #c08a16;
-  --gold-600: #9b6e0f;
-  --gold-700: #7a560b;
-  --gold-800: #5c4108;
-  --gold-900: #3f2c05;
-  --blog-accent: #c08a16;
-  --blog-accent-strong: #7a560b;
+  --gold-50: #f1fff6;
+  --gold-100: #dcffe8;
+  --gold-200: #b8f5ce;
+  --gold-300: #88e8af;
+  --gold-400: #57d88d;
+  --gold-500: #2ebf69;
+  --gold-600: #16934f;
+  --gold-700: #0f6e3a;
+  --gold-800: #0a4b28;
+  --gold-900: #052d17;
+  --blog-accent: #2ebf69;
+  --blog-accent-strong: #0f6e3a;
   --blog-ink: #0f172a;
   --blog-muted: #475569;
-  --blog-surface: #fff8e1;
+  --blog-surface: #f1fff6;
 }
 
 @theme inline {
@@ -112,7 +112,7 @@ body {
 }
 
 .blog-prose code {
-  background: #fff8e1;
+  background: var(--gold-50);
   color: var(--gold-800);
   border-radius: 0.6rem;
   padding: 0.15rem 0.45rem;
@@ -297,7 +297,7 @@ body {
 
 .blog-editor-surface blockquote {
   border-inline-start: 4px solid var(--gold-300);
-  background: #fff8e1;
+  background: var(--gold-50);
   border-radius: 1.25rem;
   padding: 1rem 1.25rem;
 }
@@ -344,7 +344,7 @@ body {
 }
 
 .blog-editor-image-wrap.is-selected .blog-resizable-image {
-  box-shadow: 0 0 0 2px rgba(192, 138, 22, 0.35);
+  box-shadow: 0 0 0 2px rgba(46, 191, 105, 0.35);
 }
 
 .blog-image-toolbar {
@@ -372,7 +372,7 @@ body {
 
 .blog-image-toolbar button.is-active {
   border-color: var(--gold-400);
-  background: #fff8e1;
+  background: var(--gold-50);
   color: var(--gold-700);
 }
 
@@ -524,14 +524,14 @@ body {
 }
 
 .blog-editor-surface .selectedCell:after {
-  background: rgba(192, 138, 22, 0.12);
+  background: rgba(46, 191, 105, 0.12);
   content: "";
   inset: 0;
   pointer-events: none;
   position: absolute;
 }
 
-/* Global mapping from red/rose utilities to a dark-gold palette */
+/* Global mapping from warm palettes to the site theme: black + light green */
 .text-red-500,
 .text-rose-500 {
   color: var(--gold-500) !important;
@@ -655,4 +655,60 @@ body {
 
 .to-rose-100 {
   --tw-gradient-to: var(--gold-100) var(--tw-gradient-to-position) !important;
+}
+
+.text-amber-500,
+.text-amber-600,
+.text-yellow-600 {
+  color: var(--gold-600) !important;
+}
+
+.text-amber-700,
+.text-yellow-700 {
+  color: var(--gold-700) !important;
+}
+
+.text-amber-800,
+.text-yellow-800 {
+  color: var(--gold-800) !important;
+}
+
+.text-amber-900,
+.text-yellow-900 {
+  color: var(--gold-900) !important;
+}
+
+.bg-amber-50,
+.bg-yellow-50 {
+  background-color: var(--gold-50) !important;
+}
+
+.bg-amber-100,
+.bg-yellow-100 {
+  background-color: var(--gold-100) !important;
+}
+
+.border-amber-100,
+.border-yellow-100 {
+  border-color: var(--gold-100) !important;
+}
+
+.border-amber-200,
+.border-yellow-200 {
+  border-color: var(--gold-200) !important;
+}
+
+.border-amber-300,
+.border-yellow-300 {
+  border-color: var(--gold-300) !important;
+}
+
+.hover\:bg-amber-50:hover,
+.hover\:bg-yellow-50:hover {
+  background-color: var(--gold-50) !important;
+}
+
+.hover\:bg-amber-100:hover,
+.hover\:bg-yellow-100:hover {
+  background-color: var(--gold-100) !important;
 }

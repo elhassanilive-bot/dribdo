@@ -363,7 +363,7 @@ export default async function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd) }} />
       <section className="border-b border-black/8">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
-          <div className="relative overflow-hidden rounded-[40px] border border-red-100 bg-[linear-gradient(135deg,#fff9e8_0%,#f8e2a8_20%,#d9b45b_44%,#f5e7c2_72%,#fffaf0_100%)] px-5 py-8 shadow-[0_30px_80px_-50px_rgba(92,65,8,0.42)] sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+          <div className="relative overflow-hidden rounded-[40px] border border-red-100 bg-[linear-gradient(135deg,#f4fff8_0%,#d8ffe7_22%,#9cefc0_46%,#e7fff1_72%,#fcfffd_100%)] px-5 py-8 shadow-[0_30px_80px_-50px_rgba(5,45,23,0.35)] sm:px-8 sm:py-10 lg:px-10 lg:py-12">
             <div className="pointer-events-none absolute -right-12 top-0 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(122,86,11,0.24),rgba(122,86,11,0)_72%)]" />
             <div className="pointer-events-none absolute -left-10 bottom-0 h-52 w-52 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.45),rgba(255,255,255,0)_72%)]" />
             <div className="relative grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
@@ -515,7 +515,7 @@ export default async function Home() {
       <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
         <div className="rounded-[34px] border border-black/10 bg-white p-8 sm:p-10">
           <div className="mb-10 grid gap-6 border-b border-black/10 pb-8 lg:grid-cols-[1.15fr_0.85fr]">
-            <div className="overflow-hidden rounded-[26px] border border-black/10 bg-[linear-gradient(145deg,#fff8e9,#f7e8c6)] p-4 shadow-[0_18px_50px_-35px_rgba(87,58,7,0.45)]">
+            <div className="overflow-hidden rounded-[26px] border border-black/10 bg-[linear-gradient(145deg,#f2fff7,#dfffea)] p-4 shadow-[0_18px_50px_-35px_rgba(5,45,23,0.28)]">
               <div className="relative flex min-h-[520px] items-center justify-center rounded-[20px] border border-white/60 bg-white/35 p-3 backdrop-blur-sm sm:min-h-[620px] lg:min-h-[700px]">
                 <Image
                   src="/screenshots/baner2.png"

@@ -8,6 +8,28 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 export const fetchCache = "force-no-store";
 
+function hexToRgb(hex) {
+  const value = String(hex || "").trim();
+  const match = value.match(/^#?([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$/);
+  if (!match) return null;
+  const raw = match[1];
+  const normalized = raw.length === 3 ? raw.split("").map((c) => c + c).join("") : raw;
+  const int = Number.parseInt(normalized, 16);
+  if (!Number.isFinite(int)) return null;
+  return {
+    r: (int >> 16) & 255,
+    g: (int >> 8) & 255,
+    b: int & 255,
+  };
+}
+
+function isDarkColor(hex) {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return false;
+  const luminance = (0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b) / 255;
+  return luminance < 0.5;
+}
+
 function formatDate(iso) {
   if (!iso) return "";
   const date = new Date(iso);
@@ -102,6 +124,15 @@ export default async function PostPage({ params }) {
   const related = (await listMomentPostsForFeed({ limit: 80 }))
     .filter((item) => item.id !== post.id && item.userId === post.userId)
     .slice(0, 4);
+  const hasColorBackground = Boolean(post.bgColor);
+  const darkBackground = hasColorBackground ? isDarkColor(post.bgColor) : false;
+  const fallbackTextColor = hasColorBackground
+    ? (darkBackground ? "#ffffff" : "#0f172a")
+    : "#111827";
+  const postTextStyle = {
+    background: post.bgColor || "transparent",
+    color: darkBackground ? "#ffffff" : (post.textColor || fallbackTextColor),
+  };
 
   const descText = excerptText(post.content, 170) || "منشور من دريبدو";
   const ogImage = post.mediaUrls.find((url) => mediaKind(url, post.postType) === "image") || absoluteUrl(site.defaultOgImage);
@@ -160,7 +191,7 @@ export default async function PostPage({ params }) {
         {post.content ? (
           <div
             className="mt-5 whitespace-pre-wrap rounded-2xl px-4 py-4 text-[1.06rem] leading-8"
-            style={{ background: post.bgColor || "transparent", color: post.textColor || "#111827" }}
+            style={postTextStyle}
           >
             <RichMomentText text={post.content} />
           </div>

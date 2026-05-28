@@ -214,7 +214,7 @@ export default function ContactForm() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-black px-6 py-3 text-sm font-semibold text-white transition hover:bg-black/90 disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-red-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-red-800 disabled:opacity-60"
           >
             {isSubmitting ? 'جاري الإرسال...' : 'إرسال'}
           </button>
@@ -256,4 +256,5 @@ export default function ContactForm() {
     </section>
   );
 }
+
 

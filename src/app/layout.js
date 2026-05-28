@@ -23,12 +23,12 @@ export const metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico?v=6", type: "image/png", sizes: "512x512" },
-      { url: "/icon.png?v=6", type: "image/png", sizes: "512x512" },
-      { url: "/icon.png?v=6", type: "image/png", sizes: "192x192" },
+      { url: "/favicon.ico?v=7", type: "image/png", sizes: "512x512" },
+      { url: "/icon.png?v=7", type: "image/png", sizes: "512x512" },
+      { url: "/icon.png?v=7", type: "image/png", sizes: "192x192" },
     ],
-    shortcut: [{ url: "/favicon.ico?v=6", type: "image/png" }],
-    apple: [{ url: "/apple-icon.png?v=6", sizes: "180x180", type: "image/png" }],
+    shortcut: [{ url: "/favicon.ico?v=7", type: "image/png" }],
+    apple: [{ url: "/apple-icon.png?v=7", sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
     type: "website",
@@ -119,6 +119,7 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
 
 
 

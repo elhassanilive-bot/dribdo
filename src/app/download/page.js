@@ -222,7 +222,7 @@ export default function DownloadPage() {
                 بعد التثبيت يمكنك إنشاء الحساب، إعداد ملفك الشخصي، متابعة الأشخاص، النشر، استكشاف الفيديوهات، والدخول إلى المجتمعات والمساحات والاستفادة من أقسام التطبيق المختلفة.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link href="/features" className="rounded-full bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-black/90">
+                <Link href="/features" className="rounded-full bg-red-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-800">
                   استعرض المميزات
                 </Link>
                 <Link href="/faq" className="rounded-full border border-black/10 bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-black/5">
@@ -241,7 +241,7 @@ function DownloadAction({ href, label, helper, icon, accent = 'light', comingSoo
   const isReady = Boolean(href) && !comingSoon;
   const className =
     accent === 'dark'
-      ? 'border-black bg-[#111111] text-white hover:bg-black'
+      ? 'border-red-800 bg-red-700 text-white hover:bg-red-800'
       : 'border-black/10 bg-[#faf8f6] text-black hover:border-black/20 hover:bg-white';
 
   const body = (
@@ -272,6 +272,7 @@ function DownloadAction({ href, label, helper, icon, accent = 'light', comingSoo
 
   return <Link href={href} className="block">{body}</Link>;
 }
+
 
 
 

@@ -243,7 +243,7 @@ export default function ReportIssueForm() {
           {attachmentError ? <p className="mt-2 text-xs text-red-500">{attachmentError}</p> : null}
         </Field>
 
-        <button type="submit" disabled={isSubmitting} className="flex w-full items-center justify-center rounded-2xl bg-black px-6 py-3 text-sm font-semibold text-white transition hover:bg-black/90 disabled:opacity-60">
+        <button type="submit" disabled={isSubmitting} className="flex w-full items-center justify-center rounded-2xl bg-red-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-red-800 disabled:opacity-60">
           {isSubmitting ? 'جارٍ الإرسال...' : 'إرسال بلاغ المشكلة'}
         </button>
       </form>
@@ -338,4 +338,5 @@ function inputClass(hasError) {
       img.onerror = () => reject(new Error('image_decode_failed'));
       img.src = dataUrl;
     });
+
 

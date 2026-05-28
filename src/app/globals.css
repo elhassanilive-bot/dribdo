@@ -4,21 +4,21 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --gold-50: #f1fff6;
-  --gold-100: #dcffe8;
-  --gold-200: #b8f5ce;
-  --gold-300: #88e8af;
-  --gold-400: #57d88d;
-  --gold-500: #2ebf69;
-  --gold-600: #16934f;
-  --gold-700: #0f6e3a;
-  --gold-800: #0a4b28;
-  --gold-900: #052d17;
-  --blog-accent: #2ebf69;
-  --blog-accent-strong: #0f6e3a;
+  --gold-50: #fff1f2;
+  --gold-100: #ffe4e6;
+  --gold-200: #fecdd3;
+  --gold-300: #fda4af;
+  --gold-400: #fb7185;
+  --gold-500: #ef4444;
+  --gold-600: #dc2626;
+  --gold-700: #b91c1c;
+  --gold-800: #991b1b;
+  --gold-900: #7f1d1d;
+  --blog-accent: #b91c1c;
+  --blog-accent-strong: #7f1d1d;
   --blog-ink: #0f172a;
   --blog-muted: #475569;
-  --blog-surface: #f1fff6;
+  --blog-surface: #fff1f2;
 }
 
 @theme inline {
@@ -524,14 +524,14 @@ body {
 }
 
 .blog-editor-surface .selectedCell:after {
-  background: rgba(46, 191, 105, 0.12);
+  background: rgba(185, 28, 28, 0.12);
   content: "";
   inset: 0;
   pointer-events: none;
   position: absolute;
 }
 
-/* Global mapping from warm palettes to the site theme: black + light green */
+/* Global mapping from common palettes to the site primary red theme */
 .text-red-500,
 .text-rose-500 {
   color: var(--gold-500) !important;
@@ -711,4 +711,154 @@ body {
 .hover\:bg-amber-100:hover,
 .hover\:bg-yellow-100:hover {
   background-color: var(--gold-100) !important;
+}
+
+/* Normalize legacy blue/emerald action colors to Dribdo red. */
+.text-blue-500,
+.text-blue-600,
+.text-sky-600,
+.text-sky-700,
+.text-emerald-600,
+.text-emerald-700 {
+  color: var(--gold-700) !important;
+}
+
+.text-blue-700,
+.text-blue-800,
+.text-emerald-800,
+.text-emerald-900 {
+  color: var(--gold-800) !important;
+}
+
+.bg-blue-50,
+.bg-sky-50,
+.bg-emerald-50 {
+  background-color: var(--gold-50) !important;
+}
+
+.bg-blue-100,
+.bg-sky-100,
+.bg-emerald-100 {
+  background-color: var(--gold-100) !important;
+}
+
+.bg-blue-500,
+.bg-blue-600,
+.bg-sky-600,
+.bg-emerald-600,
+.bg-emerald-700 {
+  background-color: var(--gold-700) !important;
+  background-image: linear-gradient(135deg, var(--gold-800), var(--gold-600)) !important;
+  color: #fff !important;
+}
+
+.hover\:bg-blue-50:hover,
+.hover\:bg-sky-50:hover,
+.hover\:bg-emerald-50:hover {
+  background-color: var(--gold-50) !important;
+}
+
+.hover\:bg-blue-100:hover,
+.hover\:bg-sky-100:hover,
+.hover\:bg-emerald-100:hover {
+  background-color: var(--gold-100) !important;
+}
+
+.hover\:bg-blue-700:hover,
+.hover\:bg-sky-700:hover,
+.hover\:bg-emerald-800:hover {
+  background-color: var(--gold-900) !important;
+  background-image: linear-gradient(135deg, var(--gold-900), var(--gold-800)) !important;
+  color: #fff !important;
+}
+
+.border-blue-200,
+.border-blue-500,
+.border-sky-200,
+.border-emerald-200,
+.border-emerald-400 {
+  border-color: var(--gold-300) !important;
+}
+
+/* Normalize legacy green action colors to Dribdo red as well. */
+.text-green-500,
+.text-green-600,
+.text-green-700,
+.text-green-800 {
+  color: var(--gold-700) !important;
+}
+
+.bg-green-50 {
+  background-color: var(--gold-50) !important;
+}
+
+.bg-green-100 {
+  background-color: var(--gold-100) !important;
+}
+
+.bg-green-600,
+.bg-green-700 {
+  background-color: var(--gold-700) !important;
+  background-image: linear-gradient(135deg, var(--gold-800), var(--gold-600)) !important;
+  color: #fff !important;
+}
+
+.hover\:bg-green-700:hover,
+.hover\:bg-green-800:hover {
+  background-color: var(--gold-900) !important;
+  background-image: linear-gradient(135deg, var(--gold-900), var(--gold-800)) !important;
+  color: #fff !important;
+}
+
+.border-green-200,
+.border-green-400,
+.border-emerald-400 {
+  border-color: var(--gold-300) !important;
+}
+
+
+/* Catch legacy blue, sky, emerald, and green utility classes so the whole site follows the red brand. */
+[class*="text-blue-"],
+[class*="text-sky-"],
+[class*="text-emerald-"],
+[class*="text-green-"] {
+  color: var(--gold-700) !important;
+}
+
+[class*="bg-blue-50"],
+[class*="bg-sky-50"],
+[class*="bg-emerald-50"],
+[class*="bg-green-50"] {
+  background-color: var(--gold-50) !important;
+}
+
+[class*="bg-blue-100"],
+[class*="bg-sky-100"],
+[class*="bg-emerald-100"],
+[class*="bg-green-100"] {
+  background-color: var(--gold-100) !important;
+}
+
+[class*="border-blue-"],
+[class*="border-sky-"],
+[class*="border-emerald-"],
+[class*="border-green-"] {
+  border-color: var(--gold-300) !important;
+}
+
+[class*="bg-blue-500"],
+[class*="bg-blue-600"],
+[class*="bg-blue-700"],
+[class*="bg-sky-500"],
+[class*="bg-sky-600"],
+[class*="bg-sky-700"],
+[class*="bg-emerald-500"],
+[class*="bg-emerald-600"],
+[class*="bg-emerald-700"],
+[class*="bg-green-500"],
+[class*="bg-green-600"],
+[class*="bg-green-700"] {
+  background-color: var(--gold-700) !important;
+  background-image: linear-gradient(135deg, var(--gold-800), var(--gold-600)) !important;
+  color: #fff !important;
 }

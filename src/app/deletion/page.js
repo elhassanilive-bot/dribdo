@@ -1,55 +1,50 @@
 ﻿import DeletionForm from './DeletionForm';
 
 export const metadata = {
-  title: 'طلب حذف الحساب | دريبدو',
-  description: 'أرسل طلب حذف نهائي لحسابك عبر واجهة آمنة مع شرح العواقب والحماية.',
+  title: 'طلب حذف الحساب والبيانات | دريبدو',
+  description: 'صفحة طلب حذف حساب Dribdo وبياناته: الملف الشخصي، المنشورات، الفيديوهات، الصوتيات، القصص، الرسائل، التفاعلات والوسائط.',
   alternates: { canonical: '/deletion' },
 };
 
+const deletedData = [
+  'معلومات الملف الشخصي مثل الاسم، الصورة، الغلاف، السيرة الذاتية والإعدادات.',
+  'المنشورات والتعليقات والتفاعلات والحفظ والمشاركات المرتبطة بالحساب.',
+  'الصور والفيديوهات والصوتيات والقصص والوسائط المرفوعة حسب حالة التخزين.',
+  'طلبات المراسلة والرسائل والبيانات المرتبطة بالدردشة حسب قواعد الأمان والامتثال.',
+];
+
 export default function DeletionPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-12 text-gray-900 dark:bg-gray-950 dark:text-white">
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4">
-        <section className="space-y-6 rounded-3xl border border-black/10 bg-white p-10 shadow-sm dark:from-gray-900 dark:to-gray-800">
-          <p className="text-xs font-semibold uppercase tracking-[0.4em] text-black/45">طلب حذف الحساب</p>
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">طلب حذف الحساب</h1>
-          <p className="max-w-3xl text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-            يمكنك من خلال هذه الصفحة إرسال طلب حذف نهائي لحسابك في دريبدو. نُراجع الطلبات بحرص ونرسل تأكيدًا بعد مراجعة التفاصيل.
+    <main dir="rtl" className="min-h-screen bg-[#f7f5f1] py-12 text-black">
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:px-6">
+        <header className="rounded-[2rem] border border-black/10 bg-white p-8 shadow-sm sm:p-10">
+          <p className="text-xs font-semibold uppercase tracking-[0.45em] text-black/40">Account Deletion</p>
+          <h1 className="mt-4 text-4xl font-black leading-tight sm:text-5xl">طلب حذف الحساب والبيانات</h1>
+          <p className="mt-4 max-w-4xl text-base leading-8 text-black/65 sm:text-lg">
+            هذه الصفحة مخصصة لحذف حساب Dribdo وبياناته. الطلب يمر بمراجعة إدارية لحماية الحساب من الطلبات غير المصرح بها قبل التنفيذ النهائي.
           </p>
-          <div className="rounded-3xl border border-black/10 bg-[#faf8f6] p-6 text-sm text-black/75 shadow-inner dark:border-red-500/60 dark:bg-red-950/40 dark:text-red-200">
-            <p className="font-semibold text-base">تنبيه واضح</p>
-            <ul className="mt-2 space-y-2 text-xs leading-relaxed">
-              <li>حذف الحساب نهائي ولا يمكن التراجع عنه.</li>
-              <li>سيتم حذف المنشورات، الصور، الفيديوهات، الرسائل، والتفاعلات.</li>
-              <li>قد يستغرق تنفيذ الطلب عدة أيام بعد التحقق.</li>
-            </ul>
-          </div>
-        </section>
+        </header>
 
-        <div className="grid gap-8 lg:grid-cols-[1.1fr,0.9fr]">
-          <DeletionForm />
-          <aside className="space-y-6 rounded-3xl border border-black/10 bg-[#faf8f6] p-8 text-gray-700 shadow-sm dark:from-gray-900 dark:to-gray-950 dark:text-gray-100">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">معلومات مهمة</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              استخدم هذه الصفحة عندما ترغب في الحذف النهائي للحساب أو إغلاقه بعد مراجعة الهوية. نطلب معلومات دقيقة لتجنب أي طلبات غير مصرح بها.
-            </p>
-            <div className="space-y-3 text-sm">
-              <p className="flex items-center gap-2">
-                <span className="text-black">✉</span>
-                <a href="mailto:support@dribdo.com" className="font-semibold text-black hover:underline">
-                  support@dribdo.com
-                </a>
-              </p>
-              <p className="flex items-center gap-2">
-                <span className="text-black">◼</span>
-                +212638813823
-              </p>
+        <section className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <aside className="space-y-5 rounded-[2rem] border border-black/10 bg-white p-7 shadow-sm">
+            <div className="rounded-[1.5rem] bg-[#faf8f6] p-5">
+              <h2 className="text-2xl font-black">ما الذي قد يتم حذفه؟</h2>
+              <ul className="mt-5 space-y-3">
+                {deletedData.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-7 text-black/70">
+                    <span className="mt-2.5 h-2.5 w-2.5 shrink-0 rounded-full bg-red-700" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <p className="text-xs uppercase tracking-[0.4em] text-black/45">حماية الطلبات</p>
+            <div className="rounded-[1.5rem] border border-red-200 bg-red-50 p-5 text-sm leading-7 text-red-950">
+              حذف الحساب إجراء حساس وقد لا يمكن التراجع عنه بعد التنفيذ. إذا كنت تريد استراحة مؤقتة فقط، استخدم خيار إلغاء التفعيل المؤقت داخل التطبيق عندما يكون متاحا.
+            </div>
           </aside>
-        </div>
+          <DeletionForm />
+        </section>
       </div>
-    </div>
+    </main>
   );
 }
-

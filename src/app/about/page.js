@@ -1,119 +1,64 @@
 ﻿export const metadata = {
-  title: 'من نحن',
-  description: 'تعرّف على دريبدو ورؤيتنا وما الذي نقدمه ولماذا تم بناء المنصة بهذه التجربة المتكاملة.',
+  title: 'عن Dribdo',
+  description: 'تعرف على Dribdo كتطبيق اجتماعي عربي يجمع المنشورات، الفيديوهات، الصوتيات، القصص، الدردشة، الاستكشاف والإعدادات المتقدمة.',
   alternates: { canonical: '/about' },
 };
 
-const principles = [
-  {
-    title: 'منصة اجتماعية شاملة',
-    text: 'دريبدو ليس مجرد صفحة رئيسية ومنشورات، بل منصة تجمع النشر والفيديو والدردشة والمجتمعات والمساحات والخدمات الإضافية في تجربة واحدة.',
-  },
-  {
-    title: 'وضوح في التجربة',
-    text: 'نركز على الواجهة الواضحة وتقليل التشتيت حتى يعرف المستخدم أين يذهب وماذا يفعل دون ازدحام بصري أو تعقيد غير ضروري.',
-  },
-  {
-    title: 'مرونة في المحتوى',
-    text: 'ندعم المنشورات النصية والصور والفيديوهات والتسجيلات الصوتية والمستندات والقصص ضمن منظومة واحدة متماسكة.',
-  },
-  {
-    title: 'أقسام تخدم الحياة اليومية',
-    text: 'إلى جانب التواصل، يحتوي دريبدو على السوق والوظائف والعقارات وبيت الحلال والصدقات والمذكرات والجداول وأدوات مساندة أخرى.',
-  },
-];
-
-const sections = [
-  {
-    eyebrow: 'فكرة المنتج',
-    title: 'لماذا تم إنشاء دريبدو؟',
-    text: 'جاء دريبدو من فكرة واضحة: كثير من المستخدمين يحتاجون إلى أكثر من تجربة اجتماعية تقليدية، لكنهم يضطرون للتنقل بين تطبيقات كثيرة من أجل النشر والفيديو والرسائل والمجتمعات والخدمات اليومية. لذلك تم بناء دريبدو ليجمع هذه العناصر داخل منتج واحد أكثر ترتيبًا ووضوحًا مع اهتمام بالهوية العربية وسهولة الاستخدام.',
-  },
-  {
-    eyebrow: 'ما الذي نقدمه',
-    title: 'منتج واحد لسيناريوهات متعددة',
-    text: 'داخل دريبدو يستطيع المستخدم نشر الصور والنصوص والفيديو والصوت والمستندات، وإنشاء القصص، واستهلاك الفيديوهات بشكل تسلسلي، والتحدث عبر الدردشة الفردية والجماعية، وإدارة ملفه وإشعاراته. كما يمكنه الاستفادة من أقسام متخصصة مثل المساحات والمجتمعات والعقارات والوظائف والسوق وبيت الحلال والصدقات والمذكرات والجداول.',
-  },
-  {
-    eyebrow: 'رؤيتنا',
-    title: 'تجربة عربية حديثة لا تنسى الوضوح',
-    text: 'رؤيتنا هي بناء منصة عربية حديثة توازن بين كثرة الإمكانيات وسهولة الوصول. لا نريد مجرد إضافة مزايا كثيرة، بل نريد أن تبقى هذه المزايا مفهومة ومنظمة وقابلة للاستخدام الفعلي من طرف المستخدم اليومي وصانع المحتوى والعلامة التجارية والمجتمع.',
-  },
-  {
-    eyebrow: 'التزامنا',
-    title: 'تحسين مستمر واحترام للمستخدم',
-    text: 'نلتزم بتحسين المنتج تدريجيًا، وتبسيط مسارات الاستخدام، وتطوير صفحات الدعم والخصوصية والسياسات، مع احترام المستخدم العربي من حيث اللغة والتجربة والوضوح. ونعتبر أن جودة المنتج لا تقتصر على الواجهة فقط، بل تشمل الأمان والشفافية وفهم النظام من الداخل إلى الخارج.',
-  },
+const features = [
+  'خلاصة اجتماعية للمنشورات والصور والفيديوهات مع تحميل تدريجي وسكليتون للوسائط.',
+  'قسم فيديوهات وتجربة مشاهدة مرنة مع حفظ للمشاهدة لاحقا وجودة مناسبة للشبكة.',
+  'صوتيات، قصص، ملف شخصي، سيرة ذاتية، صور حساب وغلاف، وتبويبات وسائط منظمة.',
+  'بريد وارد يجمع الإشعارات وطلبات المراسلة بشكل واضح دون تشتيت.',
+  'إعدادات خصوصية حقيقية: من يرى المنشورات، من يراسلك، من يعلق، من يذكرك وحالة النشاط.',
+  'أدوات أمان مثل الجلسات، سجل الدخول، التحقق بخطوتين، الحظر، الكتم، البلاغات وصحة الحساب.',
 ];
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[#f7f5f1] text-black">
-      <section className="border-b border-black/8">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="space-y-6 text-right">
-              <p className="text-sm font-semibold uppercase tracking-[0.45em] text-black/35">من نحن</p>
-              <h1 className="text-5xl font-black leading-tight text-black sm:text-6xl">دريبدو منصة اجتماعية عربية حديثة تجمع أكثر من تجربة في مكان واحد</h1>
-              <p className="max-w-3xl text-lg leading-8 text-black/65">
-                دريبدو مشروع يركز على جعل التواصل والنشر والفيديو والدردشة والمجتمعات والخدمات اليومية أقرب إلى المستخدم عبر هيكل واضح وتجربة أخف وأكثر تنظيمًا.
-              </p>
-            </div>
-
-            <div className="rounded-[2rem] border border-black/10 bg-white p-8 shadow-sm">
-              <p className="text-sm font-semibold uppercase tracking-[0.4em] text-black/35">ملخص سريع</p>
-              <div className="mt-6 space-y-4">
-                {principles.map((item) => (
-                  <article key={item.title} className="rounded-[1.5rem] bg-[#faf8f6] p-5">
-                    <h2 className="text-lg font-bold text-black">{item.title}</h2>
-                    <p className="mt-2 text-sm leading-7 text-black/65">{item.text}</p>
-                  </article>
-                ))}
-              </div>
-            </div>
+    <main dir="rtl" className="min-h-screen bg-[#f7f5f1] py-12 text-black">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <header className="grid gap-8 rounded-[2rem] border border-black/10 bg-white p-8 shadow-sm lg:grid-cols-[1.1fr_0.9fr] sm:p-10">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.45em] text-black/40">About Dribdo</p>
+            <h1 className="mt-4 text-4xl font-black leading-tight sm:text-5xl">Dribdo تطبيق اجتماعي عربي مصمم كتجربة واحدة متكاملة</h1>
+            <p className="mt-5 max-w-4xl text-base leading-8 text-black/65 sm:text-lg">
+              Dribdo يجمع النشر، الفيديو، الصوتيات، القصص، الدردشة، الاستكشاف، الملف الشخصي والإعدادات المتقدمة في تطبيق واحد. الهدف ليس إضافة ميزات كثيرة فقط، بل جعلها مرتبة وواضحة وتعمل فعليا للمستخدم العربي.
+            </p>
           </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="space-y-8">
-          {sections.map((section) => (
-            <article key={section.title} className="rounded-[2rem] border border-black/10 bg-white p-8 shadow-sm">
-              <p className="text-sm font-semibold uppercase tracking-[0.4em] text-black/35">{section.eyebrow}</p>
-              <h2 className="mt-4 text-3xl font-black text-black">{section.title}</h2>
-              <p className="mt-4 max-w-5xl text-base leading-8 text-black/65">{section.text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="border-t border-black/8 bg-white">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-3">
-            <article className="rounded-[2rem] border border-black/10 bg-[#faf8f6] p-8">
-              <h3 className="text-2xl font-black text-black">ماذا يميزنا؟</h3>
-              <p className="mt-4 text-base leading-8 text-black/65">
-                السعي إلى بناء منصة اجتماعية واسعة دون أن تصبح التجربة نفسها مشتتة أو مرهقة في الاستخدام.
-              </p>
-            </article>
-            <article className="rounded-[2rem] border border-black/10 bg-[#faf8f6] p-8">
-              <h3 className="text-2xl font-black text-black">لمن صُمم دريبدو؟</h3>
-              <p className="mt-4 text-base leading-8 text-black/65">
-                للمستخدم اليومي وصنّاع المحتوى والعلامات التجارية والمجتمعات وكل شخص يريد منصة تجمع التواصل والخدمات معًا.
-              </p>
-            </article>
-            <article className="rounded-[2rem] border border-black/10 bg-[#faf8f6] p-8">
-              <h3 className="text-2xl font-black text-black">كيف تتواصل معنا؟</h3>
-              <p className="mt-4 text-base leading-8 text-black/65">
-                عبر صفحات الدعم الرسمية داخل الموقع أو من خلال البريد:{' '}
-                <a href="mailto:support@dribdo.com" className="font-semibold text-black hover:underline">
-                  support@dribdo.com
-                </a>
-              </p>
-            </article>
+          <div className="rounded-[1.5rem] bg-[#faf8f6] p-6">
+            <h2 className="text-xl font-black">فلسفة المنتج</h2>
+            <p className="mt-3 text-sm leading-7 text-black/65">
+              كل ميزة في Dribdo يجب أن تكون مفهومة، قابلة للتحكم، وتحترم الخصوصية والأداء. لذلك تم ربط الإعدادات والوسائط والدردشة والبلاغات ببيانات حقيقية وليس بواجهات شكلية فقط.
+            </p>
           </div>
-        </div>
-      </section>
-    </div>
+        </header>
+
+        <section className="mt-8 rounded-[2rem] border border-black/10 bg-white p-8 shadow-sm">
+          <h2 className="text-3xl font-black">ما الذي يقدمه التطبيق؟</h2>
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {features.map((feature) => (
+              <article key={feature} className="rounded-[1.25rem] bg-[#faf8f6] p-5 text-sm leading-7 text-black/70">
+                {feature}
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-8 grid gap-5 md:grid-cols-3">
+          <article className="rounded-[1.5rem] border border-black/10 bg-white p-6 shadow-sm">
+            <h3 className="text-xl font-black">تجربة عربية</h3>
+            <p className="mt-3 text-sm leading-7 text-black/65">واجهة عربية RTL، نصوص واضحة، وأقسام مصممة حسب طريقة استخدام المستخدم العربي للتطبيقات الاجتماعية.</p>
+          </article>
+          <article className="rounded-[1.5rem] border border-black/10 bg-white p-6 shadow-sm">
+            <h3 className="text-xl font-black">أداء الوسائط</h3>
+            <p className="mt-3 text-sm leading-7 text-black/65">تحميل تدريجي، صور مصغرة، كاش، ثبات أبعاد، وجودة فيديو تتعامل مع قوة الشبكة.</p>
+          </article>
+          <article className="rounded-[1.5rem] border border-black/10 bg-white p-6 shadow-sm">
+            <h3 className="text-xl font-black">خصوصية قابلة للتحكم</h3>
+            <p className="mt-3 text-sm leading-7 text-black/65">الإعدادات ليست واجهة فقط؛ هي خيارات مرتبطة بسلوك الحساب والدردشة والتعليقات والظهور.</p>
+          </article>
+        </section>
+      </div>
+    </main>
   );
 }

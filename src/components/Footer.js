@@ -22,7 +22,7 @@ export default function Footer() {
             <div className="max-w-5xl">
               <h2 className="text-3xl font-black text-white sm:text-4xl">دريبدو</h2>
               <p className="mt-4 max-w-4xl text-base leading-8 text-white/85">
-                دريبدو تطبيق اجتماعي عربي يجمع المنشورات، الفيديوهات، الصوتيات، القصص، الدردشة، الملف الشخصي، الاستكشاف، الخصوصية والدعم في تجربة واحدة واضحة ومتصلة.
+                دريبدو منصة اجتماعية عربية للنشر والتفاعل ومشاركة الصور والفيديوهات والصوتيات، مع قصص ورسائل وملف شخصي يساعدك على التعبير عن نفسك والتواصل مع الآخرين بسهولة.
               </p>
             </div>
 
@@ -53,6 +53,7 @@ export default function Footer() {
     </footer>
   );
 }
+
 
 
 

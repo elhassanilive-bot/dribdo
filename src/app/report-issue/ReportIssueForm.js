@@ -25,8 +25,6 @@ const issueAreas = [
   'الفيديوهات',
   'الدردشة والرسائل',
   'الإشعارات',
-  'المجتمعات أو المساحات',
-  'السوق أو العقارات أو الوظائف',
   'الملف الشخصي والإعدادات',
   'مشكلة عامة أخرى',
 ];
@@ -340,3 +338,4 @@ function inputClass(hasError) {
       img.onerror = () => reject(new Error('image_decode_failed'));
       img.src = dataUrl;
     });
+

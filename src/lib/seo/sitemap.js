@@ -14,6 +14,7 @@ export const staticPages = [
   "/contact",
   "/privacy",
   "/terms",
+  "/community-guidelines",
   "/security",
   "/deletion",
   "/dmca",
@@ -121,3 +122,6 @@ export function xmlResponse(xml) {
     },
   });
 }
+
+
+

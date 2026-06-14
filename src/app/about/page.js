@@ -1,43 +1,45 @@
-﻿export const metadata = {
-  title: 'عن Dribdo',
-  description: 'تعرف على Dribdo كتطبيق اجتماعي عربي يجمع المنشورات، الفيديوهات، الصوتيات، القصص، الدردشة، الاستكشاف والإعدادات المتقدمة.',
+export const metadata = {
+  title: 'عن دريبدو | القصة والرؤية',
+  description: 'تعرف على فلسفة دريبدو؛ فضاء للتعبير الواعي والنشر المرن والتواصل الهادئ المصمم ليناسب تطلعاتك.',
   alternates: { canonical: '/about' },
 };
 
 const features = [
-  'خلاصة اجتماعية للمنشورات والصور والفيديوهات مع تحميل تدريجي وسكليتون للوسائط.',
-  'قسم فيديوهات وتجربة مشاهدة مرنة مع حفظ للمشاهدة لاحقا وجودة مناسبة للشبكة.',
-  'صوتيات، قصص، ملف شخصي، سيرة ذاتية، صور حساب وغلاف، وتبويبات وسائط منظمة.',
-  'بريد وارد يجمع الإشعارات وطلبات المراسلة بشكل واضح دون تشتيت.',
-  'إعدادات خصوصية حقيقية: من يرى المنشورات، من يراسلك، من يعلق، من يذكرك وحالة النشاط.',
-  'أدوات أمان مثل الجلسات، سجل الدخول، التحقق بخطوتين، الحظر، الكتم، البلاغات وصحة الحساب.',
+  'شريط النشر المتناغم: نافذة تعرض منشوراتك ومرئياتك بتدفق انسيابي يريح العين ويحترم ذوقك البصري.',
+  'عالم المرئيات: زاوية مخصصة لمشاهدة ومشاركة مقاطع الفيديو القصيرة والملهمة، مع ميزة حفظ روائع اللقطات للعودة إليها متى شئت.',
+  'النبضات الصوتية والقصص: مساحة للتعبير بأبعاد مختلفة، سواء عبر تسجيل صوتي دافئ أو قصة يومية عابرة تروي تفاصيل لحظتك.',
+  'صندوق الرسائل الذكي: بريد وارد هادئ ينظم إشعاراتك ويفصل محادثاتك عن طلبات المراسلة الجديدة لتمنح وقتك الهدوء الذي يستحقه.',
+  'سيادة الخصوصية: إعدادات تحكم متقدمة تمكّنك من رسم حدود حضورك، وتحديد من يشاهد محتواك، يراسلك، أو يتفاعل معك.',
+  'منظومة الأمان والسلامة: أدوات مرنة لحراسة حسابك، تشمل إدارة الجلسات النشطة، سجلات النشاط، وخيارات الكتم والحظر الفعالة.',
 ];
 
 export default function AboutPage() {
   return (
-    <main dir="rtl" className="min-h-screen bg-[#f7f5f1] py-12 text-black">
+    <main dir="rtl" className="min-h-screen bg-[#f8f4ef] py-12 text-black">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <header className="grid gap-8 rounded-[2rem] border border-black/10 bg-white p-8 shadow-sm lg:grid-cols-[1.1fr_0.9fr] sm:p-10">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.45em] text-black/40">About Dribdo</p>
-            <h1 className="mt-4 text-4xl font-black leading-tight sm:text-5xl">Dribdo تطبيق اجتماعي عربي مصمم كتجربة واحدة متكاملة</h1>
-            <p className="mt-5 max-w-4xl text-base leading-8 text-black/65 sm:text-lg">
-              Dribdo يجمع النشر، الفيديو، الصوتيات، القصص، الدردشة، الاستكشاف، الملف الشخصي والإعدادات المتقدمة في تطبيق واحد. الهدف ليس إضافة ميزات كثيرة فقط، بل جعلها مرتبة وواضحة وتعمل فعليا للمستخدم العربي.
+            <p className="text-xs font-semibold uppercase tracking-[0.45em] text-red-700">نبذة عن دريبدو</p>
+            <h1 className="mt-4 text-3xl font-black leading-tight sm:text-4xl text-black">
+              دريبدو.. فضاءٌ رقمي يمنح الكلمة واللحظة قيمتها المستحقة
+            </h1>
+            <p className="mt-5 max-w-4xl text-sm leading-7 text-black/65 sm:text-base sm:leading-8">
+              لم نبتكر دريبدو لنضيف رقماً جديداً في عالم المنصات الرقمية، بل أردنا صياغة تجربة تواصل فريدة؛ تجربة تتنفس الهدوء والوضوح. نؤمن بأن النشر والمشاهدة والاستماع والتفاعل يجب أن تنساب مع إيقاع حياتك دون تشتيت أو تعقيد.
             </p>
           </div>
-          <div className="rounded-[1.5rem] bg-[#faf8f6] p-6">
-            <h2 className="text-xl font-black">فلسفة المنتج</h2>
-            <p className="mt-3 text-sm leading-7 text-black/65">
-              كل ميزة في Dribdo يجب أن تكون مفهومة، قابلة للتحكم، وتحترم الخصوصية والأداء. لذلك تم ربط الإعدادات والوسائط والدردشة والبلاغات ببيانات حقيقية وليس بواجهات شكلية فقط.
+          <div className="rounded-[1.5rem] bg-[#f8f4ef] p-6 border border-black/5">
+            <h2 className="text-lg font-black text-black">رؤيتنا للتفاعل الرقمي</h2>
+            <p className="mt-3 text-xs leading-6 text-black/65 sm:text-sm sm:leading-7">
+              في دريبدو، كل تفصيل صُمم ليمنحك السيادة والراحة. لقد ربطنا كل خيار للتحكم ببيانات حقيقية وقرارات فعلية، لنجعل من تصفحك للوسائط وتبادلك للرسائل رحلة آمنة وممتعة ومحاطة بالهدوء التام.
             </p>
           </div>
         </header>
 
         <section className="mt-8 rounded-[2rem] border border-black/10 bg-white p-8 shadow-sm">
-          <h2 className="text-3xl font-black">ما الذي يقدمه التطبيق؟</h2>
+          <h2 className="text-2xl font-black text-black">تجربة دريبدو الفريدة</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             {features.map((feature) => (
-              <article key={feature} className="rounded-[1.25rem] bg-[#faf8f6] p-5 text-sm leading-7 text-black/70">
+              <article key={feature} className="rounded-[1.25rem] bg-[#f8f4ef] p-5 text-xs leading-6 sm:text-sm sm:leading-7 text-black/70 border border-black/5">
                 {feature}
               </article>
             ))}
@@ -46,16 +48,16 @@ export default function AboutPage() {
 
         <section className="mt-8 grid gap-5 md:grid-cols-3">
           <article className="rounded-[1.5rem] border border-black/10 bg-white p-6 shadow-sm">
-            <h3 className="text-xl font-black">تجربة عربية</h3>
-            <p className="mt-3 text-sm leading-7 text-black/65">واجهة عربية RTL، نصوص واضحة، وأقسام مصممة حسب طريقة استخدام المستخدم العربي للتطبيقات الاجتماعية.</p>
+            <h3 className="text-lg font-black text-black">تصميم أصيل ومريح</h3>
+            <p className="mt-3 text-xs leading-6 text-black/65 sm:text-sm sm:leading-7">واجهة متناسقة بنصوص واضحة وتفاصيل تدعم اللغة العربية والاتجاه الطبيعي لعين القارئ لتمنحك استخداماً يومياً هادئاً.</p>
           </article>
           <article className="rounded-[1.5rem] border border-black/10 bg-white p-6 shadow-sm">
-            <h3 className="text-xl font-black">أداء الوسائط</h3>
-            <p className="mt-3 text-sm leading-7 text-black/65">تحميل تدريجي، صور مصغرة، كاش، ثبات أبعاد، وجودة فيديو تتعامل مع قوة الشبكة.</p>
+            <h3 className="text-lg font-black text-black">وسائط تتدفق بسلاسة</h3>
+            <p className="mt-3 text-xs leading-6 text-black/65 sm:text-sm sm:leading-7">آليات تحميل ذكية وصور ثابتة الأبعاد تتلاءم مع قوة اتصالك لتضمن تدفق المحتوى المرئي والصوتي دون أي تشويه أو انقطاع.</p>
           </article>
           <article className="rounded-[1.5rem] border border-black/10 bg-white p-6 shadow-sm">
-            <h3 className="text-xl font-black">خصوصية قابلة للتحكم</h3>
-            <p className="mt-3 text-sm leading-7 text-black/65">الإعدادات ليست واجهة فقط؛ هي خيارات مرتبطة بسلوك الحساب والدردشة والتعليقات والظهور.</p>
+            <h3 className="text-lg font-black text-black">سيادة مطلقة لخيارك</h3>
+            <p className="mt-3 text-xs leading-6 text-black/65 sm:text-sm sm:leading-7">إعدادات الخصوصية والأمان هي قرارات نافذة فوراً؛ تحمي حسابك وتحدد من يمكنه مرافقتك والتعقيب على فكرك.</p>
           </article>
         </section>
       </div>

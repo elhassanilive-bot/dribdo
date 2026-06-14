@@ -1,4 +1,4 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 import { downloadContent } from '@/content/download';
 
 export const metadata = {
@@ -219,7 +219,7 @@ export default function DownloadPage() {
               <p className="text-sm font-semibold uppercase tracking-[0.4em] text-black/35">ماذا بعد التنزيل؟</p>
               <h2 className="mt-4 text-3xl font-black text-black">ابدأ تجربتك الأولى داخل دريبدو</h2>
               <p className="mt-4 leading-8 text-black/65">
-                بعد التثبيت يمكنك إنشاء الحساب، إعداد ملفك الشخصي، متابعة الأشخاص، النشر، استكشاف الفيديوهات، والدخول إلى المجتمعات والمساحات والاستفادة من أقسام التطبيق المختلفة.
+                بعد التثبيت يمكنك إنشاء الحساب، إعداد ملفك الشخصي، متابعة الأشخاص، النشر، استكشاف الفيديوهات، الاستماع إلى التسجيلات الصوتية، تصفح القصص، والتواصل عبر الدردشة.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link href="/features" className="rounded-full bg-red-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-800">

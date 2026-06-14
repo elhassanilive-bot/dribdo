@@ -1,35 +1,34 @@
-﻿import ComplaintsForm from './ComplaintsForm';
+import ComplaintsForm from './ComplaintsForm';
 
 export const metadata = {
   title: 'شكاوى وبلاغات | دريبدو',
-  description: 'أرسل بلاغاً عن محتوى مخالف أو مشكلة تقنية، ويصلك رد فريق دريبدو بعد المراجعة.',
+  description: 'أرسل بلاغاً عن محتوى مخالف، سلوك غير لائق، أو مشكلة تقنية، ليتولى فريق مراجعة دريبدو فحصها بدقة.',
   alternates: { canonical: '/complaints' },
 };
 
 export default function ComplaintsPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-12 text-gray-900 dark:bg-gray-950 dark:text-white">
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4">
-        <section className="space-y-4 rounded-3xl border border-black/10 bg-white p-10 shadow-sm dark:from-gray-900 dark:to-gray-800">
-          <p className="text-xs font-semibold uppercase tracking-[0.4em] text-black/45">النظام الإشرافي</p>
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">شكاوى وبلاغات</h1>
-          <p className="max-w-3xl text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-            هذه الصفحة مخصصة لتلقي البلاغات المنظمة المتعلقة بالمحتوى المخالف، انتحال الهوية، الرسائل المزعجة،
-            المشكلات التقنية، أو أي حالة تستدعي مراجعة إشرافية من فريق دريبدو.
+    <main dir="rtl" className="min-h-screen bg-[#f8f4ef] py-12 text-black">
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:px-6">
+        <section className="space-y-4 rounded-[2rem] border border-black/10 bg-white p-8 shadow-sm sm:p-10">
+          <p className="text-xs font-semibold uppercase tracking-[0.4em] text-red-700">النظام الإشرافي</p>
+          <h1 className="text-3xl font-black leading-tight sm:text-4xl text-black">الشكاوى والبلاغات</h1>
+          <p className="max-w-3xl text-xs leading-6 text-black/65 sm:text-sm sm:leading-7">
+            نعمل بجد لنبقي فضاء دريبدو مكاناً آمناً يتسم بالاحترام المتبادل. إن صادفك محتوى ينتهك معاييرنا، أو سلوك يسيء لتجربتك، أو واجهت عقبة تقنية أثناء الاستخدام، فيرجى إطلاعنا على التفاصيل عبر النموذج أدناه ليتولى فريق الدعم والمراجعة الفحص والرد عليك.
           </p>
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-2xl border border-black/10 bg-[#faf8f6] px-4 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-black/75 dark:border-red-600/40 dark:bg-red-900/40">
-              الإبلاغ عن محتوى
+            <div className="rounded-2xl border border-black/10 bg-[#f8f4ef] px-4 py-3 text-xs font-semibold uppercase tracking-[0.25em] text-black/75">
+              صون سلامة المحتوى
             </div>
-            <div className="rounded-2xl border border-black/10 bg-[#faf8f6] px-4 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-black/75 dark:border-red-600/40 dark:bg-red-900/40">
-              دعم سريع وآمن
+            <div className="rounded-2xl border border-black/10 bg-[#f8f4ef] px-4 py-3 text-xs font-semibold uppercase tracking-[0.25em] text-black/75">
+              مراجعة سريعة وحريصة
             </div>
           </div>
         </section>
 
         <ComplaintsForm />
       </div>
-    </div>
+    </main>
   );
 }
 

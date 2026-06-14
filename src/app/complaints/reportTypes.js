@@ -1,4 +1,4 @@
-﻿export const reportTypes = [
+export const reportTypes = [
   {
     value: 'user',
     label: 'إبلاغ عن مستخدم',
@@ -16,12 +16,6 @@
     label: 'إبلاغ عن رسالة',
     description: 'رسائل غير مرغوبة أو مسيئة داخل الدردشة.',
     icon: 'message',
-  },
-  {
-    value: 'channel',
-    label: 'إبلاغ عن مجموعة أو قناة',
-    description: 'محتوى المجموعة أو القناة مخالف.',
-    icon: 'channels',
   },
   {
     value: 'technical',

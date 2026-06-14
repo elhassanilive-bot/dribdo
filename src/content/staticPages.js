@@ -4,36 +4,36 @@ export const staticPages = {
     titleEn: "Frequently Asked Questions",
     updated: "آخر تحديث: 17 مارس 2026",
     arText: `
-1) كيف أخطو خطوتي الأولى في رحاب دريبدو؟
-ارسم ملامح حسابك، وعطّر ملفك الشخصي بالبيانات، ثم انطلق لتنشر فكرةً، أو تسرد قصةً، أو تشارك مرئياتك لتضيء بها صفحات خلاصة المجتمع.
+1) كيف أبدأ مع دريبدو؟
+أنشئ حسابك، أكمل ملفك الشخصي بصورة ونبذة، ثم انطلق لتنشر أول منشور أو قصة أو مقطع فيديو ليظهر في الشريط الرئيسي لمن يتابعونك.
 
-2) كيف أصون أمن حسابي وحرمة بياناتي؟
-اختر لحسابك كلمة مرورٍ منيعة، وتوشّح بالتحقق الثنائي الذكي، ثم ألقِ نظرةً على إعدادات الخصوصية لترسم حدود الرسائل والمجموعات بما يرضيك.
+2) كيف أحمي أمان حسابي؟
+استخدم كلمة مرور قوية لا تكررها في أكثر من موقع، وفعّل التحقق الثنائي من الإعدادات. راجع بانتظام الأجهزة المتصلة بحسابك وأنهِ أي جلسة لا تعرفها.
 
-3) هل لي أن أمحو أثراً أو منشوراً شاركته؟
-بكل تأكيد؛ متى شئت محو منشورٍ أو قصة، فقط اختر زر الحذف وسيتلاشى الأثر من شريط المجتمع فوراً. كما يمكنك حفظ قصصك في الأرشيف لتظل ذكرى تخصك.
+3) هل يمكنني حذف منشور أو قصة نشرتها؟
+نعم. اضغط على خيارات المنشور أو القصة واختر "حذف"، وستختفي فوراً من شريطك ومن الشريط الرئيسي للمتابعين. يمكنك أيضاً أرشفة القصص قبل انتهائها للرجوع إليها لاحقاً.
 
-4) كيف أبلغ عن سلوكٍ يخدش نقاء مجتمعنا؟
-استخدم أيقونة البلاغ المتاحة في طيات المنشور أو الملف الشخصي، واشرح لنا ما حدث بوضوح ليتولى حراس الأمان لدينا إعادة الأمور إلى نصابها.
+4) كيف أبلّغ عن محتوى مسيء أو مزعج؟
+استخدم أيقونة البلاغ الموجودة في قائمة خيارات أي منشور أو ملف شخصي، واختر سبب البلاغ بدقة ليتمكن فريق المراجعة من التصرف بشكل مناسب.
 
-5) كيف أتحكم فيمن يمكنه رؤية إبداعاتي؟
-توجّه إلى محراب الإعدادات، وحدّد هناك جمهورك المفضل لكل منشور، وتحكّم بقوائم المتابعين والمحظورين لتصنع فضاءك الخاص الذي تحب.
+5) كيف أتحكم فيمن يرى منشوراتي؟
+من إعدادات الخصوصية يمكنك ضبط الجمهور الافتراضي لمنشوراتك، وتحديد من يمكنه التعليق أو الإشارة إليك، وإدارة قائمة الحظر والكتم.
     `,
     enText: `
 1) How do I start with Dribdo?
-Create an account, complete your profile, and publish a post, story, or short video to appear in the feed.
+Create an account, complete your profile with a photo and bio, then publish your first post, story, or video so it appears in the feed for your followers.
 
-2) How can I lock down my account?
-Use a strong password, enable two-factor authentication, and fine-tune who can message you or join your circles via Privacy settings.
+2) How can I secure my account?
+Use a strong, unique password and enable two-factor authentication in Settings. Regularly review active sessions and sign out of any device you don't recognise.
 
 3) Can I delete content?
-Yes. Tap “Delete” on the post or story you no longer need, and it will disappear from the feed immediately.
+Yes. Tap the options menu on a post or story and choose "Delete." It disappears immediately from your profile and the main feed. You can also archive stories before they expire.
 
-4) How do I report abuse?
-Use the “Report” button on posts or profiles, provide context and evidence, and our safety team will review the case.
+4) How do I report abusive content?
+Use the "Report" button on any post or profile. Select the reason accurately so our review team can take appropriate action.
 
-5) Who can view my content?
-Use the Audience controls inside Settings to limit posts, stories, and highlights to followers, friends, or specific groups.
+5) Who can see my posts?
+From Privacy Settings, you can set the default audience for posts, control who can comment or tag you, and manage your block and mute lists.
     `,
   },
   security: {
@@ -41,9 +41,11 @@ Use the Audience controls inside Settings to limit posts, stories, and highlight
     titleEn: "Data Security",
     updated: "آخر تحديث: 17 مارس 2026",
     arText: `
-نحن نؤمن بأن بياناتك هي أمانةٌ غالية، ولذلك ننسج حولها دروعاً متعددة من الحماية؛ بدءاً من الاتصالات المشفرة التي تحرس انتقال كلماتك، مروراً بأنظمة رصد الأنشطة المريبة، ووصولاً إلى لجان المراجعة اليقظة.
-نحتفظ بسجلاتك الفنية بأقل قدر ممكن ولدواعٍ تنظيمية وأمنية بحتة، وسنكون دوماً أول من ينبهك عند أي تحديث في شروط الأمان.
-ولأن حمايتك غايتنا، نرشّح لك تحديث التطبيق دورياً، وتجنّب فتح أي روابط خارجية مجهولة الهوية لتظل دوماً في أمان.
+نحرص على سلامة بياناتك من خلال طبقات متعددة من الحماية: اتصالات مشفرة تحمي كل طلب يتنقل بين التطبيق والخادم، وأنظمة رصد تكتشف النشاط غير المعتاد وتتصرف تلقائياً.
+
+نحتفظ بالسجلات التقنية بالحد الأدنى الضروري للأغراض الأمنية والتقنية فقط، ونعلمك فوراً بأي تغيير جوهري في سياسات الأمان.
+
+ننصحك بتحديث التطبيق بانتظام للحصول على أحدث تصحيحات الأمان، وتجنب فتح الروابط المجهولة أو مشاركة بيانات حسابك مع أي طرف خارجي.
     `,
     enText: `
 We protect Dribdo with encrypted transport, anomaly detection, and a strict abuse-review workflow.
@@ -56,12 +58,14 @@ Keep your app updated and avoid sharing credentials or suspicious links to stay 
     titleEn: "Request Account Deletion",
     updated: "آخر تحديث: 17 مارس 2026",
     arText: `
-إن قررت يوماً الرحيل وطوي صفحتك في دريبدو، فإننا نحترم رغبتك ونحرص على توفير وداعٍ لائق يحفظ خصوصيتك.
-كل ما عليك فعله هو التوجه إلى إعدادات حسابك، واختيار "إغلاق الحساب"، ثم إرسال طلبك عبر صفحة الدعم لإثبات الهوية.
-وعند التحقق من الطلب، سنقوم بمسح أثر حسابك وبياناتك الشخصية من خوادمنا بشكل نهائي، تماشياً مع القوانين والالتزامات التقنية المعمول بها.
+إذا قررت إنهاء حسابك في دريبدو، نحترم قرارك ونوفر مساراً واضحاً لتنفيذه.
+
+توجّه إلى إعدادات الحساب واختر "إغلاق الحساب"، ثم أرسل طلبك عبر صفحة الدعم لإثبات الهوية. بعد التحقق، نحذف بياناتك الشخصية من خوادمنا بشكل نهائي وفق الالتزامات التقنية والقانونية المعمول بها.
+
+يمكنك في أي وقت إنشاء حساب جديد إذا قررت العودة.
     `,
     enText: `
-To delete your account, open Account Settings, choose “Close Account,” and confirm the request inside Support with a valid ID.
+To delete your account, open Account Settings, choose "Close Account," and confirm the request inside Support with a valid ID.
 We honor deletion requests promptly, removing personal records while keeping necessary logs for compliance when required.
 You can always reconnect later by creating a new account.
     `,
@@ -71,9 +75,11 @@ You can always reconnect later by creating a new account.
     titleEn: "Complaints & Reports",
     updated: "آخر تحديث: 17 مارس 2026",
     arText: `
-نسعى جاهدين ليكون فضاؤنا نقياً وملهماً، ونرحب بقلبٍ مفتوح بأي بلاغٍ أو شكوى تتعلق بسلوكٍ مسيء أو مشكلاتٍ تقنية عبر قسم "اتصل بنا".
-نرجو منك تزويدنا بكافة التفاصيل؛ كعنوان البلاغ، والروابط المعنية، ولقطات الشاشة التي تعيننا على فهم سياق الأمر.
-ونؤكد لك بأغلظ المواثيق أن فريق الأمان لدينا يتعامل مع كل بلاغ بسرية تامة وعناية فائقة، وسنوافيك بالخطوات المتخذة فور إتمام المراجعة.
+نسعى لأن يكون دريبدو بيئة آمنة ومريحة، ونرحب بأي بلاغ أو شكوى تتعلق بسلوك مسيء أو مشكلة تقنية عبر قسم "اتصل بنا".
+
+أرسل لنا كل التفاصيل: عنوان البلاغ، الروابط أو أسماء الحسابات المعنية، ولقطات الشاشة التي توضح السياق، لنتمكن من التعامل مع الأمر بدقة.
+
+نعامل جميع البلاغات بسرية تامة، ونوافيك بالإجراء المتخذ حين يكون ذلك ممكناً.
     `,
     enText: `
 Submit complaints about bugs, policy violations, or impersonation via Contact/Report, including links and evidence.
